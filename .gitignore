@@ -1,0 +1,33 @@
+﻿# Java
+*.class
+*.jar
+*.war
+*.log
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Node
+node_modules/
+dist/
+node_cache/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+bin/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java crash logs
+hs_err_pid*.log
+replay_pid*.log
+
+# Maven
+bank-maven/repository/
+bank-maven/.repository/

@@ -1,0 +1,142 @@
+Starting at 2026/06/03 周三 18:47:26.70 
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.bank:bank-server >------------------------
+[INFO] Building Bank Server 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot-maven-plugin:2.7.18:run (default-cli) > test-compile @ bank-server >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ bank-server ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ bank-server ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ bank-server ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory E:\Agent\MyProject\MBCS\bank-core\bank-server\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ bank-server ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:2.7.18:run (default-cli) < test-compile @ bank-server <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.7.18:run (default-cli) @ bank-server ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.18)
+
+2026-06-03 18:47:30.744 [main] INFO  c.bank.server.BankServerApplication - Starting BankServerApplication using Java 17.0.14 on Marvelous with PID 6372 (E:\Agent\MyProject\MBCS\bank-core\bank-server\target\classes started by Mwl20 in E:\Agent\MyProject\MBCS\bank-core\bank-server)
+2026-06-03 18:47:30.746 [main] DEBUG c.bank.server.BankServerApplication - Running with Spring Boot v2.7.18, Spring v5.3.31
+2026-06-03 18:47:30.746 [main] INFO  c.bank.server.BankServerApplication - No active profile set, falling back to 1 default profile: "default"
+2026-06-03 18:47:31.471 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'baseEnumType' and 'com.bank.common.domain.enums.BaseEnumType' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.473 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'baseEnumType' and 'com.bank.common.domain.enums.BaseEnumType' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.475 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'institutionMapper' and 'com.bank.teller.infrastructure.persistence.InstitutionMapper' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.475 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'tellerMapper' and 'com.bank.teller.infrastructure.persistence.TellerMapper' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.476 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'customerMapper' and 'com.bank.customer.infrastructure.persistence.CustomerMapper' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.476 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'customerAccountMapper' and 'com.bank.liability.infrastructure.persistence.CustomerAccountMapper' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.476 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'customerSubAccountMapper' and 'com.bank.liability.infrastructure.persistence.CustomerSubAccountMapper' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.476 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'liabilityAccountMapper' and 'com.bank.liability.infrastructure.persistence.LiabilityAccountMapper' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.476 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'transactionMapper' and 'com.bank.liability.infrastructure.persistence.TransactionMapper' mapperInterface. Bean already defined with the same name!
+2026-06-03 18:47:31.476 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.bank.teller.infrastructure.persistence, com.bank.customer.infrastructure.persistence, com.bank.liability.infrastructure.persistence]' package. Please check your configuration.
+2026-06-03 18:47:31.982 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-06-03 18:47:31.992 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-03 18:47:31.993 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
+2026-06-03 18:47:32.108 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-03 18:47:32.108 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1313 ms
+Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
+Registered plugin: 'com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor@2fbe26da'
+Property 'mapperLocations' was not specified.
+ _ _   |_  _ _|_. ___ _ |    _ 
+| | |\/|_)(_| | |_\  |_)||_|_\ 
+     /               |         
+                        3.5.3.1 
+2026-06-03 18:47:32.743 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: d583297a-4ebf-4c2d-8019-4339ef648dcb
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-06-03 18:47:32.842 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure Ant [pattern='/api/**'] with [org.springframework.security.web.session.DisableEncodeUrlFilter@53d6e959, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3caee3a8, org.springframework.security.web.context.SecurityContextPersistenceFilter@6d5f4900, org.springframework.security.web.header.HeaderWriterFilter@666618d6, org.springframework.security.web.authentication.logout.LogoutFilter@7aded903, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1b560eb0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@9e02f84, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@69a40b3c, org.springframework.security.web.session.SessionManagementFilter@67328bcb, org.springframework.security.web.access.ExceptionTranslationFilter@3d3c886f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@bbb6f0]
+2026-06-03 18:47:32.850 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2b6fb197, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2eb0cefe, org.springframework.security.web.context.SecurityContextPersistenceFilter@38159384, org.springframework.security.web.header.HeaderWriterFilter@3002e397, org.springframework.security.web.authentication.logout.LogoutFilter@14f060b8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@55877274, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@723e2d08, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5a2ae1ab, org.springframework.security.web.session.SessionManagementFilter@7da1e005, org.springframework.security.web.access.ExceptionTranslationFilter@6b70d1fb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4eeab3e]
+2026-06-03 18:47:33.162 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-03 18:47:33.170 [main] INFO  c.bank.server.BankServerApplication - Started BankServerApplication in 2.902 seconds (JVM running for 3.288)
+2026-06-03 18:47:52.002 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-03 18:47:52.002 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-03 18:47:52.003 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5e80792e] was not registered for synchronization because synchronization is not active
+2026-06-03 18:47:52.070 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-06-03 18:47:52.207 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+JDBC Connection [HikariProxyConnection@1549587440 wrapping com.mysql.cj.jdbc.ConnectionImpl@e3b1f62] will not be managed by Spring
+==>  Preparing: SELECT id,institution_no,institution_name,institution_level,parent_institution_no,status,created_at,updated_at FROM sys_institution
+==> Parameters: 
+<==    Columns: id, institution_no, institution_name, institution_level, parent_institution_no, status, created_at, updated_at
+<==        Row: 1, 100001, Head Office, HEADQUARTERS, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 2, 100002, Branch A, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 3, 100003, Branch B, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 4, 100004, Branch C, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 5, 100005, Branch D, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 6, 100006, Branch E, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 7, 100007, Branch F, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 8, 100008, Branch G, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 9, 100009, Branch H, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 10, 100010, Branch I, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==      Total: 10
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5e80792e]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@75a42b73] was not registered for synchronization because synchronization is not active
+2026-06-03 18:47:52.532 [http-nio-8080-exec-2] WARN  c.b.m.c.t.support.ReflectLambdaMeta - Unable to make field private final java.lang.Class java.lang.invoke.SerializedLambda.capturingClass accessible: module java.base does not "opens java.lang.invoke" to unnamed module @33f88ab
+JDBC Connection [HikariProxyConnection@1895545111 wrapping com.mysql.cj.jdbc.ConnectionImpl@e3b1f62] will not be managed by Spring
+==>  Preparing: SELECT id,teller_no,teller_name,institution_no,teller_type,password,status,created_at,updated_at FROM sys_teller WHERE (teller_no = ?)
+==> Parameters: 1000010001(String)
+<==    Columns: id, teller_no, teller_name, institution_no, teller_type, password, status, created_at, updated_at
+<==        Row: 1, 1000010001, TELLER001, 100001, VAULT, $2a$10$Ltcs/OrfPnmRS6BkShIpAuFM/VKAHEj8swbH.nOvlv9arbVEgkvM6, NORMAL, 2026-04-21 16:21:03, 2026-06-03 16:19:57
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@75a42b73]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7a46cc98] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1954626976 wrapping com.mysql.cj.jdbc.ConnectionImpl@e3b1f62] will not be managed by Spring
+==>  Preparing: SELECT id,teller_no,teller_name,institution_no,teller_type,password,status,created_at,updated_at FROM sys_teller WHERE (teller_no = ?)
+==> Parameters: 1000010001(String)
+<==    Columns: id, teller_no, teller_name, institution_no, teller_type, password, status, created_at, updated_at
+<==        Row: 1, 1000010001, TELLER001, 100001, VAULT, $2a$10$Ltcs/OrfPnmRS6BkShIpAuFM/VKAHEj8swbH.nOvlv9arbVEgkvM6, NORMAL, 2026-04-21 16:21:03, 2026-06-03 16:19:57
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7a46cc98]
+2026-06-03 18:47:52.691 [http-nio-8080-exec-3] ERROR c.b.c.e.GlobalExceptionHandler - 业务异常: code=400, message=密码错误
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@34fa5d56] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@977118649 wrapping com.mysql.cj.jdbc.ConnectionImpl@e3b1f62] will not be managed by Spring
+==>  Preparing: SELECT id,institution_no,institution_name,institution_level,parent_institution_no,status,created_at,updated_at FROM sys_institution
+==> Parameters: 
+<==    Columns: id, institution_no, institution_name, institution_level, parent_institution_no, status, created_at, updated_at
+<==        Row: 1, 100001, Head Office, HEADQUARTERS, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 2, 100002, Branch A, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 3, 100003, Branch B, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 4, 100004, Branch C, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 5, 100005, Branch D, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 6, 100006, Branch E, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 7, 100007, Branch F, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 8, 100008, Branch G, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 9, 100009, Branch H, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==        Row: 10, 100010, Branch I, BRANCH, null, NORMAL, 2026-04-21 16:21:03, 2026-04-21 16:21:03
+<==      Total: 10
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@34fa5d56]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@b68599] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@242314239 wrapping com.mysql.cj.jdbc.ConnectionImpl@e3b1f62] will not be managed by Spring
+==>  Preparing: SELECT id,teller_no,teller_name,institution_no,teller_type,password,status,created_at,updated_at FROM sys_teller WHERE (teller_no = ?)
+==> Parameters: 1000010001(String)
+<==    Columns: id, teller_no, teller_name, institution_no, teller_type, password, status, created_at, updated_at
+<==        Row: 1, 1000010001, TELLER001, 100001, VAULT, $2a$10$Ltcs/OrfPnmRS6BkShIpAuFM/VKAHEj8swbH.nOvlv9arbVEgkvM6, NORMAL, 2026-04-21 16:21:03, 2026-06-03 16:19:57
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@b68599]

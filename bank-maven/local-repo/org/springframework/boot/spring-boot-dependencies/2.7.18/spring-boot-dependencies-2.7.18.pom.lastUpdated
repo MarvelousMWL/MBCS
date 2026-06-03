@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Jun 03 16:23:22 CST 2026
+http\://10.10.20.29\:8081/nexus/content/groups/public/.error=Could not transfer artifact org.springframework.boot\:spring-boot-dependencies\:pom\:2.7.18 from/to nexus-nanjing (http\://10.10.20.29\:8081/nexus/content/groups/public/)\: transfer failed for http\://10.10.20.29\:8081/nexus/content/groups/public/org/springframework/boot/spring-boot-dependencies/2.7.18/spring-boot-dependencies-2.7.18.pom
+c9d2892aec998de738f9e2b2d23f8d5d6a54ae46@default-nexus-nanjing-http\://10.10.20.29\:8081/nexus/content/groups/public/.lastUpdated=1780475002539
