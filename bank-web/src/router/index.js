@@ -9,6 +9,9 @@ const routes = [
       { path: '/institution', name: 'Institution', component: () => import('../views/institution/Institution.vue') },
       { path: '/teller', name: 'Teller', component: () => import('../views/teller/Teller.vue') },
       { path: '/customer', name: 'Customer', component: () => import('../views/customer/Customer.vue') },
+      // 产品工厂
+      { path: '/product-factory', name: 'ProductList', component: () => import('../views/product/ProductList.vue') },
+      { path: '/product-factory/copy', name: 'ProductCopy', component: () => import('../views/product/ProductCopy.vue') },
       // 账户查询
       { path: '/account/query', name: 'AccountQuery', component: () => import('../views/account/AccountQuery.vue') },
       // 开户
@@ -39,3 +42,4 @@ router.beforeEach((to, from, next) => {
   if (to.path !== '/login' && !userStore.token) { next('/login') } else { next() }
 })
 export default router
+

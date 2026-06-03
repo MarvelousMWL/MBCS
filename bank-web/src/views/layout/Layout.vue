@@ -16,6 +16,12 @@
             <el-menu-item index="/teller"><span>柜员管理</span></el-menu-item>
           </el-sub-menu>
 
+                    <el-sub-menu index="product-mod">
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></el-icon><span>产品工厂</span></template>
+            <el-menu-item index="/product-factory"><span>产品列表</span></el-menu-item>
+            <el-menu-item index="/product-factory/copy"><span>产品拷贝</span></el-menu-item>
+          </el-sub-menu>
+
           <el-sub-menu index="customer-mod">
             <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></el-icon><span>客户管理</span></template>
             <el-menu-item index="/customer"><span>客户信息</span></el-menu-item>
@@ -76,7 +82,7 @@
 <script setup>
 import { ref, computed } from 'vue'; import { useRouter, useRoute } from 'vue-router'; import { useUserStore } from '../../stores/user'
 const router=useRouter(),route=useRoute(),userStore=useUserStore(),collapsed=ref(false),activeMenu=computed(()=>route.path),isVaultUser=computed(()=>userStore.tellerType==='VAULT')
-var titles={'/home':'首页','/institution':'机构管理','/teller':'柜员管理','/customer':'客户管理','/account/query':'账户查询','/account/open-personal':'个人开户','/account/open-corporate':'对公开户','/account/open-liability':'开立负债账户','/account/close':'账户销户','/account/restriction':'限制总览','/account/freeze':'账户冻结','/account/unfreeze':'账户解冻','/account/sub-account':'子账户管理','/transaction/deposit':'存款交易','/transaction/withdraw':'取款交易','/transaction/cancel-deposit':'存款撤销','/transaction/cancel-withdraw':'取款撤销','/transaction/list':'交易流水'}
+var titles={'/product-factory':'产品列表','/product-factory/copy':'产品拷贝','/home':'首页','/institution':'机构管理','/teller':'柜员管理','/customer':'客户管理','/account/query':'账户查询','/account/open-personal':'个人开户','/account/open-corporate':'对公开户','/account/open-liability':'开立负债账户','/account/close':'账户销户','/account/restriction':'限制总览','/account/freeze':'账户冻结','/account/unfreeze':'账户解冻','/account/sub-account':'子账户管理','/transaction/deposit':'存款交易','/transaction/withdraw':'取款交易','/transaction/cancel-deposit':'存款撤销','/transaction/cancel-withdraw':'取款撤销','/transaction/list':'交易流水'}
 var currentTitle=computed(()=>titles[route.path]||'工作台')
 const handleLogout=()=>{userStore.logout();router.push('/login')}
 </script>
@@ -117,3 +123,6 @@ const handleLogout=()=>{userStore.logout();router.push('/login')}
 .main-area{background:var(--main-bg);padding:0}
 .page-content{padding:28px;min-height:100%}
 </style>
+
+
+
