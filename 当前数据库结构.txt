@@ -1,0 +1,11 @@
+﻿python.exe : Traceback (most recent call last):
+At line:21 char:1
++ & $python "$env:TEMP\check_db.py" 2>&1 | Out-File -FilePath "E:\Agent ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\Mwl20\AppData\Local\Temp\check_db.py", line 1, in <module>
+    \ufeffimport mysql.connector
+    ^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'mysql'

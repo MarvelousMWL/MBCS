@@ -1,0 +1,46 @@
+package com.bank.liability.domain.account.entity;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+@Data @TableName("kdaf_zhxx")
+public class AccountInfo {
+    private Long id; private String accountNo; private String accountName; private String customerNo;
+    private String countryCode; private String currencyCode; private String cashExchangeFlag; private String term;
+    private LocalDate maturityDate; private String interestStartMethod; private LocalDate initialInterestStartDate;
+    private LocalDate initialMaturityDate; private String businessCode; private String batchInstitution;
+    private String accountInstitution; private String openInstitution; private LocalDate openDate; private String openTeller;
+    private String closeInstitution; private LocalDate closeDate; private String closeTeller; private String depositPromoter;
+    private String accountManager; private LocalDate accountValidDate; private Integer currentUnusedSeq;
+    private BigDecimal currentBalance; private BigDecimal lastDayBalance; private LocalDate balanceUpdateDate;
+    private LocalDate firstDepositDate; private LocalDate lastBusinessDate; private LocalDate lastCollectionDate;
+    private String productCode; private String liabilityProductType; private String customerType;
+    private String accountClassify1; private String accountClassify2; private String accountClassify3;
+    private String conversionCurrency; private BigDecimal maxRetainBalance; private BigDecimal minRetainBalance;
+    private String depositCtrlMode; private String depositCtrlMethod; private String depositProcessOrder;
+    private String withdrawCtrlMode; private String withdrawCtrlMethod; private String customWithdrawMethod;
+    private String customerAccount; private String renewMethod; private BigDecimal reserveAmount; private BigDecimal openAmount;
+    private String depositType; private String accountStatus; private String balanceSyncFlag; private String comboProductNo;
+    private Integer comboProductSeq; private String comboMasterAccount; private String comboTemplateCode;
+    private String comboTemplateName; private String comboAccountType; private String accountRestrictFlag;
+    private String restrictType; private String overdraftFlag; private String formTransferFlag; private String dormantToNormalFlag;
+    private String monitorFlag; private String allowOverdraftFlag; private String forexSupervisionFlag; private String forexCheckFlag;
+    private String settlementFlag; private String financialPlanningFlag; private String cashWithdrawFlag;
+    private String transferWithdrawFlag; private String cashDepositFlag; private String transferDepositFlag;
+    private String agreementDepositFlag; private String simpleInterestFlag; private String interestPaymentMethod;
+    private String passbookFlag; private String realtimeTransferFlag; private String balanceCollectionFlag;
+    private String amountFreezeFlag; private String closedFreezeFlag; private String onlyReceiveNoPayFlag;
+    private String onlyPayNoReceiveFlag; private String checkCode; private String reserveField01; private String reserveField02;
+    private String reserveField03; private BigDecimal reserveBalance01; private LocalDate reserveDate01; private String openChannel;
+    private String accrualBizCode; private String realAccountFlag; private String accountStatusField; private String batchSplitGroup;
+    private String superviseAccountFlag; private String superviseAccountType; private String checkFlag; private String whitelistFlag;
+    private String ftzAccountFlag; private String cashManagementFlag; private String reserveFundFlag; private String custodyFlag;
+    private String fiscalAccountFlag; private String fastOpenFlag; private String approvalFlag; private String accountEngName;
+    private String accountEngShort; private String accountCnShort; private String relatedBizNo; private String sellableProductNo;
+    private String reserveFundType; private String interbankDepositType; private String fiscalDepositType;
+    private String custodyAccountType; private String ftzAccountType; private String foreignCtrlAccountNature;
+    private String cleanAccountFlag; private String fundSupervisionFlag; private String billingFlag; private String faceVerifyFlag;
+    private String reserveChar01; private String reserveChar02; private String reserveChar03;
+    private LocalDateTime createdAt; private LocalDateTime updatedAt;
+}

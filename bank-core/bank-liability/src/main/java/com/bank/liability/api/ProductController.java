@@ -31,6 +31,11 @@ public class ProductController {
         cfg(c, b, "customerControls", ProductCustomerControl.class, r::deleteCustomerControl, r::saveCustomerControl);
         cfg(c, b, "voucherControls", ProductVoucherControl.class, r::deleteVoucherControl, r::saveVoucherControl);
         cfg(c, b, "accountingControls", ProductAccountingControl.class, r::deleteAccountingControl, r::saveAccountingControl);
+        // ADBC new tables
+        cfg(c, b, "closeControls", ProductCloseControl.class, r::deleteCloseControl, r::saveCloseControl);
+        cfg(c, b, "depositControls", ProductDepositControl.class, r::deleteDepositControl, r::saveDepositControl);
+        cfg(c, b, "interestDefinitions", ProductInterestDefinition.class, r::deleteInterestDefinition, r::saveInterestDefinition);
+        cfg(c, b, "rateDefinitions", ProductRateDefinition.class, r::deleteRateDefinition, r::saveRateDefinition);
         return Result.success();
     }
     private <T> void cfg(String code, Map<String,Object> b, String key, Class<T> cls, java.util.function.Consumer<String> del, java.util.function.Consumer<T> save) {
@@ -44,7 +49,10 @@ public class ProductController {
         else if (item instanceof ProductChannelControl p) p.setProductCode(code); else if (item instanceof ProductCurrencyControl p) p.setProductCode(code);
         else if (item instanceof ProductInstitutionControl p) p.setProductCode(code); else if (item instanceof ProductCustomerControl p) p.setProductCode(code);
         else if (item instanceof ProductVoucherControl p) p.setProductCode(code); else if (item instanceof ProductAccountingControl p) p.setProductCode(code);
+        else if (item instanceof ProductCloseControl p) p.setProductCode(code); else if (item instanceof ProductDepositControl p) p.setProductCode(code);
+        else if (item instanceof ProductInterestDefinition p) p.setProductCode(code); else if (item instanceof ProductRateDefinition p) p.setProductCode(code);
     }
+    // GET endpoints
     @GetMapping("/{c}/controls") public Result<?> gc1(@PathVariable String c) { return Result.success(r.findControlsByProductCode(c)); }
     @GetMapping("/{c}/term-controls") public Result<?> gc2(@PathVariable String c) { return Result.success(r.findTermControls(c)); }
     @GetMapping("/{c}/open-controls") public Result<?> gc3(@PathVariable String c) { return Result.success(r.findOpenControls(c)); }
@@ -57,4 +65,9 @@ public class ProductController {
     @GetMapping("/{c}/customer-controls") public Result<?> gc10(@PathVariable String c) { return Result.success(r.findCustomerControls(c)); }
     @GetMapping("/{c}/voucher-controls") public Result<?> gc11(@PathVariable String c) { return Result.success(r.findVoucherControls(c)); }
     @GetMapping("/{c}/accounting-controls") public Result<?> gc12(@PathVariable String c) { return Result.success(r.findAccountingControls(c)); }
+    // ADBC new GET endpoints
+    @GetMapping("/{c}/close-controls") public Result<?> gc13(@PathVariable String c) { return Result.success(r.findCloseControls(c)); }
+    @GetMapping("/{c}/deposit-controls") public Result<?> gc14(@PathVariable String c) { return Result.success(r.findDepositControls(c)); }
+    @GetMapping("/{c}/interest-definitions") public Result<?> gc15(@PathVariable String c) { return Result.success(r.findInterestDefinitions(c)); }
+    @GetMapping("/{c}/rate-definitions") public Result<?> gc16(@PathVariable String c) { return Result.success(r.findRateDefinitions(c)); }
 }

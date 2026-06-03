@@ -22,8 +22,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final ProductCustomerControlMapper k;
     private final ProductVoucherControlMapper l;
     private final ProductAccountingControlMapper m;
+    // ADBC new
+    private final ProductCloseControlMapper n;
+    private final ProductDepositControlMapper o;
+    private final ProductInterestDefinitionMapper p;
+    private final ProductRateDefinitionMapper q;
 
-    // Helper
     private <T> void del(Class<T> cls, String code) { ((com.baomidou.mybatisplus.core.mapper.BaseMapper<T>)getMapper(cls)).delete(wq("product_code", code)); }
     private <T> List<T> lst(Class<T> cls, String code) { return ((com.baomidou.mybatisplus.core.mapper.BaseMapper<T>)getMapper(cls)).selectList(wq("product_code", code)); }
     @SuppressWarnings("unchecked")
@@ -34,12 +38,21 @@ public class ProductRepositoryImpl implements ProductRepository {
         if (cls == ProductFormTransfer.class) return g; if (cls == ProductChannelControl.class) return h;
         if (cls == ProductCurrencyControl.class) return i; if (cls == ProductInstitutionControl.class) return j;
         if (cls == ProductCustomerControl.class) return k; if (cls == ProductVoucherControl.class) return l;
-        if (cls == ProductAccountingControl.class) return m; return null;
+        if (cls == ProductAccountingControl.class) return m; if (cls == ProductCloseControl.class) return n;
+        if (cls == ProductDepositControl.class) return o; if (cls == ProductInterestDefinition.class) return p;
+        if (cls == ProductRateDefinition.class) return q; return null;
     }
 
     @Override public void save(ProductDefinition d) { a.insert(d); }
     @Override public void update(ProductDefinition d) { a.updateById(d); }
-    @Override public void deleteByProductCode(String code) { for (var cls : List.of(ProductDefinition.class,ProductControl.class,ProductTermControl.class,ProductOpenControl.class,ProductWithdrawControl.class,ProductMaturityControl.class,ProductFormTransfer.class,ProductChannelControl.class,ProductCurrencyControl.class,ProductInstitutionControl.class,ProductCustomerControl.class,ProductVoucherControl.class,ProductAccountingControl.class)) del(cls, code); }
+    @Override public void deleteByProductCode(String code) {
+        for (var cls : List.of(ProductDefinition.class,ProductControl.class,ProductTermControl.class,
+          ProductOpenControl.class,ProductWithdrawControl.class,ProductMaturityControl.class,
+          ProductFormTransfer.class,ProductChannelControl.class,ProductCurrencyControl.class,
+          ProductInstitutionControl.class,ProductCustomerControl.class,ProductVoucherControl.class,
+          ProductAccountingControl.class,ProductCloseControl.class,ProductDepositControl.class,
+          ProductInterestDefinition.class,ProductRateDefinition.class)) del(cls, code);
+    }
     @Override public Optional<ProductDefinition> findByProductCode(String code) { return Optional.ofNullable(a.selectOne(wq("product_code", code))); }
     @Override public List<ProductDefinition> findAll() { return a.selectList(null); }
     @Override public List<ProductDefinition> findByDepositType(String t) { return a.selectList(wq("deposit_type", t)); }
@@ -82,5 +95,18 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override public void saveAccountingControl(ProductAccountingControl x) { m.insert(x); }
     @Override public void deleteAccountingControl(String code) { del(ProductAccountingControl.class, code); }
     @Override public List<ProductAccountingControl> findAccountingControls(String code) { return lst(ProductAccountingControl.class, code); }
+    // ADBC new tables
+    @Override public void saveCloseControl(ProductCloseControl x) { n.insert(x); }
+    @Override public void deleteCloseControl(String code) { del(ProductCloseControl.class, code); }
+    @Override public List<ProductCloseControl> findCloseControls(String code) { return lst(ProductCloseControl.class, code); }
+    @Override public void saveDepositControl(ProductDepositControl x) { o.insert(x); }
+    @Override public void deleteDepositControl(String code) { del(ProductDepositControl.class, code); }
+    @Override public List<ProductDepositControl> findDepositControls(String code) { return lst(ProductDepositControl.class, code); }
+    @Override public void saveInterestDefinition(ProductInterestDefinition x) { p.insert(x); }
+    @Override public void deleteInterestDefinition(String code) { del(ProductInterestDefinition.class, code); }
+    @Override public List<ProductInterestDefinition> findInterestDefinitions(String code) { return lst(ProductInterestDefinition.class, code); }
+    @Override public void saveRateDefinition(ProductRateDefinition x) { q.insert(x); }
+    @Override public void deleteRateDefinition(String code) { del(ProductRateDefinition.class, code); }
+    @Override public List<ProductRateDefinition> findRateDefinitions(String code) { return lst(ProductRateDefinition.class, code); }
     private <T> QueryWrapper<T> wq(String col, Object val) { return new QueryWrapper<T>().eq(col, val); }
 }

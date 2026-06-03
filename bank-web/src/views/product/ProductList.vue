@@ -7,7 +7,7 @@
     <el-card>
       <el-table :data="products" v-loading="loading" stripe>
         <el-table-column prop="productCode" label="产品代码" width="100"/>
-        <el-table-column prop="productName" label="产品名称" width="160"/>
+        <el-table-column prop="productDescription" label="产品名称" width="160"/>
         <el-table-column label="存款种类" width="110">
           <template #default="{ row: r }">{{ typeMap[r.depositType] || r.depositType }}</template>
         </el-table-column>
@@ -44,8 +44,8 @@
             <el-row :gutter="20">
               <el-col :span="12"><el-form-item label="产品代码" prop="productCode" :rules="[{required:true}]">
                 <el-input v-model="form.productCode" :disabled="isEdit" placeholder="如 DP001"/></el-form-item></el-col>
-              <el-col :span="12"><el-form-item label="产品名称" prop="productName" :rules="[{required:true}]">
-                <el-input v-model="form.productName"/></el-form-item></el-col>
+              <el-col :span="12"><el-form-item label="产品说明" prop="productDescription" :rules="[{required:true}]">
+                <el-input v-model="form.productDescription"/></el-form-item></el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="12"><el-form-item label="生效日期" prop="effectiveDate" :rules="[{required:true}]">
@@ -84,8 +84,8 @@
               <el-col :span="8"><el-form-item label="结算户"><el-switch v-model="form.settlementFlag" active-value="1" inactive-value="0"/></el-form-item></el-col>
             </el-row>
             <el-row :gutter="20">
-              <el-col :span="8"><el-form-item label="现金通兑"><el-switch v-model="form.cashWithdrawalFlag" active-value="1" inactive-value="0"/></el-form-item></el-col>
-              <el-col :span="8"><el-form-item label="转账通兑"><el-switch v-model="form.ttWithdrawalFlag" active-value="1" inactive-value="0"/></el-form-item></el-col>
+              <el-col :span="8"><el-form-item label="现金通兑"><el-switch v-model="form.cashExchangeFlag" active-value="1" inactive-value="0"/></el-form-item></el-col>
+              <el-col :span="8"><el-form-item label="转账通兑"><el-switch v-model="form.transferExchangeFlag" active-value="1" inactive-value="0"/></el-form-item></el-col>
               <el-col :span="8"><el-form-item label="到期定义"><el-switch v-model="form.maturityFlag" active-value="1" inactive-value="0"/></el-form-item></el-col>
             </el-row>
             <el-row :gutter="20">
@@ -174,7 +174,7 @@
                 </el-select></template></el-table-column>
                 <el-table-column label="操作" width="80"><template #default="{ row: r, $index }"><el-button size="small" type="danger" link @click="withdrawControls.splice($index,1)">删除</el-button></template></el-table-column>
               </el-table>
-              <el-button size="small" style="margin-top:8px" @click="withdrawControls.push({minBalance:0,withdrawMethod:'ALL'})">添加支取控制</el-button>
+              <el-button size="small" style="margin-top:8px" @click="withdrawControls.push({minBalance:0,withdrawMethod:'0'})">添加支取控制</el-button>
               <el-empty v-if="withdrawControls.length===0" description="未配置支取控制" :image-size="50"/>
             </div>
 
@@ -217,7 +217,7 @@
     <el-dialog v-model="detailVisible" title="产品详情" width="750px">
       <el-descriptions v-if="detail" :column="2" border>
         <el-descriptions-item label="产品代码" span="2">{{ detail.productCode }}</el-descriptions-item>
-        <el-descriptions-item label="产品名称" span="2">{{ detail.productName }}</el-descriptions-item>
+        <el-descriptions-item label="产品名称" span="2">{{ detail.productDescription }}</el-descriptions-item>
         <el-descriptions-item label="存款种类">{{ typeMap[detail.depositType] }}</el-descriptions-item>
         <el-descriptions-item label="定活类型">{{ detail.currentFixedFlag==='0'?'活期':'定期' }}</el-descriptions-item>
         <el-descriptions-item label="所属对象">{{ detail.customerType==='CORPORATE'?'对公':'同业' }}</el-descriptions-item>
@@ -240,13 +240,13 @@ var products = ref([]), loading = ref(false), dialogVisible = ref(false), detail
 var isEdit = ref(false), saving = ref(false), activeTab = ref('basic'), detail = ref(null), formRef = ref(null)
 
 var form = reactive({
-  productCode:'', productName:'', effectiveDate:'', expiryDate:'', productStatus:'0',
+  productCode:'', productDescription:'', effectiveDate:'', expiryDate:'', productStatus:'0',
   currentFixedFlag:'0', customerType:'CORPORATE', productType:'TRADITIONAL', depositType:'00',
-  defaultCurrency:'156', withdrawScope:'BRANCH', depositScope:'ALL', cashWithdrawalFlag:'0',
-  ttWithdrawalFlag:'0', maturityFlag:'0', overdraftFlag:'0', chargeFlag:'0', accountClassifyFlag:'0',
+  defaultCurrency:'156', withdrawScope:'0', depositScope:'0', cashExchangeFlag:'0',
+  transferExchangeFlag:'0', maturityFlag:'0', overdraftFlag:'0', chargeFlag:'0', accountClassifyFlag:'0',
   channelCtrlMode:'0', currencyCtrlMode:'0', institutionCtrlMode:'0', customerCtrlMode:'0',
   voucherCtrlMode:'0', termCtrlMode:'0', simpleInterestFlag:'0', settlementFlag:'0',
-  exchangeFlag:'0', exchangeSellFlag:'0', balanceSyncFlag:'1', formTransferFlag:'0'
+  exchangeFlag:'0', autoExchangeSellFlag:'0', balanceSyncFlag:'1', formTransferFlag:'0'
 })
 
 var controls = ref([]), termControls = ref([]), openControls = ref([]), withdrawControls = ref([])
@@ -264,13 +264,13 @@ async function loadData() {
 
 function resetForm() {
   Object.assign(form, {
-    productCode:'', productName:'', effectiveDate:'', expiryDate:'', productStatus:'0',
+    productCode:'', productDescription:'', effectiveDate:'', expiryDate:'', productStatus:'0',
     currentFixedFlag:'0', customerType:'CORPORATE', depositType:'00', defaultCurrency:'156',
-    withdrawScope:'BRANCH', depositScope:'ALL', cashWithdrawalFlag:'0', ttWithdrawalFlag:'0',
+    withdrawScope:'0', depositScope:'0', cashExchangeFlag:'0', transferExchangeFlag:'0',
     maturityFlag:'0', overdraftFlag:'0', chargeFlag:'0', accountClassifyFlag:'0',
     channelCtrlMode:'0', currencyCtrlMode:'0', institutionCtrlMode:'0', customerCtrlMode:'0',
     voucherCtrlMode:'0', termCtrlMode:'0', simpleInterestFlag:'0', settlementFlag:'0',
-    exchangeFlag:'0', exchangeSellFlag:'0', balanceSyncFlag:'1', formTransferFlag:'0'
+    exchangeFlag:'0', autoExchangeSellFlag:'0', balanceSyncFlag:'1', formTransferFlag:'0'
   })
   controls.value = []; termControls.value = []; openControls.value = []; withdrawControls.value = []
   maturityControls.value = []; formTransfers.value = []; channelControls.value = []
@@ -359,3 +359,5 @@ onMounted(function () { loadData() })
 .cfg-title{font-size:14px;font-weight:600;margin:0 0 12px;color:var(--text-primary);display:flex;align-items:center;gap:8px}
 .cfg-title:before{content:'';display:inline-block;width:3px;height:14px;background:#3182ce;border-radius:2px}
 </style>
+
+

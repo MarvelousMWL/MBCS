@@ -1,0 +1,27 @@
+﻿Sheets: ['��Ŀ�ܹ�', '��Ʒ����', '������', '������', '�˻�����', '������Ϣ', '����', '���浥']
+
+=== ��Ŀ�ܹ� (17 rows, 5 cols) ===
+  1. ��� |  | ���� | ���� | ��ע
+python.exe : Traceback (most recent call last):
+At line:20 char:1
++ & $python "$env:TEMP\read_learning.py" 2>&1 | Out-File -FilePath "E:\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  2. Web ��� |  | Spring Boot 2.7.18, Spring Web 5.3.34 |  |
+  3. ORM |  | MyBatis 3.5.9, MyBatis-Plus 3.5.3 |  |
+  4. ���ݿ� |  | MySQL, Oracle, PostgreSQL, H2 |  |
+  5. �м�� | ����ע�����ĺ��������� | Nacos/ESB��ҵ�������� | �����֡���̬���ù��� | ϵͳ�ġ�ͨѶ¼���͡��㲥̨��
+  6. | �ڴ����ݿ⣨�������棩 | Redis | ���ٻ��桢�ֲ�ʽ�������а� | ϵͳ�ġ����ٹ���̨��
+  7. | ��Ϣ���� | Kafka | �첽ͨ�š��������塢ϵͳ���� | ϵͳ�ġ������תվ��
+  8. | �߿������ط������ڱ��� | Sentinel | �������۶ϡ�ϵͳ���� | ϵͳ�ġ����ڡ��͡�����˿��
+  9. ΢���� |  | Spring Cloud Alibaba 2021.0.6.1 |  |
+  10. ����
+��һ�����棩 |  | Caffeine |  |
+  11. ��־ |  | Log4j 2.17.2, SLF4J |  |
+  12. ��ȫ��� |  | Spring Security, Shiro |  |
+  13. ���� | ���߼��� | Hutool | ���ַ��������ڡ����ܵȵײ���� |
+  File "C:\Users\Mwl20\AppData\Local\Temp\read_learning.py", line 11, in <module>
+    print(f"  {i+1}. {line}")
+UnicodeEncodeError: 'gbk' codec can't encode character '\u2194' in position 32: illegal multibyte sequence

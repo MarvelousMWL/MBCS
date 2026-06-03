@@ -12,10 +12,6 @@ public class ProductService {
     public ProductDefinition getByProductCode(String code) { return r.findByProductCode(code).orElseThrow(() -> new RuntimeException("产品不存在: " + code)); }
     @Transactional public void save(ProductDefinition def) { if (def.getProductCode() == null) throw new RuntimeException("产品代码不能为空"); r.save(def); }
     @Transactional public void update(ProductDefinition def) { var e = r.findByProductCode(def.getProductCode()).orElseThrow(); def.setId(e.getId()); r.update(def); }
-    @Transactional public <T> void replaceConfig(String code, List<T> items, java.util.function.Consumer<List<T>> deleteFn, java.util.function.Consumer<T> saveFn) {
-        deleteFn.accept(null); if (items != null) for (var item : items) { setCode(item, code); saveFn.accept(item); }
-    }
-    public <T> void del(String code, java.util.function.Consumer<String> fn) { fn.accept(code); }
     private void setCode(Object item, String code) {
         if (item instanceof ProductControl p) p.setProductCode(code);
         else if (item instanceof ProductTermControl p) p.setProductCode(code);
@@ -29,5 +25,9 @@ public class ProductService {
         else if (item instanceof ProductCustomerControl p) p.setProductCode(code);
         else if (item instanceof ProductVoucherControl p) p.setProductCode(code);
         else if (item instanceof ProductAccountingControl p) p.setProductCode(code);
+        else if (item instanceof ProductCloseControl p) p.setProductCode(code);
+        else if (item instanceof ProductDepositControl p) p.setProductCode(code);
+        else if (item instanceof ProductInterestDefinition p) p.setProductCode(code);
+        else if (item instanceof ProductRateDefinition p) p.setProductCode(code);
     }
 }
