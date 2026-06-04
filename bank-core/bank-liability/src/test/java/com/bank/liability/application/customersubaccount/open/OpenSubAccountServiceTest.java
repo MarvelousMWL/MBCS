@@ -25,15 +25,15 @@ class OpenSubAccountServiceTest {
     void open_shouldSucceed_whenGeneratingUniqueAccountNo() {
         OpenSubAccountCommand command = new OpenSubAccountCommand();
         command.setCustomerAccountNo("CACC001");
-        command.setAccountType("DEMAND");
+        command.setAccountType(0);
 
         when(liabilityAccountRepository.countAll()).thenReturn(5L);
-        when(customerSubAccountDomainService.generateSubAccountSeq("CACC001", "DEMAND")).thenReturn("001CNY");
+        when(customerSubAccountDomainService.generateSubAccountSeq("CACC001", "0")).thenReturn("001CNY");
 
         CustomerSubAccount expected = new CustomerSubAccount();
         expected.setCustomerAccountNo("CACC001");
         expected.setSubAccountSeq("001CNY");
-        when(customerSubAccountDomainService.createSubAccount("CACC001", "001CNY", "10000006", "DEMAND"))
+        when(customerSubAccountDomainService.createSubAccount("CACC001", "001CNY", "10000006", "0"))
                 .thenReturn(expected);
 
         CustomerSubAccount result = openSubAccountService.open(command, "OPE001");
@@ -42,7 +42,7 @@ class OpenSubAccountServiceTest {
         assertEquals("CACC001", result.getCustomerAccountNo());
 
         verify(liabilityAccountRepository).countAll();
-        verify(customerSubAccountDomainService).generateSubAccountSeq("CACC001", "DEMAND");
-        verify(customerSubAccountDomainService).createSubAccount("CACC001", "001CNY", "10000006", "DEMAND");
+        verify(customerSubAccountDomainService).generateSubAccountSeq("CACC001", "0");
+        verify(customerSubAccountDomainService).createSubAccount("CACC001", "001CNY", "10000006", "0");
     }
 }

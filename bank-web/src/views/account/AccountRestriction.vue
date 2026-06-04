@@ -11,13 +11,13 @@
         <el-table :data="allAccounts" class="data-table">
           <el-table-column prop="liabilityAccountNo" label="负债账号" width="150"/>
           <el-table-column prop="customerAccountNo" label="客户账号" width="170"/>
-          <el-table-column label="状态" width="110"><template #default="{ row: r }"><el-tag size="small" :type="r.status==='NORMAL'?'success':r.status==='FROZEN'?'danger':'info'" effect="light" style="border:0">{{{NORMAL:'正常',FROZEN:'冻结',CLOSED:'已销户',STOPPED:'停用'}[r.status]||r.status}}</el-tag></template></el-table-column>
+          <el-table-column label="状态" width="110"><template #default="{ row: r }"><el-tag size="small" :type="[0,3,2,1].indexOf(r.status)===0?'success':[0,3,2,1].indexOf(r.status)===1?'danger':'info'" effect="light" style="border:0">{{$enumDict.LIABILITY_ACCOUNT_STATUS[r.status]||r.status}}</el-tag></template></el-table-column>
           <el-table-column prop="balance" label="余额" width="130" align="right"><template #default="{ row: r }"><span style="font-family:'Courier New',monospace;font-weight:600">{{Number(r.balance).toLocaleString('zh-CN',{minFractionDigits:2})}}</span></template></el-table-column>
           <el-table-column label="操作" width="200" fixed="right">
             <template #default="{ row: r }">
-              <el-button v-if="r.status==='NORMAL'" size="small" type="danger" @click="handleFreeze(r)">冻结</el-button>
-              <el-button v-if="r.status==='FROZEN'" size="small" @click="handleUnfreeze(r)">解冻</el-button>
-              <el-button v-if="r.status==='NORMAL'" size="small" type="danger" plain @click="handleClose(r)">销户</el-button>
+              <el-button v-if="r.status===0" size="small" type="danger" @click="handleFreeze(r)">冻结</el-button>
+              <el-button v-if="r.status===3" size="small" @click="handleUnfreeze(r)">解冻</el-button>
+              <el-button v-if="r.status===0" size="small" type="danger" plain @click="handleClose(r)">销户</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -52,10 +52,10 @@
 import { ref, reactive, computed, onMounted } from 'vue'; import { ElMessage, ElMessageBox } from 'element-plus'
 import { getLiabilityAccountList, freezeAccount, unfreezeAccount, closeLiabAcct } from '../../api/account'
 var allAccounts=ref([]),activeTab=ref('all')
-var normalCount=computed(()=>allAccounts.value.filter(a=>a.status==='NORMAL').length)
-var frozenCount=computed(()=>allAccounts.value.filter(a=>a.status==='FROZEN').length)
-var closedCount=computed(()=>allAccounts.value.filter(a=>a.status==='CLOSED').length)
-var frozenAccounts=computed(()=>allAccounts.value.filter(a=>a.status==='FROZEN'))
+var normalCount=computed(()=>allAccounts.value.filter(a=>a.status===0).length)
+var frozenCount=computed(()=>allAccounts.value.filter(a=>a.status===3).length)
+var closedCount=computed(()=>allAccounts.value.filter(a=>a.status===2).length)
+var frozenAccounts=computed(()=>allAccounts.value.filter(a=>a.status===3))
 var freezeDlg=ref(false),freezeForm=reactive({liabilityAccountNo:'',reason:''})
 var unfreezeDlg=ref(false),unfreezeForm=reactive({liabilityAccountNo:'',reason:''})
 var loadData=async()=>{try{var r=await getLiabilityAccountList();allAccounts.value=r.data||[]}catch(e){console.error(e)}}

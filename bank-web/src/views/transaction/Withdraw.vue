@@ -18,7 +18,7 @@ import { withdraw } from '../../api/transaction'; import { getCustomerSubAccount
 var formRef=ref(),subList=ref([])
 var form=reactive({customerAccountNo:'',selectedSub:null,liabilityAccountNo:'',amount:0})
 var rules={customerAccountNo:[{required:true,message:'请输入客户账号',trigger:'blur'}],amount:[{required:true,validator:(r,v,c)=>{if(v>0){c()}else{c(new Error('金额必须大于0'))}},trigger:'blur'}]}
-var loadSubs=async()=>{if(!form.customerAccountNo){subList.value=[];return}try{var r=await getCustomerSubAccountList(form.customerAccountNo);subList.value=(r.data||[]).filter(s=>s.status==='NORMAL')}catch(e){subList.value=[]}}
+var loadSubs=async()=>{if(!form.customerAccountNo){subList.value=[];return}try{var r=await getCustomerSubAccountList(form.customerAccountNo);subList.value=(r.data||[]).filter(s=>s.status===0)}catch(e){subList.value=[]}}
 var onSubChange=(v)=>{form.liabilityAccountNo=v?v.liabilityAccountNo:''}
 var handleSubmit=async()=>{await formRef.value.validate(async v=>{if(v){try{var r=await withdraw({liabilityAccountNo:form.liabilityAccountNo,amount:form.amount});ElMessage.success('取款成功! 流水号:'+(r.data?.transactionNo||''));form.customerAccountNo='';form.selectedSub=null;form.liabilityAccountNo='';form.amount=0;subList.value=[]}catch(e){console.error(e)}}})}
 </script>

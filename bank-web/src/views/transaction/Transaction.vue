@@ -214,7 +214,7 @@ const loadDepositSubAccounts = async () => {
   }
   try {
     const res = await getCustomerSubAccountList(depositForm.customerAccountNo)
-    depositSubAccountList.value = (res.data || []).filter(item => item.status === 'NORMAL')
+    depositSubAccountList.value = (res.data || []).filter(item => item.status===0)
   } catch (error) {
     console.error(error)
     depositSubAccountList.value = []
@@ -228,7 +228,7 @@ const loadWithdrawSubAccounts = async () => {
   }
   try {
     const res = await getCustomerSubAccountList(withdrawForm.customerAccountNo)
-    withdrawSubAccountList.value = (res.data || []).filter(item => item.status === 'NORMAL')
+    withdrawSubAccountList.value = (res.data || []).filter(item => item.status===0)
   } catch (error) {
     console.error(error)
     withdrawSubAccountList.value = []

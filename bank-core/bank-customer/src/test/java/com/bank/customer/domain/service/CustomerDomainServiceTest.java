@@ -3,6 +3,7 @@ package com.bank.customer.domain.service;
 import com.bank.common.exception.BusinessException;
 import com.bank.customer.domain.entity.Customer;
 import com.bank.customer.domain.enums.CustomerStatus;
+import com.bank.customer.domain.enums.IdType;
 import com.bank.customer.domain.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -110,7 +111,7 @@ class CustomerDomainServiceTest {
     private Customer createNormalCustomer() {
         Customer customer = new Customer();
         customer.setCustomerName("张三");
-        customer.setIdType("ID_CARD");
+        customer.setIdType(IdType.ID_CARD);
         customer.setIdNumber("110101199001011234");
         customer.setPhone("13800138000");
         customer.setAddress("北京市朝阳区");

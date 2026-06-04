@@ -2,6 +2,7 @@ package com.bank.liability.application.transaction.transfer;
 
 import com.bank.common.exception.BusinessException;
 import com.bank.liability.domain.enums.LiabilityAccountStatus;
+import com.bank.liability.domain.enums.LiabilityAccountType;
 import com.bank.liability.domain.enums.TransactionType;
 import com.bank.liability.domain.liabilityaccount.entity.LiabilityAccount;
 import com.bank.liability.domain.liabilityaccount.repository.LiabilityAccountRepository;
@@ -212,7 +213,7 @@ class TransferServiceTest {
         account.setId(1L);
         account.setLiabilityAccountNo(accountNo);
         account.setCustomerAccountNo("CACC001");
-        account.setAccountType("SAVING");
+        account.setAccountType(LiabilityAccountType.DEMAND);
         account.setBalance(balance);
         account.setStatus(LiabilityAccountStatus.NORMAL);
         return account;

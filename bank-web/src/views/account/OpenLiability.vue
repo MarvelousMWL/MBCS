@@ -16,7 +16,7 @@
 import { ref, reactive } from 'vue'; import { ElMessage } from 'element-plus'; import { openLiabilityAccount, getCustomerSubAccountByType } from '../../api/account'
 var formRef=ref(),loading=ref(false),form=reactive({customerAccountNo:'',accountType:'DEMAND'}),subs=ref([]),selSub=ref(null)
 var rules={customerAccountNo:[{required:true,message:'请输入客户账号',trigger:'blur'}],accountType:[{required:true,message:'请选择产品类型',trigger:'change'}]}
-var loadSubs=async()=>{if(!form.customerAccountNo||!form.accountType){subs.value=[];return}try{var r=await getCustomerSubAccountByType(form.customerAccountNo,form.accountType);subs.value=(r.data||[]).filter(i=>i.status==='NORMAL')}catch(e){subs.value=[]}}
+var loadSubs=async()=>{if(!form.customerAccountNo||!form.accountType){subs.value=[];return}try{var r=await getCustomerSubAccountByType(form.customerAccountNo,form.accountType);subs.value=(r.data||[]).filter(i=>i.status===0)}catch(e){subs.value=[]}}
 var handleSubmit=async()=>{await formRef.value.validate(async v=>{if(v){loading.value=true;try{var d={...form};if(selSub.value)d.subAccountSeq=selSub.value.subAccountSeq;await openLiabilityAccount(d);ElMessage.success('负债账户开立成功');form.customerAccountNo='';form.accountType='DEMAND';selSub.value=null;subs.value=[]}catch(e){}finally{loading.value=false}}})}
 </script>
 <style scoped>.page-header{margin-bottom:24px}.page-title{font-size:20px;font-weight:700;color:var(--text-primary);margin:0 0 4px}.page-desc{font-size:13px;color:var(--text-secondary);margin:0}</style>

@@ -17,7 +17,7 @@
       <el-table-column prop="balanceAfter" label="后余额" width="120" align="right"/>
       <el-table-column prop="operateTime" label="操作时间" width="180"/>
       <el-table-column prop="operatorNo" label="操作员" width="110"/>
-      <el-table-column prop="status" label="状态" width="90"><template #default="{ row: r }"><el-tag size="small" :type="r.status==='NORMAL'?'success':'danger'" style="border:0">{{r.status==='NORMAL'?'正常':'已冲正'}}</el-tag></template></el-table-column>
+      <el-table-column prop="status" label="状态" width="90"><template #default="{ row: r }"><el-tag size="small" :type="r.status===0?'success':'danger'" style="border:0">{{r.status===0?'正常':'已冲正'}}</el-tag></template></el-table-column>
     </el-table>
   </div>
 </template>

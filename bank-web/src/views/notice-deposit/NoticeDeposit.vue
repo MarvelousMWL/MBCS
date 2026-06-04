@@ -38,7 +38,7 @@
         <el-table-column label="余额" width="130" align="right"><template #default="{ row: r }">{{Number(r.balance).toLocaleString('zh-CN',{minFractionDigits:2})}}</template></el-table-column>
         <el-table-column label="通知天数" width="100"><template #default="{ row: r }">{{r.noticeDays}}天</template></el-table-column>
         <el-table-column prop="appointDate" label="预约支取日" width="140"/>
-        <el-table-column label="状态" width="100"><template #default="{ row: r }"><el-tag size="small" :type="r.status==='NORMAL'?'success':r.status==='APPOINTED'?'warning':'info'" effect="light" style="border:0">{{{'NORMAL':'正常','APPOINTED':'已预约','WITHDRAWN':'已支取','CLOSED':'已销户'}[r.status]||r.status}}</el-tag></template></el-table-column>
+        <el-table-column label="状态" width="100"><template #default="{ row: r }"><el-tag size="small" :type="r.status===0?'success':r.status==='APPOINTED'?'warning':'info'" effect="light" style="border:0">{{{'NORMAL':'正常','APPOINTED':'已预约','WITHDRAWN':'已支取','CLOSED':'已销户'}[r.status]||r.status}}</el-tag></template></el-table-column>
         <el-table-column prop="openDate" label="开户日期" width="160"/>
       </el-table>
     </el-card>

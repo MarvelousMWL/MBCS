@@ -1,16 +1,16 @@
-package com.bank.teller.domain.enums;
+package com.bank.liability.domain.enums;
 
 import com.bank.common.domain.enums.BaseEnumType;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum TellerType implements BaseEnumType {
-    NORMAL(0, "普通柜员"),
-    VAULT(1, "库管柜员");
+public enum CustomerAccountType implements BaseEnumType {
+    PERSONAL(0, "个人"),
+    CORPORATE(1, "企业");
     
     private final Integer code;
     private final String description;
     
-    TellerType(Integer code, String description) {
+    CustomerAccountType(Integer code, String description) {
         this.code = code;
         this.description = description;
     }

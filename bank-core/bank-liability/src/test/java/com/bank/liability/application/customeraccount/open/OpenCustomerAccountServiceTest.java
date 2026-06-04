@@ -29,7 +29,7 @@ class OpenCustomerAccountServiceTest {
     void open_shouldSucceed_whenCommandIsValid() {
         OpenCustomerAccountCommand command = new OpenCustomerAccountCommand();
         command.setCustomerNo("CUS001");
-        command.setAccountType("PERSONAL");
+        command.setAccountType(0);
 
         when(customerAccountRepository.findAll()).thenReturn(new ArrayList<>());
         doNothing().when(customerAccountDomainService).validateCreate(any());
@@ -39,14 +39,14 @@ class OpenCustomerAccountServiceTest {
 
         assertNotNull(result);
         assertEquals("CUS001", result.getCustomerNo());
-        assertEquals("PERSONAL", result.getAccountType());
+        assertEquals(0, result.getAccountType().getCode());
         assertEquals(CustomerAccountStatus.NORMAL, result.getStatus());
 
         ArgumentCaptor<CustomerAccount> captor = ArgumentCaptor.forClass(CustomerAccount.class);
         verify(customerAccountRepository).save(captor.capture());
         CustomerAccount saved = captor.getValue();
         assertEquals("CUS001", saved.getCustomerNo());
-        assertEquals("PERSONAL", saved.getAccountType());
+        assertEquals(0, saved.getAccountType().getCode());
         assertEquals(CustomerAccountStatus.NORMAL, saved.getStatus());
         assertNotNull(saved.getOpenDate());
         assertNotNull(saved.getCreatedAt());

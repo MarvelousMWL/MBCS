@@ -1,5 +1,6 @@
 package com.bank.liability.application.liabilityaccount.open;
 
+import com.bank.common.domain.enums.BaseEnumType;
 import com.bank.common.exception.BusinessException;
 import com.bank.common.util.NoGenerator;
 import com.bank.liability.domain.customeraccount.repository.CustomerAccountRepository;
@@ -30,8 +31,8 @@ public class OpenLiabilityAccountService {
         customerAccountRepository.findByCustomerAccountNo(command.getCustomerAccountNo())
                 .orElseThrow(() -> new BusinessException("客户账号不存在"));
 
-        String accountType = command.getAccountType();
-        String subAccountSeq = customerSubAccountDomainService.generateSubAccountSeq(command.getCustomerAccountNo(), accountType);
+        LiabilityAccountType accountType = BaseEnumType.valueOfCode(LiabilityAccountType.class, command.getAccountType());
+        String subAccountSeq = customerSubAccountDomainService.generateSubAccountSeq(command.getCustomerAccountNo(), accountType.getCode().toString());
         String liabilityAccountNo = generateLiabilityAccountNo();
 
         LiabilityAccount liabilityAccount = new LiabilityAccount();
@@ -50,7 +51,7 @@ public class OpenLiabilityAccountService {
         liabilityAccountRepository.save(liabilityAccount);
 
         CustomerSubAccount subAccount = customerSubAccountDomainService.createSubAccount(
-                command.getCustomerAccountNo(), subAccountSeq, liabilityAccountNo, accountType);
+                command.getCustomerAccountNo(), subAccountSeq, liabilityAccountNo, accountType.getCode().toString());
 
         return liabilityAccount;
     }

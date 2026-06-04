@@ -1,10 +1,12 @@
 package com.bank.liability.application.customeraccount.open;
 
+import com.bank.common.domain.enums.BaseEnumType;
 import com.bank.common.util.NoGenerator;
 import com.bank.liability.domain.customeraccount.entity.CustomerAccount;
 import com.bank.liability.domain.customeraccount.repository.CustomerAccountRepository;
 import com.bank.liability.domain.customeraccount.service.CustomerAccountDomainService;
 import com.bank.liability.domain.enums.CustomerAccountStatus;
+import com.bank.liability.domain.enums.CustomerAccountType;
 import com.bank.liability.domain.enums.TransactionType;
 import com.bank.liability.domain.transaction.service.TransactionDomainService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ public class OpenCustomerAccountService {
         CustomerAccount customerAccount = new CustomerAccount();
         customerAccount.setCustomerAccountNo(generateCustomerAccountNo());
         customerAccount.setCustomerNo(command.getCustomerNo());
-        customerAccount.setAccountType(command.getAccountType());
+        customerAccount.setAccountType(BaseEnumType.valueOfCode(CustomerAccountType.class, command.getAccountType()));
         customerAccount.setStatus(CustomerAccountStatus.NORMAL);
         customerAccount.setOpenDate(LocalDateTime.now());
         customerAccount.setCreatedAt(LocalDateTime.now());

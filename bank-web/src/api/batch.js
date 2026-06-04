@@ -1,46 +1,37 @@
-﻿import request from '../utils/request'
+import request from '../utils/request'
 
 // 批量结息
 export function batchSettleInterest(data) {
   return request({
-    url: '/liability/batch/settle-interest',
+    url: '/liability/batch/interest-settlement/execute',
     method: 'post',
-    data
+    params: data
   })
 }
 
-// 批量兑付
+// 批量自动兑付
 export function batchRedeem(data) {
   return request({
-    url: '/liability/batch/redeem',
+    url: '/liability/batch/auto-redemption/execute',
     method: 'post',
-    data
+    params: data
   })
 }
 
 // 批量逾期处理
 export function batchOverdue(data) {
   return request({
-    url: '/liability/batch/overdue',
+    url: '/liability/batch/overdue-processing/execute',
     method: 'post',
-    data
+    params: data
   })
 }
 
 // 批量形态转移
 export function batchTransferType(data) {
   return request({
-    url: '/liability/batch/transfer-type',
+    url: '/liability/batch/form-transfer/execute',
     method: 'post',
-    data
-  })
-}
-
-// 查询批量处理记录
-export function getBatchRecordList(params) {
-  return request({
-    url: '/liability/batch/records',
-    method: 'get',
-    params
+    params: data
   })
 }

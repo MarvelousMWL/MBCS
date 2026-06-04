@@ -1,8 +1,10 @@
 package com.bank.customer.application.command.create;
 
+import com.bank.common.domain.enums.BaseEnumType;
 import com.bank.common.util.NoGenerator;
 import com.bank.customer.domain.entity.Customer;
 import com.bank.customer.domain.enums.CustomerStatus;
+import com.bank.customer.domain.enums.IdType;
 import com.bank.customer.domain.repository.CustomerRepository;
 import com.bank.customer.domain.service.CustomerDomainService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class CreateCustomerService {
         Customer customer = new Customer();
         customer.setCustomerNo(generateCustomerNo());
         customer.setCustomerName(command.getCustomerName());
-        customer.setIdType(command.getIdType());
+        customer.setIdType(BaseEnumType.valueOfCode(IdType.class, command.getIdType()));
         customer.setIdNumber(command.getIdNumber());
         customer.setPhone(command.getPhone());
         customer.setAddress(command.getAddress());

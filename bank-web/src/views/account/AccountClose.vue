@@ -24,7 +24,7 @@ import { ref, reactive, onMounted } from 'vue'; import { ElMessage, ElMessageBox
 var formRef=ref(),loading=ref(false),form=reactive({liabilityAccountNo:''}),closedAccounts=ref([])
 var rules={liabilityAccountNo:[{required:true,message:'请输入负债账号',trigger:'blur'}]}
 var handleClose=async()=>{await formRef.value.validate(async v=>{if(v){loading.value=true;try{await ElMessageBox.confirm('确定要销户吗?','提示',{type:'warning'});await closeLiabAcct({liabilityAccountNo:form.liabilityAccountNo});ElMessage.success('销户成功');form.liabilityAccountNo='';loadClosed()}catch(e){if(e!=='cancel')console.error(e)}finally{loading.value=false}}})}
-var loadClosed=async()=>{try{var r=await getLiabilityAccountList();closedAccounts.value=(r.data||[]).filter(a=>a.status==='CLOSED').slice(0,10)}catch(e){}}
+var loadClosed=async()=>{try{var r=await getLiabilityAccountList();closedAccounts.value=(r.data||[]).filter(a=>a.status===2).slice(0,10)}catch(e){}}
 onMounted(()=>{loadClosed()})
 </script>
 <style scoped>.page-header{margin-bottom:24px}.page-title{font-size:20px;font-weight:700;color:var(--text-primary);margin:0 0 4px}.page-desc{font-size:13px;color:var(--text-secondary);margin:0}</style>

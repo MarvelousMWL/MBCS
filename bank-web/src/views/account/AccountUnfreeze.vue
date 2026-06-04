@@ -23,7 +23,7 @@
 import { ref, reactive, onMounted } from 'vue'; import { ElMessage } from 'element-plus'; import { getLiabilityAccountList, unfreezeAccount } from '../../api/account'
 var formRef=ref(),loading=ref(false),form=reactive({liabilityAccountNo:'',reason:''}),frozenAccounts=ref([])
 var rules={liabilityAccountNo:[{required:true,message:'请输入负债账号',trigger:'blur'}]}
-var loadFrozen=async()=>{try{var r=await getLiabilityAccountList();frozenAccounts.value=(r.data||[]).filter(a=>a.status==='FROZEN')}catch(e){}}
+var loadFrozen=async()=>{try{var r=await getLiabilityAccountList();frozenAccounts.value=(r.data||[]).filter(a=>a.status===3)}catch(e){}}
 var handleUnfreeze=async()=>{await formRef.value.validate(async v=>{if(v){loading.value=true;try{await unfreezeAccount({liabilityAccountNo:form.liabilityAccountNo,reason:form.reason||'柜员解冻'});ElMessage.success('解冻成功');form.liabilityAccountNo='';form.reason='';loadFrozen()}catch(e){}finally{loading.value=false}}})}
 var quickUnfreeze=async(r)=>{try{await unfreezeAccount({liabilityAccountNo:r.liabilityAccountNo,reason:'柜员解冻'});ElMessage.success('解冻成功');loadFrozen()}catch(e){}}
 onMounted(()=>{loadFrozen()})

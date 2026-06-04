@@ -16,9 +16,9 @@ public class CustomerDomainService {
 
     public void validateCreate(Customer customer) {
         Assert.notBlank(customer.getCustomerName(), "客户姓名不能为空");
-        Assert.notBlank(customer.getIdType(), "证件类型不能为空");
+        Assert.notNull(customer.getIdType(), "证件类型不能为空");
         Assert.notBlank(customer.getIdNumber(), "证件号码不能为空");
-        if (customerRepository.existsByIdNumber(customer.getIdType(), customer.getIdNumber())) {
+        if (customerRepository.existsByIdNumber(customer.getIdType().getCode().toString(), customer.getIdNumber())) {
             throw new BusinessException("该证件号码已存在");
         }
     }

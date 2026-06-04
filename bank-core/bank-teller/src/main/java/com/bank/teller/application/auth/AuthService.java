@@ -43,8 +43,8 @@ public class AuthService {
                 .tellerNo(teller.getTellerNo())
                 .tellerName(teller.getTellerName())
                 .institutionNo(teller.getInstitutionNo())
-                .tellerType(teller.getTellerType().name())
-                .status(teller.getStatus().name())
+                .tellerType(teller.getTellerType().getCode())
+                .status(teller.getStatus().getCode())
                 .build();
 
         TOKEN_STORE.put(token, response);

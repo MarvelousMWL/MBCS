@@ -17,7 +17,7 @@ public class LiabilityAccountDomainService {
 
     public void validateCreate(LiabilityAccount liabilityAccount) {
         Assert.notBlank(liabilityAccount.getCustomerAccountNo(), "客户账号不能为空");
-        Assert.notBlank(liabilityAccount.getAccountType(), "负债类型不能为空");
+        Assert.notNull(liabilityAccount.getAccountType(), "负债类型不能为空");
     }
 
     public void validateDeposit(BigDecimal amount) {

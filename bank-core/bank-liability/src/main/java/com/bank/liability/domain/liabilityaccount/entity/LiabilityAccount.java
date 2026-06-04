@@ -1,7 +1,10 @@
 package com.bank.liability.domain.liabilityaccount.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.bank.liability.domain.enums.LiabilityAccountStatus;
+import com.bank.liability.domain.enums.LiabilityAccountType;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +16,8 @@ public class LiabilityAccount {
     private String liabilityAccountNo;
     private String customerAccountNo;
     private String subAccountSeq;
-    private String accountType;
+    @TableField(typeHandler = com.bank.liability.infrastructure.persistence.handler.LiabilityAccountTypeHandler.class)
+    private LiabilityAccountType accountType;
     private BigDecimal balance;
     private LiabilityAccountStatus status;
     private LocalDateTime openDate;

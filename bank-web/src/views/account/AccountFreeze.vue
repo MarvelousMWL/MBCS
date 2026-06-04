@@ -24,7 +24,7 @@
 import { ref, reactive, onMounted } from 'vue'; import { ElMessage } from 'element-plus'; import { getLiabilityAccountList, freezeAccount } from '../../api/account'
 var formRef=ref(),loading=ref(false),form=reactive({liabilityAccountNo:'',reason:''}),normalAccounts=ref([])
 var rules={liabilityAccountNo:[{required:true,message:'请输入负债账号',trigger:'blur'}]}
-var loadNormal=async()=>{try{var r=await getLiabilityAccountList();normalAccounts.value=(r.data||[]).filter(a=>a.status==='NORMAL')}catch(e){}}
+var loadNormal=async()=>{try{var r=await getLiabilityAccountList();normalAccounts.value=(r.data||[]).filter(a=>a.status===0)}catch(e){}}
 var handleFreeze=async()=>{await formRef.value.validate(async v=>{if(v){loading.value=true;try{await freezeAccount({liabilityAccountNo:form.liabilityAccountNo,reason:form.reason||'柜员冻结'});ElMessage.success('冻结成功');form.liabilityAccountNo='';form.reason='';loadNormal()}catch(e){}finally{loading.value=false}}})}
 var quickFreeze=async(r)=>{try{await freezeAccount({liabilityAccountNo:r.liabilityAccountNo,reason:'柜员冻结'});ElMessage.success('冻结成功');loadNormal()}catch(e){}}
 onMounted(()=>{loadNormal()})

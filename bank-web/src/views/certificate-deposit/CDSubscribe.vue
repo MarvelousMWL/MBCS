@@ -18,7 +18,7 @@
         <el-table-column prop="productId" label="产品编号" width="140"/>
         <el-table-column label="认购金额" width="130" align="right"><template #default="{ row: r }">{{Number(r.amount).toLocaleString('zh-CN',{minFractionDigits:2})}}</template></el-table-column>
         <el-table-column prop="subscribeDate" label="认购日期" width="160"/>
-        <el-table-column label="状态" width="100"><template #default="{ row: r }"><el-tag size="small" :type="r.status==='NORMAL'?'success':'info'" effect="light" style="border:0">{{r.status==='NORMAL'?'有效':'已兑付'}}</el-tag></template></el-table-column>
+        <el-table-column label="状态" width="100"><template #default="{ row: r }"><el-tag size="small" :type="r.status===0?'success':'info'" effect="light" style="border:0">{{r.status===0?'有效':'已兑付'}}</el-tag></template></el-table-column>
       </el-table>
     </el-card>
   </div>

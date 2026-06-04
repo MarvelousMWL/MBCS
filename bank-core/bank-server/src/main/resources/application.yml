@@ -24,7 +24,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-  type-handlers-package: com.bank.common.infrastructure.persistence.handler
+  type-handlers-package: com.bank.common.infrastructure.persistence.handler,com.bank.liability.infrastructure.persistence.handler,com.bank.customer.infrastructure.persistence.handler
 
 logging:
   level:

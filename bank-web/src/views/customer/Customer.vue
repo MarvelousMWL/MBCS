@@ -11,7 +11,7 @@
       <el-table-column prop="address" label="地址" />
       <el-table-column prop="status" label="状态" width="100">
         <template #default="{ row }">
-          <el-tag :type="row.status === 'NORMAL' ? 'success' : 'danger'">{{ row.status === 'NORMAL' ? '正常' : '停用' }}</el-tag>
+          <el-tag :type="row.status===0 ? 'success' : 'danger'">{{ $enumDict.CUSTOMER_STATUS[row.status]||row.status }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="160">

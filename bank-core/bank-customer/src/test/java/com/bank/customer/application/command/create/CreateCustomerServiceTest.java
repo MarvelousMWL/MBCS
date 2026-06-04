@@ -32,7 +32,7 @@ class CreateCustomerServiceTest {
     void create_shouldSucceed_whenCommandIsValid() {
         CreateCustomerCommand command = new CreateCustomerCommand();
         command.setCustomerName("李四");
-        command.setIdType("ID_CARD");
+        command.setIdType(0);
         command.setIdNumber("110101199002022345");
         command.setPhone("13900139000");
         command.setAddress("上海市浦东新区");

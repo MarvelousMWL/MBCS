@@ -15,7 +15,7 @@ public class CustomerAccountDomainService {
 
     public void validateCreate(CustomerAccount customerAccount) {
         Assert.notBlank(customerAccount.getCustomerNo(), "客户号不能为空");
-        Assert.notBlank(customerAccount.getAccountType(), "账号类型不能为空");
+        Assert.notNull(customerAccount.getAccountType(), "账号类型不能为空");
     }
 
     public void validateClose(CustomerAccount customerAccount) {

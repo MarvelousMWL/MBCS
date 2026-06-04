@@ -14,6 +14,6 @@ public class LoginResponse {
     private String tellerNo;
     private String tellerName;
     private String institutionNo;
-    private String tellerType;
-    private String status;
+    private Integer tellerType;
+    private Integer status;
 }

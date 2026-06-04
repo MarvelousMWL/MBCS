@@ -25,24 +25,57 @@ public class BaseEnumTypeHandler<E extends Enum<E> & BaseEnumType> extends BaseT
     
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, E parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, parameter.getCode());
+        // 数据库存储为code的字符串形式（如 "0"）
+        ps.setString(i, String.valueOf(parameter.getCode()));
     }
     
     @Override
     public E getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String code = rs.getString(columnName);
-        return code == null ? null : BaseEnumType.valueOfCode(type, code);
+        if (code == null) return null;
+        try {
+            // 优先尝试按Integer code解析（新格式）
+            return BaseEnumType.valueOfCode(type, Integer.valueOf(code));
+        } catch (Exception e) {
+            // 回退：按枚举name()解析（旧格式，如 "DEMAND"）
+            for (E enumConst : type.getEnumConstants()) {
+                if (enumConst.name().equals(code)) {
+                    return enumConst;
+                }
+            }
+            return null;
+        }
     }
     
     @Override
     public E getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String code = rs.getString(columnIndex);
-        return code == null ? null : BaseEnumType.valueOfCode(type, code);
+        if (code == null) return null;
+        try {
+            return BaseEnumType.valueOfCode(type, Integer.valueOf(code));
+        } catch (Exception e) {
+            for (E enumConst : type.getEnumConstants()) {
+                if (enumConst.name().equals(code)) {
+                    return enumConst;
+                }
+            }
+            return null;
+        }
     }
     
     @Override
     public E getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String code = cs.getString(columnIndex);
-        return code == null ? null : BaseEnumType.valueOfCode(type, code);
+        if (code == null) return null;
+        try {
+            return BaseEnumType.valueOfCode(type, Integer.valueOf(code));
+        } catch (Exception e) {
+            for (E enumConst : type.getEnumConstants()) {
+                if (enumConst.name().equals(code)) {
+                    return enumConst;
+                }
+            }
+            return null;
+        }
     }
 }

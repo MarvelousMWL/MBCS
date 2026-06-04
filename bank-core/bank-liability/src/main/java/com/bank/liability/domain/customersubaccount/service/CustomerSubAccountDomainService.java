@@ -1,5 +1,6 @@
 package com.bank.liability.domain.customersubaccount.service;
 
+import com.bank.common.domain.enums.BaseEnumType;
 import com.bank.common.exception.BusinessException;
 import com.bank.common.util.Assert;
 import com.bank.liability.domain.customersubaccount.entity.CustomerSubAccount;
@@ -24,9 +25,9 @@ public class CustomerSubAccountDomainService {
     private static final String TIME_SUB_SEQ_FORMAT = "%06d";
 
     public String generateSubAccountSeq(String customerAccountNo, String accountType) {
-        if (LiabilityAccountType.DEMAND.name().equals(accountType)) {
+        if (LiabilityAccountType.DEMAND.getCode().toString().equals(accountType) || LiabilityAccountType.DEMAND.name().equals(accountType)) {
             return DEMAND_SUB_SEQ_PREFIX;
-        } else if (LiabilityAccountType.TERM.name().equals(accountType)) {
+        } else if (LiabilityAccountType.TERM.getCode().toString().equals(accountType) || LiabilityAccountType.TERM.name().equals(accountType)) {
             Optional<LiabilityAccount> maxAccount = liabilityAccountRepository.findMaxSubAccountSeqByCustomerAccountNoAndAccountType(customerAccountNo, accountType);
             int nextSeq = 1;
             if (maxAccount.isPresent() && maxAccount.get().getSubAccountSeq() != null) {
@@ -57,9 +58,10 @@ public class CustomerSubAccountDomainService {
         subAccount.setCustomerAccountNo(customerAccountNo);
         subAccount.setSubAccountSeq(subAccountSeq);
         subAccount.setLiabilityAccountNo(liabilityAccountNo);
-        subAccount.setAccountType(accountType);
+        subAccount.setAccountType(BaseEnumType.valueOfCode(LiabilityAccountType.class, Integer.valueOf(accountType)));
         subAccount.setStatus(SubAccountStatus.NORMAL);
         customerSubAccountRepository.save(subAccount);
         return subAccount;
     }
 }
+

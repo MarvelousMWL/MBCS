@@ -34,7 +34,7 @@
       <el-table-column prop="liabilityAccountNo" label="负债账号" width="150" />
       <el-table-column prop="customerAccountNo" label="客户账号" width="170" />
       <el-table-column prop="accountType" label="产品类型" width="100">
-        <template #default="{row}"><el-tag size="small" :type="row.accountType==='DEMAND'?'primary':'warning'" effect="plain" style="border:0">{{row.accountType==='DEMAND'?'活期':'定期'}}</el-tag></template>
+        <template #default="{row}"><el-tag size="small" :type="row.accountType==='DEMAND'?'primary':'warning'" effect="plain" style="border:0">{{$enumDict.LIABILITY_ACCOUNT_TYPE_STR[row.accountType]||row.accountType}}</el-tag></template>
       </el-table-column>
       <el-table-column prop="balance" label="账户余额" width="130" align="right">
         <template #default="{row}"><span class="balance-text">{{Number(row.balance).toLocaleString('zh-CN',{minimumFractionDigits:2})}}</span></template>
@@ -42,7 +42,7 @@
       <el-table-column label="账户状态" width="160">
         <template #default="{row}">
           <div class="status-group">
-            <el-tag size="small" :type="row.status==='NORMAL'?'success':row.status==='FROZEN'?'danger':row.status==='CLOSED'?'info':'warning'" effect="light" style="border:0">
+            <el-tag size="small" :type="row.status===0?'success':row.status===3?'danger':row.status===2?'info':'warning'" effect="light" style="border:0">
               {{statusMap[row.status]||row.status}}
             </el-tag>
             <el-tag v-if="row.frozen" size="small" type="danger" effect="dark" style="border:0;margin-left:4px">冻结</el-tag>
@@ -53,9 +53,9 @@
       <el-table-column label="操作" width="200" fixed="right">
         <template #default="{row}">
           <el-button text size="small" @click.stop="showDetail(row)">详情</el-button>
-          <el-button v-if="row.status==='NORMAL' && !row.frozen" text size="small" type="danger" @click.stop="handleFreeze(row)">冻结</el-button>
+          <el-button v-if="row.status===0 && !row.frozen" text size="small" type="danger" @click.stop="handleFreeze(row)">冻结</el-button>
           <el-button v-if="row.frozen" text size="small" type="warning" @click.stop="handleUnfreeze(row)">解冻</el-button>
-          <el-button v-if="row.status==='NORMAL' && !row.frozen" text size="small" type="danger" @click.stop="closeLiabilityAccount(row)">销户</el-button>
+          <el-button v-if="row.status===0 && !row.frozen" text size="small" type="danger" @click.stop="closeLiabilityAccount(row)">销户</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -69,7 +69,7 @@
             <el-descriptions-item label="负债账号">{{detailData.liabilityAccountNo}}</el-descriptions-item>
             <el-descriptions-item label="客户账号">{{detailData.customerAccountNo}}</el-descriptions-item>
             <el-descriptions-item label="子账户序号">{{detailData.subAccountSeq||'-'}}</el-descriptions-item>
-            <el-descriptions-item label="产品类型">{{detailData.accountType==='DEMAND'?'活期存款':'定期存款'}}</el-descriptions-item>
+            <el-descriptions-item label="产品类型">{{$enumDict.LIABILITY_ACCOUNT_TYPE_STR[detailData.accountType]||detailData.accountType}}</el-descriptions-item>
             <el-descriptions-item label="账户余额"><span style="font-weight:700;font-size:16px;color:#3182ce">{{Number(detailData.balance).toLocaleString('zh-CN',{minimumFractionDigits:2})}}</span></el-descriptions-item>
           </el-descriptions>
         </div>
@@ -92,9 +92,9 @@
         <div class="detail-section">
           <div class="detail-section-title">操作</div>
           <div style="display:flex;gap:8px">
-            <el-button v-if="detailData.status==='NORMAL' && !detailData.frozen" type="danger" @click="handleFreeze(detailData)">冻结账户</el-button>
+            <el-button v-if="detailData.status===0 && !detailData.frozen" type="danger" @click="handleFreeze(detailData)">冻结账户</el-button>
             <el-button v-if="detailData.frozen" type="warning" @click="handleUnfreeze(detailData)">解冻账户</el-button>
-            <el-button v-if="detailData.status==='NORMAL'" @click="closeLiabilityAccount(detailData)">销户</el-button>
+            <el-button v-if="detailData.status===0" @click="closeLiabilityAccount(detailData)">销户</el-button>
           </div>
         </div>
       </template>
@@ -171,8 +171,8 @@
         <el-table :data="subAccountList" border size="small" max-height="400">
           <el-table-column prop="subAccountSeq" label="子账户序号" width="120"/>
           <el-table-column prop="liabilityAccountNo" label="负债账号" width="150"/>
-          <el-table-column prop="accountType" label="类型" width="80"><template #default="{row}">{{row.accountType==='DEMAND'?'活期':'定期'}}</template></el-table-column>
-          <el-table-column prop="status" label="状态" width="80"><template #default="{row}"><el-tag size="small" :type="row.status==='NORMAL'?'success':'info'" style="border:0">{{row.status==='NORMAL'?'正常':'已销户'}}</el-tag></template></el-table-column>
+          <el-table-column prop="accountType" label="类型" width="80"><template #default="{row}">{{$enumDict.LIABILITY_ACCOUNT_TYPE_STR[row.accountType]||row.accountType}}</template></el-table-column>
+          <el-table-column prop="status" label="状态" width="80"><template #default="{row}"><el-tag size="small" :type="row.status===0?'success':'info'" style="border:0">{{$enumDict.LIABILITY_ACCOUNT_STATUS[row.status]||row.status}}</el-tag></template></el-table-column>
           <el-table-column prop="createdAt" label="创建时间" width="170"/>
         </el-table>
         <el-button style="margin-top:12px" @click="subQueryDone=false">返回查询</el-button>
@@ -196,7 +196,7 @@ import { getLiabilityAccountList, getLiabilityAccountByNo, openCustomerAccount, 
 
 var statusMap = { NORMAL:'正常', FROZEN:'冻结', CLOSED:'已销户', STOPPED:'停用' }
 var accountList = ref([])
-var normalCount = computed(()=>accountList.value.filter(a=>a.status==='NORMAL').length)
+var normalCount = computed(()=>accountList.value.filter(a=>a.status===0).length)
 var demandCount = computed(()=>accountList.value.filter(a=>a.accountType==='DEMAND').length)
 var timeCount = computed(()=>accountList.value.filter(a=>a.accountType==='TIME').length)
 
@@ -251,7 +251,7 @@ var loadLiabilitySubAccounts = async () => {
   if(!liabilityForm.customerAccountNo||!liabilityForm.accountType) { availableSubAccounts.value=[]; return }
   try {
     var res = await getCustomerSubAccountByType(liabilityForm.customerAccountNo, liabilityForm.accountType)
-    availableSubAccounts.value = (res.data||[]).filter(i=>i.status==='NORMAL')
+    availableSubAccounts.value = (res.data||[]).filter(i=>i.status===0)
   } catch(e) { availableSubAccounts.value=[]; console.error(e) }
 }
 

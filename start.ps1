@@ -1,4 +1,4 @@
-﻿# MBCS 一键启动 - start.ps1
+# MBCS 一键启动 - start.ps1
 param([switch]$Build)
 $root = "E:\Agent\MyProject\MBCS"
 
@@ -23,7 +23,7 @@ function Start-Svc {
         Pop-Location
     }
     if(!(Test-Path $jar)){ Write-Host "JAR not found: $jar"; return $false }
-    Start-Process -WindowStyle Hidden java "-jar $jar"
+    Start-Process -WindowStyle Hidden java "-Xms512m -Xmx1024m -jar $jar"
     Start-Sleep 8
     return (Wait-For "http://localhost:$port/api/liability/product" $name) -or (Wait-For "http://localhost:$port/api/customer" $name)
 }

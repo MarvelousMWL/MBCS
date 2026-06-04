@@ -37,7 +37,7 @@ class OpenLiabilityAccountServiceTest {
     void open_shouldSucceed_whenCustomerAccountExists() {
         OpenLiabilityAccountCommand command = new OpenLiabilityAccountCommand();
         command.setCustomerAccountNo("CACC001");
-        command.setAccountType("DEMAND");
+        command.setAccountType(0);
 
         when(customerAccountRepository.findByCustomerAccountNo("CACC001"))
                 .thenReturn(Optional.of(new com.bank.liability.domain.customeraccount.entity.CustomerAccount()));

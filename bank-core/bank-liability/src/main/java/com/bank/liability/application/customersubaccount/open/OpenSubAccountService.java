@@ -17,13 +17,14 @@ public class OpenSubAccountService {
 
     @Transactional
     public CustomerSubAccount open(OpenSubAccountCommand command, String operatorNo) {
+        String accountTypeStr = String.valueOf(command.getAccountType());
         String subAccountSeq = customerSubAccountDomainService.generateSubAccountSeq(
-                command.getCustomerAccountNo(), command.getAccountType());
+                command.getCustomerAccountNo(), accountTypeStr);
 
         String liabilityAccountNo = generateLiabilityAccountNo();
 
         return customerSubAccountDomainService.createSubAccount(
-                command.getCustomerAccountNo(), subAccountSeq, liabilityAccountNo, command.getAccountType());
+                command.getCustomerAccountNo(), subAccountSeq, liabilityAccountNo, accountTypeStr);
     }
 
     private String generateLiabilityAccountNo() {

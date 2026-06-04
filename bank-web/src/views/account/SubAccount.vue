@@ -16,7 +16,7 @@
         <el-table-column prop="subAccountSeq" label="子账户序号" width="130"/>
         <el-table-column prop="liabilityAccountNo" label="负债账号" width="160"/>
         <el-table-column label="账户类型" width="90"><template #default="{ row: r }">{{r.accountType==='DEMAND'?'活期':'定期'}}</template></el-table-column>
-        <el-table-column label="状态" width="90"><template #default="{ row: r }"><el-tag size="small" :type="r.status==='NORMAL'?'success':'info'" style="border:0">{{r.status==='NORMAL'?'正常':'已销户'}}</el-tag></template></el-table-column>
+        <el-table-column label="状态" width="90"><template #default="{ row: r }"><el-tag size="small" :type="r.status===0?'success':'info'" style="border:0">{{r.status===0?'正常':'已销户'}}</el-tag></template></el-table-column>
         <el-table-column prop="createdAt" label="创建时间" width="180"/>
       </el-table>
     </template>
