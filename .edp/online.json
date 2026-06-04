@@ -1,0 +1,30 @@
+[
+  {
+    "protocol": "http",
+    "type": "pillar",
+    "label": "用于在线的IDE业务开发调试",
+    "address": "http://localhost:56024",
+    "startTime": 1780553434134
+  },
+  {
+    "protocol": "websocket",
+    "type": "pillar",
+    "label": "用于在线的IDE业务开发调试",
+    "address": "http://localhost:56024/socketjs",
+    "startTime": 1780553434134
+  },
+  {
+    "protocol": "http",
+    "type": "pillar",
+    "label": "用于在线的IDE业务开发调试",
+    "address": "http://localhost:53293",
+    "startTime": 1780556041696
+  },
+  {
+    "protocol": "websocket",
+    "type": "pillar",
+    "label": "用于在线的IDE业务开发调试",
+    "address": "http://localhost:53293/socketjs",
+    "startTime": 1780556041696
+  }
+]

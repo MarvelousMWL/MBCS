@@ -43,60 +43,60 @@ class DepositServiceTest {
     @Test
     void deposit_shouldSucceed_whenAccountIsNormal() {
         LiabilityAccount account = createNormalAccount(BigDecimal.valueOf(500));
-        DepositCommand command = createDepositCommand( ACC001, BigDecimal.valueOf(200));
+        DepositCommand command = createDepositCommand("ACC001", BigDecimal.valueOf(200));
 
-        when(liabilityAccountRepository.findByLiabilityAccountNo(ACC001))
+        when(liabilityAccountRepository.findByLiabilityAccountNo("ACC001"))
                 .thenReturn(Optional.of(account));
         doNothing().when(liabilityAccountDomainService).validateDeposit(any(BigDecimal.class));
         doNothing().when(liabilityAccountDomainService).deposit(any(LiabilityAccount.class), any(BigDecimal.class));
         doNothing().when(liabilityAccountRepository).update(any(LiabilityAccount.class));
 
         LiabilityTransaction expectedTransaction = new LiabilityTransaction();
-        expectedTransaction.setTransactionNo(TX123456);
+        expectedTransaction.setTransactionNo("TX123456");
         when(transactionDomainService.createTransaction(
-                eq(ACC001),
+                eq("ACC001"),
                 eq(TransactionType.DEPOSIT),
                 eq(BigDecimal.valueOf(200)),
                 any(BigDecimal.class),
                 any(BigDecimal.class),
-                eq(OPE001),
-                eq(正常存款),
+                eq("OPE001"),
+                eq("正常存款"),
                 isNull()
         )).thenReturn(expectedTransaction);
 
         LiabilityTransaction result = depositService.deposit(command);
 
         assertNotNull(result);
-        assertEquals(TX123456, result.getTransactionNo());
+        assertEquals("TX123456", result.getTransactionNo());
 
-        verify(liabilityAccountRepository).findByLiabilityAccountNo(ACC001);
+        verify(liabilityAccountRepository).findByLiabilityAccountNo("ACC001");
         verify(liabilityAccountDomainService).validateDeposit(BigDecimal.valueOf(200));
         verify(liabilityAccountDomainService).deposit(account, BigDecimal.valueOf(200));
         verify(liabilityAccountRepository).update(account);
         verify(transactionDomainService).createTransaction(
-                eq(ACC001),
+                eq("ACC001"),
                 eq(TransactionType.DEPOSIT),
                 eq(BigDecimal.valueOf(200)),
                 any(BigDecimal.class),
                 any(BigDecimal.class),
-                eq(OPE001),
-                eq(正常存款),
+                eq("OPE001"),
+                eq("正常存款"),
                 isNull()
         );
     }
 
     @Test
     void deposit_shouldThrowException_whenAccountNotExist() {
-        DepositCommand command = createDepositCommand(NONEXIST, BigDecimal.valueOf(100));
+        DepositCommand command = createDepositCommand("NONEXIST", BigDecimal.valueOf(100));
 
-        when(liabilityAccountRepository.findByLiabilityAccountNo(NONEXIST))
+        when(liabilityAccountRepository.findByLiabilityAccountNo("NONEXIST"))
                 .thenReturn(Optional.empty());
 
         BusinessException exception = assertThrows(BusinessException.class,
                 () -> depositService.deposit(command));
         assertNotNull(exception.getMessage());
 
-        verify(liabilityAccountRepository).findByLiabilityAccountNo(NONEXIST);
+        verify(liabilityAccountRepository).findByLiabilityAccountNo("NONEXIST");
         verifyNoInteractions(liabilityAccountDomainService, transactionDomainService);
     }
 
@@ -105,25 +105,25 @@ class DepositServiceTest {
         LiabilityAccount account = createNormalAccount(BigDecimal.valueOf(500));
         account.setStatus(LiabilityAccountStatus.STOPPED);
 
-        DepositCommand command = createDepositCommand(ACC002, BigDecimal.valueOf(100));
+        DepositCommand command = createDepositCommand("ACC002", BigDecimal.valueOf(100));
 
-        when(liabilityAccountRepository.findByLiabilityAccountNo(ACC002))
+        when(liabilityAccountRepository.findByLiabilityAccountNo("ACC002"))
                 .thenReturn(Optional.of(account));
 
         BusinessException exception = assertThrows(BusinessException.class,
                 () -> depositService.deposit(command));
         assertNotNull(exception.getMessage());
 
-        verify(liabilityAccountRepository).findByLiabilityAccountNo(ACC002);
+        verify(liabilityAccountRepository).findByLiabilityAccountNo("ACC002");
         verifyNoInteractions(liabilityAccountDomainService, transactionDomainService);
     }
 
     private LiabilityAccount createNormalAccount(BigDecimal balance) {
         LiabilityAccount account = new LiabilityAccount();
         account.setId(1L);
-        account.setLiabilityAccountNo(ACC001);
-        account.setCustomerAccountNo(CACC001);
-        account.setAccountType(SAVING);
+        account.setLiabilityAccountNo("ACC001");
+        account.setCustomerAccountNo("CACC001");
+        account.setAccountType("SAVING");
         account.setBalance(balance);
         account.setStatus(LiabilityAccountStatus.NORMAL);
         return account;
@@ -133,8 +133,8 @@ class DepositServiceTest {
         DepositCommand command = new DepositCommand();
         command.setLiabilityAccountNo(accountNo);
         command.setAmount(amount);
-        command.setOperatorNo(OPE001);
-        command.setRemark(正常存款);
+        command.setOperatorNo("OPE001");
+        command.setRemark("正常存款");
         return command;
     }
 }

@@ -27,26 +27,20 @@ class CustomerDomainServiceTest {
     @Test
     void validateCreate_shouldSucceed_whenAllFieldsValid() {
         Customer customer = createNormalCustomer();
-
         when(customerRepository.existsByIdNumber(customer.getIdType(), customer.getIdNumber()))
                 .thenReturn(false);
-
         assertDoesNotThrow(() -> customerDomainService.validateCreate(customer));
-
         verify(customerRepository).existsByIdNumber(customer.getIdType(), customer.getIdNumber());
     }
 
     @Test
     void validateCreate_shouldThrowException_whenIdNumberAlreadyExists() {
         Customer customer = createNormalCustomer();
-
         when(customerRepository.existsByIdNumber(customer.getIdType(), customer.getIdNumber()))
                 .thenReturn(true);
-
         BusinessException exception = assertThrows(BusinessException.class,
                 () -> customerDomainService.validateCreate(customer));
         assertNotNull(exception.getMessage());
-
         verify(customerRepository).existsByIdNumber(customer.getIdType(), customer.getIdNumber());
     }
 
@@ -54,15 +48,12 @@ class CustomerDomainServiceTest {
     void validateUpdate_shouldSucceed_whenCustomerExistsAndIsNormal() {
         Customer customer = createNormalCustomer();
         customer.setId(1L);
-
         Customer existingCustomer = createNormalCustomer();
         existingCustomer.setId(1L);
         existingCustomer.setStatus(CustomerStatus.NORMAL);
 
         when(customerRepository.findById(1L)).thenReturn(Optional.of(existingCustomer));
-
         assertDoesNotThrow(() -> customerDomainService.validateUpdate(customer));
-
         verify(customerRepository).findById(1L);
     }
 
@@ -70,13 +61,10 @@ class CustomerDomainServiceTest {
     void validateUpdate_shouldThrowException_whenCustomerNotExist() {
         Customer customer = createNormalCustomer();
         customer.setId(999L);
-
         when(customerRepository.findById(999L)).thenReturn(Optional.empty());
-
         BusinessException exception = assertThrows(BusinessException.class,
                 () -> customerDomainService.validateUpdate(customer));
         assertNotNull(exception.getMessage());
-
         verify(customerRepository).findById(999L);
     }
 
@@ -84,17 +72,14 @@ class CustomerDomainServiceTest {
     void validateUpdate_shouldThrowException_whenCustomerStatusIsNotNormal() {
         Customer customer = createNormalCustomer();
         customer.setId(1L);
-
         Customer existingCustomer = createNormalCustomer();
         existingCustomer.setId(1L);
         existingCustomer.setStatus(CustomerStatus.STOPPED);
 
         when(customerRepository.findById(1L)).thenReturn(Optional.of(existingCustomer));
-
         BusinessException exception = assertThrows(BusinessException.class,
                 () -> customerDomainService.validateUpdate(customer));
         assertNotNull(exception.getMessage());
-
         verify(customerRepository).findById(1L);
     }
 
@@ -105,9 +90,7 @@ class CustomerDomainServiceTest {
         existingCustomer.setStatus(CustomerStatus.NORMAL);
 
         when(customerRepository.findById(1L)).thenReturn(Optional.of(existingCustomer));
-
         assertDoesNotThrow(() -> customerDomainService.validateDelete(1L));
-
         verify(customerRepository).findById(1L);
     }
 
@@ -118,21 +101,19 @@ class CustomerDomainServiceTest {
         existingCustomer.setStatus(CustomerStatus.CLOSED);
 
         when(customerRepository.findById(1L)).thenReturn(Optional.of(existingCustomer));
-
         BusinessException exception = assertThrows(BusinessException.class,
                 () -> customerDomainService.validateDelete(1L));
         assertNotNull(exception.getMessage());
-
         verify(customerRepository).findById(1L);
     }
 
     private Customer createNormalCustomer() {
         Customer customer = new Customer();
-        customer.setCustomerName( 张三);
-        customer.setIdType(ID_CARD);
-        customer.setIdNumber(110101199001011234);
-        customer.setPhone(13800138000);
-        customer.setAddress(北京市朝阳区);
+        customer.setCustomerName("张三");
+        customer.setIdType("ID_CARD");
+        customer.setIdNumber("110101199001011234");
+        customer.setPhone("13800138000");
+        customer.setAddress("北京市朝阳区");
         customer.setStatus(CustomerStatus.NORMAL);
         return customer;
     }

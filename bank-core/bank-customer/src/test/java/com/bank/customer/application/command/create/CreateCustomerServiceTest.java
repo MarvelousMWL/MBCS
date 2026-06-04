@@ -31,34 +31,33 @@ class CreateCustomerServiceTest {
     @Test
     void create_shouldSucceed_whenCommandIsValid() {
         CreateCustomerCommand command = new CreateCustomerCommand();
-        command.setCustomerName( 李四);
-        command.setIdType(ID_CARD);
-        command.setIdNumber(110101199002022345);
-        command.setPhone(13900139000);
-        command.setAddress(上海市浦东新区);
+        command.setCustomerName("李四");
+        command.setIdType("ID_CARD");
+        command.setIdNumber("110101199002022345");
+        command.setPhone("13900139000");
+        command.setAddress("上海市浦东新区");
 
         when(customerRepository.findAll()).thenReturn(new ArrayList<>());
-
         doNothing().when(customerDomainService).validateCreate(any(Customer.class));
         doNothing().when(customerRepository).save(any(Customer.class));
 
         Customer result = createCustomerService.create(command);
 
         assertNotNull(result);
-        assertEquals(000000001, result.getCustomerNo());
-        assertEquals(李四, result.getCustomerName());
+        assertEquals("000000001", result.getCustomerNo());
+        assertEquals("李四", result.getCustomerName());
         assertEquals(CustomerStatus.NORMAL, result.getStatus());
 
         ArgumentCaptor<Customer> customerCaptor = ArgumentCaptor.forClass(Customer.class);
         verify(customerRepository).save(customerCaptor.capture());
 
         Customer savedCustomer = customerCaptor.getValue();
-        assertEquals(000000001, savedCustomer.getCustomerNo());
-        assertEquals(李四, savedCustomer.getCustomerName());
-        assertEquals(ID_CARD, savedCustomer.getIdType());
-        assertEquals(110101199002022345, savedCustomer.getIdNumber());
-        assertEquals(13900139000, savedCustomer.getPhone());
-        assertEquals(上海市浦东新区, savedCustomer.getAddress());
+        assertEquals("000000001", savedCustomer.getCustomerNo());
+        assertEquals("李四", savedCustomer.getCustomerName());
+        assertEquals("ID_CARD", savedCustomer.getIdType());
+        assertEquals("110101199002022345", savedCustomer.getIdNumber());
+        assertEquals("13900139000", savedCustomer.getPhone());
+        assertEquals("上海市浦东新区", savedCustomer.getAddress());
         assertEquals(CustomerStatus.NORMAL, savedCustomer.getStatus());
         assertNotNull(savedCustomer.getCreatedAt());
         assertNotNull(savedCustomer.getUpdatedAt());

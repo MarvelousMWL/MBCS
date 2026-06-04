@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <name>Bank Core System</name>
-    <description>银行核心系统</description>
+    <description>閾惰鏍稿績绯荤粺</description>
 
     <modules>
         <module>bank-common</module>
@@ -72,7 +72,13 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot.version}</version>
                 </plugin>
-            </plugins>
+            
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M7</version>
+                </plugin>
+</plugins>
         </pluginManagement>
     </build>
 </project>

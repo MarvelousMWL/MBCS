@@ -34,22 +34,21 @@ class TellerApplicationServiceTest {
     @Test
     void create_shouldSucceed_whenCommandIsValid() {
         CreateTellerCommand command = new CreateTellerCommand();
-        command.setTellerNo( T001);
-        command.setTellerName(王五);
-        command.setInstitutionNo(INST001);
+        command.setTellerNo("T001");
+        command.setTellerName("王五");
+        command.setInstitutionNo("INST001");
         command.setTellerType(TellerType.NORMAL);
-        command.setPassword(plainPassword);
+        command.setPassword("plainPassword");
 
-        when(passwordEncoder.encode(plainPassword)).thenReturn();
-
+        when(passwordEncoder.encode("plainPassword")).thenReturn("encodedPassword");
         doNothing().when(tellerRepository).save(any(Teller.class));
 
         Teller result = tellerApplicationService.create(command);
 
         assertNotNull(result);
-        assertEquals(T001, result.getTellerNo());
-        assertEquals(王五, result.getTellerName());
-        assertEquals(INST001, result.getInstitutionNo());
+        assertEquals("T001", result.getTellerNo());
+        assertEquals("王五", result.getTellerName());
+        assertEquals("INST001", result.getInstitutionNo());
         assertEquals(TellerType.NORMAL, result.getTellerType());
         assertEquals(TellerStatus.NORMAL, result.getStatus());
 
@@ -57,58 +56,58 @@ class TellerApplicationServiceTest {
         verify(tellerRepository).save(tellerCaptor.capture());
 
         Teller savedTeller = tellerCaptor.getValue();
-        assertEquals(T001, savedTeller.getTellerNo());
-        assertEquals(王五, savedTeller.getTellerName());
-        assertEquals(INST001, savedTeller.getInstitutionNo());
+        assertEquals("T001", savedTeller.getTellerNo());
+        assertEquals("王五", savedTeller.getTellerName());
+        assertEquals("INST001", savedTeller.getInstitutionNo());
         assertEquals(TellerType.NORMAL, savedTeller.getTellerType());
-        assertEquals(, savedTeller.getPassword());
+        assertEquals("encodedPassword", savedTeller.getPassword());
         assertEquals(TellerStatus.NORMAL, savedTeller.getStatus());
 
-        verify(passwordEncoder).encode(plainPassword);
+        verify(passwordEncoder).encode("plainPassword");
     }
 
     @Test
     void update_shouldSucceed_whenPartialFieldsProvided() {
         Teller existingTeller = new Teller();
         existingTeller.setId(1L);
-        existingTeller.setTellerNo(T001);
-        existingTeller.setTellerName(王五);
-        existingTeller.setInstitutionNo(INST001);
+        existingTeller.setTellerNo("T001");
+        existingTeller.setTellerName("王五");
+        existingTeller.setInstitutionNo("INST001");
         existingTeller.setTellerType(TellerType.NORMAL);
-        existingTeller.setPassword(oldPassword);
+        existingTeller.setPassword("oldPassword");
         existingTeller.setStatus(TellerStatus.NORMAL);
 
         UpdateTellerCommand command = new UpdateTellerCommand();
-        command.setTellerName(王五更新);
+        command.setTellerName("王五更新");
         command.setTellerType(TellerType.VAULT);
 
-        when(tellerRepository.findByTellerNo(T001)).thenReturn(Optional.of(existingTeller));
+        when(tellerRepository.findByTellerNo("T001")).thenReturn(Optional.of(existingTeller));
         doNothing().when(tellerRepository).update(any(Teller.class));
 
-        Teller result = tellerApplicationService.update(T001, command);
+        Teller result = tellerApplicationService.update("T001", command);
 
         assertNotNull(result);
-        assertEquals(王五更新, result.getTellerName());
+        assertEquals("王五更新", result.getTellerName());
         assertEquals(TellerType.VAULT, result.getTellerType());
-        assertEquals(oldPassword, result.getPassword());
+        assertEquals("oldPassword", result.getPassword());
         assertEquals(TellerStatus.NORMAL, result.getStatus());
 
-        verify(tellerRepository).findByTellerNo(T001);
+        verify(tellerRepository).findByTellerNo("T001");
         verify(tellerRepository).update(existingTeller);
     }
 
     @Test
     void update_shouldThrowException_whenTellerNotExist() {
-        when(tellerRepository.findByTellerNo(NONEXIST)).thenReturn(Optional.empty());
+        when(tellerRepository.findByTellerNo("NONEXIST")).thenReturn(Optional.empty());
 
         UpdateTellerCommand command = new UpdateTellerCommand();
-        command.setTellerName(测试);
+        command.setTellerName("测试");
 
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> tellerApplicationService.update(NONEXIST, command));
+                () -> tellerApplicationService.update("NONEXIST", command));
         assertNotNull(exception.getMessage());
 
-        verify(tellerRepository).findByTellerNo(NONEXIST);
+        verify(tellerRepository).findByTellerNo("NONEXIST");
         verify(tellerRepository, never()).update(any());
     }
 
@@ -116,30 +115,30 @@ class TellerApplicationServiceTest {
     void delete_shouldSucceed_whenTellerExists() {
         Teller existingTeller = new Teller();
         existingTeller.setId(1L);
-        existingTeller.setTellerNo(T001);
-        existingTeller.setTellerName(王五);
+        existingTeller.setTellerNo("T001");
+        existingTeller.setTellerName("王五");
         existingTeller.setStatus(TellerStatus.NORMAL);
 
-        when(tellerRepository.findByTellerNo(T001)).thenReturn(Optional.of(existingTeller));
+        when(tellerRepository.findByTellerNo("T001")).thenReturn(Optional.of(existingTeller));
         doNothing().when(tellerRepository).update(any(Teller.class));
 
-        tellerApplicationService.delete(T001);
+        tellerApplicationService.delete("T001");
 
         assertEquals(TellerStatus.RESIGNED, existingTeller.getStatus());
 
-        verify(tellerRepository).findByTellerNo(T001);
+        verify(tellerRepository).findByTellerNo("T001");
         verify(tellerRepository).update(existingTeller);
     }
 
     @Test
     void delete_shouldThrowException_whenTellerNotExist() {
-        when(tellerRepository.findByTellerNo(NONEXIST)).thenReturn(Optional.empty());
+        when(tellerRepository.findByTellerNo("NONEXIST")).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> tellerApplicationService.delete(NONEXIST));
+                () -> tellerApplicationService.delete("NONEXIST"));
         assertNotNull(exception.getMessage());
 
-        verify(tellerRepository).findByTellerNo(NONEXIST);
+        verify(tellerRepository).findByTellerNo("NONEXIST");
         verify(tellerRepository, never()).update(any());
     }
 }
