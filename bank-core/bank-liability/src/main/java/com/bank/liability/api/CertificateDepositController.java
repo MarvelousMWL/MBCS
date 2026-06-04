@@ -1,6 +1,9 @@
 package com.bank.liability.api;
 
 import com.bank.common.result.Result;
+import com.bank.liability.application.batch.BatchResult;
+import com.bank.liability.application.certificatedeposit.batch.CDAutoMaturityBatchCommand;
+import com.bank.liability.application.certificatedeposit.batch.CDAutoMaturityBatchService;
 import com.bank.liability.application.certificatedeposit.issue.IssueCDProductCommand;
 import com.bank.liability.application.certificatedeposit.issue.IssueCDProductService;
 import com.bank.liability.application.certificatedeposit.subscription.SubscribeCDCommand;
@@ -27,6 +30,7 @@ public class CertificateDepositController {
     private final RedeemCDService redeemCDService;
     private final TransferCDService transferCDService;
     private final CDQueryService cdQueryService;
+    private final CDAutoMaturityBatchService cdAutoMaturityBatchService;
 
     @PostMapping("/product")
     public Result<CertificateDepositProduct> issueProduct(@Valid @RequestBody IssueCDProductCommand command) {
@@ -80,5 +84,13 @@ public class CertificateDepositController {
     @GetMapping("/account/{cdAccountNo}")
     public Result<CertificateDepositAccount> getAccount(@PathVariable String cdAccountNo) {
         return Result.success(cdQueryService.findAccountByNo(cdAccountNo));
+    }
+
+    @PostMapping("/batch/maturity")
+    public Result<BatchResult> executeBatchMaturity(@RequestBody(required = false) CDAutoMaturityBatchCommand command) {
+        if (command == null) {
+            command = new CDAutoMaturityBatchCommand();
+        }
+        return Result.success(cdAutoMaturityBatchService.executeBatch(command));
     }
 }

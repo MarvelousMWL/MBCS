@@ -10,7 +10,9 @@ public enum TransactionType implements BaseEnumType {
     DEPOSIT("2001", "存款"),
     WITHDRAW("2002", "取款"),
     DEPOSIT_CANCEL("3001", "存款冲正"),
-    WITHDRAW_CANCEL("3002", "取款冲正");
+    WITHDRAW_CANCEL("3002", "取款冲正"),
+    TRANSFER("2003", "行内转账"),
+    TRANSFER_CANCEL("3003", "转账冲正");
     
     private final String code;
     private final String description;

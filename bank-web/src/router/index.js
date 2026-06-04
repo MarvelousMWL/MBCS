@@ -33,6 +33,17 @@ const routes = [
       { path: '/transaction/cancel-deposit', name: 'CancelDeposit', component: () => import('../views/transaction/CancelDeposit.vue') },
       { path: '/transaction/cancel-withdraw', name: 'CancelWithdraw', component: () => import('../views/transaction/CancelWithdraw.vue') },
       { path: '/transaction/list', name: 'TransList', component: () => import('../views/transaction/TransList.vue') },
+      // 大额存单
+      { path: '/certificate-deposit/product', name: 'CDProduct', component: () => import('../views/certificate-deposit/CDProduct.vue') },
+      { path: '/certificate-deposit/subscribe', name: 'CDSubscribe', component: () => import('../views/certificate-deposit/CDSubscribe.vue') },
+      { path: '/certificate-deposit/redeem', name: 'CDRedeem', component: () => import('../views/certificate-deposit/CDRedeem.vue') },
+      { path: '/certificate-deposit/transfer', name: 'CDTransfer', component: () => import('../views/certificate-deposit/CDTransfer.vue') },
+      // 批量处理
+      { path: '/batch/execute', name: 'BatchExecute', component: () => import('../views/batch/BatchExecute.vue') },
+      // 通知存款
+      { path: '/notice-deposit', name: 'NoticeDeposit', component: () => import('../views/notice-deposit/NoticeDeposit.vue') },
+      // 转账
+      { path: '/transfer', name: 'Transfer', component: () => import('../views/transfer/Transfer.vue') },
     ]
   }
 ]
@@ -42,4 +53,6 @@ router.beforeEach((to, from, next) => {
   if (to.path !== '/login' && !userStore.token) { next('/login') } else { next() }
 })
 export default router
+
+
 
