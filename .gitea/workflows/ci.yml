@@ -22,7 +22,6 @@ jobs:
           cd C:\mbcs_repo
           git config user.name "CI Bot"
           git config user.email "ci@mbcs.local"
-          git fetch origin master:master
-          git checkout master
-          git merge mbcs-mwl-001 --no-edit
-          git push http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git master:master
+          git checkout origin/master -b master
+          git merge origin/mbcs-mwl-001 --no-edit
+          git push http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git HEAD:master
