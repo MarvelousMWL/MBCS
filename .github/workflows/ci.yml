@@ -43,7 +43,7 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
       run: |
-        mysql -h 127.0.0.1 -u root -p123456 bank_core < product_init_data.sql
+        echo "=== Checking ===" && wc -l product_init_data.sql && echo "=== Running ===" && mysql -h 127.0.0.1 -u root -p123456 bank_core < product_init_data.sql 2>&1 && echo "=== Done ==="
     - name: Init sub accounts
       run: |
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source bank-core/db/alter_sub_account.sql"
@@ -93,7 +93,7 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
       run: |
-        mysql -h 127.0.0.1 -u root -p123456 bank_core < product_init_data.sql
+        echo "=== Checking ===" && wc -l product_init_data.sql && echo "=== Running ===" && mysql -h 127.0.0.1 -u root -p123456 bank_core < product_init_data.sql 2>&1 && echo "=== Done ==="
     - name: Init sub accounts
       run: |
         mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/alter_sub_account.sql
