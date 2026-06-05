@@ -18,4 +18,4 @@ jobs:
         run: mvn test -s C:\mbcs_repo\bank-maven\settings.xml
       - name: Create PR and merge
         shell: cmd
-        run: python3 C:\mbcs_repo\daily_review\auto_merge.py
+        run: python3 -c "import json,urllib.request,base64; a=base64.b64encode(b'mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a').decode(); h={'Content-Type':'application/json','Authorization':'Basic '+a}; d=json.dumps({'title':'Auto merge','head':'mbcs-mwl-001','base':'master'}).encode(); r=urllib.request.Request('http://localhost:3001/api/v1/repos/mbcsadmin/MBCS/pulls',data=d,headers=h,method='POST'); p=json.loads(urllib.request.urlopen(r).read()); print('PR #'+str(p['number'])+' created'); d2=json.dumps({'Do':'merge'}).encode(); r2=urllib.request.Request('http://localhost:3001/api/v1/repos/mbcsadmin/MBCS/pulls/'+str(p['number'])+'/merge',data=d2,headers=h,method='POST'); urllib.request.urlopen(r2); print('PR #'+str(p['number'])+' merged')"
