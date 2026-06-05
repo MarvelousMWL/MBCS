@@ -1,4 +1,4 @@
-﻿# Java
+# Java
 *.class
 *.jar
 *.war
@@ -28,6 +28,27 @@ Thumbs.db
 hs_err_pid*.log
 replay_pid*.log
 
-# Maven
+# Maven local repo
+bank-maven/local-repo/
 bank-maven/repository/
 bank-maven/.repository/
+
+# Jenkins
+jenkins-*.xml
+jenkins_*.png
+jenkins_*.json
+jenkins_*.html
+jenkins_*.txt
+cookies*.txt
+headers*.txt
+*.bat
+
+# Temp scripts
+write_pipeline*.py
+check_job.py
+create_jenkins_job.py
+response.html
+response2.html
+login_result.html
+test_page.html
+test_cookie.txt
