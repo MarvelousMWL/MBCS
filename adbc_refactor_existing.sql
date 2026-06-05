@@ -1,4 +1,4 @@
-﻿RENAME TABLE kdpf_chpshx TO kdpf_chpshx_old;
+RENAME TABLE kdpf_chpshx TO kdpf_chpshx_old;
 RENAME TABLE kdpf_kaihkz TO kdpf_kaihkz_old;
 RENAME TABLE kdpf_zhiqkz TO kdpf_zhiqkz_old;
 RENAME TABLE kdpf_daoqkz TO kdpf_daoqkz_old;

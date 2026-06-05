@@ -1,4 +1,4 @@
-﻿-- 产品销户控制表 (10字段) - 新增
+-- 产品销户控制表 (10字段) - 新增
 DROP TABLE IF EXISTS kdpf_xiohkz;
 CREATE TABLE kdpf_xiohkz (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
