@@ -6,6 +6,7 @@ import com.bank.liability.domain.customeraccount.repository.CustomerAccountRepos
 import com.bank.liability.domain.customersubaccount.entity.CustomerSubAccount;
 import com.bank.liability.domain.customersubaccount.service.CustomerSubAccountDomainService;
 import com.bank.liability.domain.enums.LiabilityAccountStatus;
+import com.bank.liability.domain.enums.LiabilityAccountType;
 import com.bank.liability.domain.liabilityaccount.entity.LiabilityAccount;
 import com.bank.liability.domain.liabilityaccount.repository.LiabilityAccountRepository;
 import com.bank.liability.domain.liabilityaccount.service.LiabilityAccountDomainService;
@@ -42,24 +43,24 @@ class OpenLiabilityAccountServiceTest {
         when(customerAccountRepository.findByCustomerAccountNo("CACC001"))
                 .thenReturn(Optional.of(new com.bank.liability.domain.customeraccount.entity.CustomerAccount()));
         when(liabilityAccountRepository.countAll()).thenReturn(0L);
-        when(customerSubAccountDomainService.generateSubAccountSeq("CACC001", "DEMAND")).thenReturn("001CNY");
+        when(customerSubAccountDomainService.generateSubAccountSeq("CACC001", "0")).thenReturn("001CNY");
         doNothing().when(liabilityAccountDomainService).validateCreate(any());
         doNothing().when(liabilityAccountRepository).save(any());
-        when(customerSubAccountDomainService.createSubAccount("CACC001", "001CNY", "10000001", "DEMAND"))
+        when(customerSubAccountDomainService.createSubAccount("CACC001", "001CNY", "10000001", "0"))
                 .thenReturn(new CustomerSubAccount());
 
         LiabilityAccount result = openLiabilityAccountService.open(command, "OPE001");
 
         assertNotNull(result);
         assertEquals("CACC001", result.getCustomerAccountNo());
-        assertEquals("DEMAND", result.getAccountType());
+        assertEquals(LiabilityAccountType.DEMAND, result.getAccountType());
         assertEquals("001CNY", result.getSubAccountSeq());
         assertEquals(BigDecimal.ZERO, result.getBalance());
         assertEquals(LiabilityAccountStatus.NORMAL, result.getStatus());
 
         verify(liabilityAccountRepository).save(any());
         verify(liabilityAccountDomainService).validateCreate(any());
-        verify(customerSubAccountDomainService).createSubAccount("CACC001", "001CNY", "10000001", "DEMAND");
+        verify(customerSubAccountDomainService).createSubAccount("CACC001", "001CNY", "10000001", "0");
     }
 
     @Test

@@ -28,21 +28,23 @@ class CustomerDomainServiceTest {
     @Test
     void validateCreate_shouldSucceed_whenAllFieldsValid() {
         Customer customer = createNormalCustomer();
-        when(customerRepository.existsByIdNumber(customer.getIdType(), customer.getIdNumber()))
+        String idTypeCode = String.valueOf(customer.getIdType().getCode());
+        when(customerRepository.existsByIdNumber(idTypeCode, customer.getIdNumber()))
                 .thenReturn(false);
         assertDoesNotThrow(() -> customerDomainService.validateCreate(customer));
-        verify(customerRepository).existsByIdNumber(customer.getIdType(), customer.getIdNumber());
+        verify(customerRepository).existsByIdNumber(idTypeCode, customer.getIdNumber());
     }
 
     @Test
     void validateCreate_shouldThrowException_whenIdNumberAlreadyExists() {
         Customer customer = createNormalCustomer();
-        when(customerRepository.existsByIdNumber(customer.getIdType(), customer.getIdNumber()))
+        String idTypeCode = String.valueOf(customer.getIdType().getCode());
+        when(customerRepository.existsByIdNumber(idTypeCode, customer.getIdNumber()))
                 .thenReturn(true);
         BusinessException exception = assertThrows(BusinessException.class,
                 () -> customerDomainService.validateCreate(customer));
         assertNotNull(exception.getMessage());
-        verify(customerRepository).existsByIdNumber(customer.getIdType(), customer.getIdNumber());
+        verify(customerRepository).existsByIdNumber(idTypeCode, customer.getIdNumber());
     }
 
     @Test

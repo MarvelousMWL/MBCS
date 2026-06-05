@@ -2,6 +2,7 @@ package com.bank.customer.application.command.create;
 
 import com.bank.customer.domain.entity.Customer;
 import com.bank.customer.domain.enums.CustomerStatus;
+import com.bank.customer.domain.enums.IdType;
 import com.bank.customer.domain.repository.CustomerRepository;
 import com.bank.customer.domain.service.CustomerDomainService;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ class CreateCustomerServiceTest {
         Customer savedCustomer = customerCaptor.getValue();
         assertEquals("000000001", savedCustomer.getCustomerNo());
         assertEquals("李四", savedCustomer.getCustomerName());
-        assertEquals("ID_CARD", savedCustomer.getIdType());
+        assertEquals(IdType.ID_CARD, savedCustomer.getIdType());
         assertEquals("110101199002022345", savedCustomer.getIdNumber());
         assertEquals("13900139000", savedCustomer.getPhone());
         assertEquals("上海市浦东新区", savedCustomer.getAddress());

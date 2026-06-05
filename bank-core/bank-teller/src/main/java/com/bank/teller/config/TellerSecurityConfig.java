@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class TellerSecurityConfig {
 
     @Bean
-    @Order(2)
+    @Order(0)
     public SecurityFilterChain tellerFilterChain(HttpSecurity http) throws Exception {
         http
             .antMatcher("/api/teller/**")
