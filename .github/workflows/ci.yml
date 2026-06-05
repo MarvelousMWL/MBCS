@@ -8,23 +8,59 @@ on:
 
 jobs:
   build:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    
+
     - name: Compile
-      run: mvn compile -f bank-core/pom.xml
-    
+      run: mvn compile -f bank-core/pom.xml -s bank-maven/settings.xml
+
     - name: Test
-      run: mvn test -f bank-core/pom.xml
-    
+      run: mvn test -f bank-core/pom.xml -s bank-maven/settings.xml
+
     - name: Package
-      run: mvn package -Dmaven.test.skip=true -f bank-core/pom.xml
+      run: mvn package -Dmaven.test.skip=true -f bank-core/pom.xml -s bank-maven/settings.xml
+
+  pr-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Compile + Test
+      run: mvn test -f bank-core/pom.xml -s bank-maven/settings.xml
+
+    - name: Package
+      run: mvn package -Dmaven.test.skip=true -f bank-core/pom.xml -s bank-maven/settings.xml
+
+  auto-merge:
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'mbcs-mwl-001'
+    needs: [pr-check]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - name: Auto-merge PR
+      run: |
+        gh pr merge ${{ github.event.pull_request.number }} --merge --auto
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

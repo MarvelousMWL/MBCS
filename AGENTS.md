@@ -240,12 +240,14 @@
 
 ## CI/CD\u5de5\u4f5c\u6d41
 \u9879\u76ee\u4f7f\u7528 GitHub Actions \u8fdb\u884c\u6301\u7eed\u96c6\u6210\uff0c\u914d\u7f6e\u6587\u4ef6\u5728 .github/workflows/ci.yml\u3002
-\u5f00\u53d1\u5206\u652f\uff1ambcs-mwl-001\uff0c\u4e3b\u5206\u652f\uff1amaster\u3002\u63d0\u4ea4 PR \u540e CI \u81ea\u52a8\u6267\u884c\uff0c\u901a\u8fc7\u540e\u624d\u80fd\u5408\u5e76\u3002
+\u5f00\u53d1\u5206\u652f\uff1ambcs-mwl-001\uff0c\u4e3b\u5206\u652f\uff1amaster\u3002\u63d0\u4ea4 PR \u540e CI \u81ea\u52a8\u6267\u884c\uff0c\u901a\u8fc7\u540e\u81ea\u52a8\u5408\u5e76\u5230\u4e3b\u5206\u652f\u3002
 
 
 ## CI/CD workflow
 - **CI**: GitHub Actions (.github/workflows/ci.yml)
 - **Dev branch**: mbcs-mwl-001
 - **Main branch**: master (protected)
-- **Flow**: Push to mbcs-mwl-001 -> CI auto runs -> PR to master -> must pass CI to merge
+- **Flow**: Push to mbcs-mwl-001 → CI auto runs (compile + test + package)
+  → Create PR on GitHub: mbcs-mwl-001 → master
+  → PR triggers CI (pr-check) → auto-merge when all checks pass
 - **Jenkins** (optional): http://localhost:9090 admin/admin, daily 8:00 build
