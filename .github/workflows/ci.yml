@@ -39,6 +39,7 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/teller_data.sql
     - name: Init product factory tables
       run: |
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < daily_review/ci-product-tables.sql
         mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_account_tables.sql
     - name: Init product data
       run: |
@@ -86,6 +87,7 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/teller_data.sql
     - name: Init product factory tables
       run: |
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < daily_review/ci-product-tables.sql
         mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_account_tables.sql
     - name: Init product data
       run: |
