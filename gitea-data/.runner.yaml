@@ -1,0 +1,18 @@
+log:
+  level: info
+
+runner:
+  file: .runner
+  capacity: 1
+  timeout: 3h
+  fetch_interval: 3s
+  labels:
+    - "windows-latest:host"
+
+cache:
+  enabled: true
+  dir: cache
+  ttl: 720h
+
+container:
+  network_mode: ""
