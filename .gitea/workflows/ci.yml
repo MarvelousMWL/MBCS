@@ -16,12 +16,13 @@ jobs:
         shell: cmd
         working-directory: C:\mbcs_repo\bank-core
         run: mvn test -s C:\mbcs_repo\bank-maven\settings.xml
-      - name: Auto-merge to master
-        shell: cmd
+      - name: Create PR and merge
+        shell: powershell
         run: |
-          cd C:\mbcs_repo
-          git config user.name "CI Bot"
-          git config user.email "ci@mbcs.local"
-          git checkout master
-          git merge origin/mbcs-mwl-001 --no-edit
-          git push http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git HEAD:master
+          $auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a"))
+          $headers = @{"Content-Type"="application/json";"Authorization"="Basic $auth"}
+          $body = @{title="Auto merge from CI";head="mbcs-mwl-001";base="master"} | ConvertTo-Json
+          $pr = Invoke-RestMethod -Uri "http://localhost:3001/api/v1/repos/mbcsadmin/MBCS/pulls" -Method POST -Headers $headers -Body $body
+          Write-Host "PR #$($pr.number) created"
+          $merge = Invoke-RestMethod -Uri "http://localhost:3001/api/v1/repos/mbcsadmin/MBCS/pulls/$($pr.number)/merge" -Method POST -Headers $headers -Body (@{Do="merge"} | ConvertTo-Json)
+          Write-Host "PR #$($pr.number) merged"
