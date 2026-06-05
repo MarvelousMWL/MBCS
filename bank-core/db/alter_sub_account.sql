@@ -14,5 +14,3 @@ CREATE TABLE IF NOT EXISTS acc_customer_sub_account (
     UNIQUE KEY uk_liability_account_no (liability_account_no),
     KEY idx_customer_account_no (customer_account_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-ALTER TABLE acc_liability_account ADD COLUMN sub_account_seq VARCHAR(6) NOT NULL DEFAULT '001CNY' AFTER customer_account_no;
