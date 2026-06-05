@@ -69,7 +69,7 @@ CREATE TABLE kdpf_kaihkz (
   product_code VARCHAR(20) NOT NULL,
   currency_code VARCHAR(6) NOT NULL DEFAULT '156',
   specify_account_rule VARCHAR(4),
-  account_gen_rule VARCHAR(4),
+  account_gen_rule VARCHAR(10),
   account_seq_rule VARCHAR(4),
   open_restrict_flag VARCHAR(4),
   restrict_type VARCHAR(4),
