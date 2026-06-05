@@ -38,9 +38,7 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source daily_review/ci-product-tables.sql"
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
-      run: |
-        ls -la product_init_data.sql
-        mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core -v < product_init_data.sql 2>&1 | tail -30
+      run: mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core < product_init_data.sql
     - name: Init sub accounts
       run: mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source bank-core/db/alter_sub_account.sql"
     - name: Compile
@@ -81,9 +79,7 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source daily_review/ci-product-tables.sql"
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
-      run: |
-        ls -la product_init_data.sql
-        mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core -v < product_init_data.sql 2>&1 | tail -30
+      run: mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core < product_init_data.sql
     - name: Init sub accounts
       run: mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source bank-core/db/alter_sub_account.sql"
     - name: Compile + Test
