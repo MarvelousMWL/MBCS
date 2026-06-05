@@ -12,5 +12,5 @@ jobs:
       - name: Run tests
         shell: cmd
         run: |
-          cd bank-core
+          cd "%GITHUB_WORKSPACE%\bank-core"
           mvn test
