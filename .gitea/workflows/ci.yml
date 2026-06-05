@@ -15,4 +15,4 @@ jobs:
       - name: Test
         shell: cmd
         working-directory: C:\mbcs_repo\bank-core
-        run: mvn test
+        run: mvn test -s ..\bank-maven\settings.xml
