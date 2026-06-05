@@ -11,7 +11,7 @@ jobs:
         shell: cmd
         run: |
           if exist C:\mbcs_repo rmdir /s /q C:\mbcs_repo
-          git clone http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git C:\mbcs_repo --depth 1
+          git clone http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git C:\mbcs_repo
       - name: Test
         shell: cmd
         working-directory: C:\mbcs_repo\bank-core
@@ -22,6 +22,7 @@ jobs:
           cd C:\mbcs_repo
           git config user.name "CI Bot"
           git config user.email "ci@mbcs.local"
+          git fetch origin master:master
           git checkout master
-          git merge origin/mbcs-mwl-001
+          git merge mbcs-mwl-001 --no-edit
           git push http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git master:master
