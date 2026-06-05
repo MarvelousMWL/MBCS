@@ -43,8 +43,8 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
       run: |
-        cp 产品初始化数据.sql /tmp/product_init.sql
-        mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core < /tmp/product_init.sql
+        git show HEAD:"产品初始化数据.sql" > /tmp/product_init.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < /tmp/product_init.sql 2>&1
     - name: Init sub accounts
       run: |
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source bank-core/db/alter_sub_account.sql"
@@ -94,8 +94,8 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
       run: |
-        cp 产品初始化数据.sql /tmp/product_init.sql
-        mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core < /tmp/product_init.sql
+        git show HEAD:"产品初始化数据.sql" > /tmp/product_init.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < /tmp/product_init.sql 2>&1
     - name: Init sub accounts
       run: |
         mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/alter_sub_account.sql
