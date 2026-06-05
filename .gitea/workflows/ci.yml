@@ -9,10 +9,11 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Debug
+      - name: Checkout code
         shell: cmd
         run: |
-          echo Current dir: %cd%
-          echo Workspace: %GITHUB_WORKSPACE%
-          dir /s /b %cd%\..\bank-core 2>nul || echo No bank-core found
-          dir /s /b %cd%\..\..\bank-core 2>nul || echo No ../.. bank-core found
+          git clone http://mbcsadmin:605ec14b1dfc2fad736e2082dfb27c6fc684557b@localhost:3001/mbcsadmin/MBCS.git C:\ActionsRepo
+      - name: Run tests
+        shell: cmd
+        working-directory: C:\ActionsRepo\bank-core
+        run: mvn test
