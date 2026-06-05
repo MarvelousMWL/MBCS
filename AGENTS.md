@@ -238,16 +238,22 @@
 
 当开发者提出需求时，答案应该是完成品——而不是一个计划。包括测试。包括评估。包括文档。
 
-## CI/CD\u5de5\u4f5c\u6d41
-\u9879\u76ee\u4f7f\u7528 GitHub Actions \u8fdb\u884c\u6301\u7eed\u96c6\u6210\uff0c\u914d\u7f6e\u6587\u4ef6\u5728 .github/workflows/ci.yml\u3002
-\u5f00\u53d1\u5206\u652f\uff1ambcs-mwl-001\uff0c\u4e3b\u5206\u652f\uff1amaster\u3002\u63d0\u4ea4 PR \u540e CI \u81ea\u52a8\u6267\u884c\uff0c\u901a\u8fc7\u540e\u81ea\u52a8\u5408\u5e76\u5230\u4e3b\u5206\u652f\u3002
+## CI/CD工作流
+- **Git服务器**: http://localhost:3001 (本地 Gitea)
+- **开发分支**: mbcs-mwl-001
+- **主分支**: master (受保护)
+- **流程**: 推送代码到 mbcs-mwl-001 → 在 Gitea 上创建 PR → 合并到 master
+- **CI**: .gitea/workflows/ci.yml (Gitea Actions)
 
 
 ## CI/CD workflow
-- **CI**: GitHub Actions (.github/workflows/ci.yml)
+- **CI (GitHub)**: .github/workflows/ci.yml (保留，后续回推 GitHub 时使用)
+- **CI (Gitea)**: .gitea/workflows/ci.yml (本地 Gitea Actions)
+- **Git Server**: http://localhost:3001 (Gitea)
 - **Dev branch**: mbcs-mwl-001
-- **Main branch**: master (protected)
-- **Flow**: Push to mbcs-mwl-001 → CI auto runs (compile + test + package)
-  → Create PR on GitHub: mbcs-mwl-001 → master
-  → PR triggers CI (pr-check) → auto-merge when all checks pass
+- **Main branch**: master (protected，只能通过 PR 合并)
+- **Git remotes**:
+  - `origin` → GitHub (远端)
+  - `gitea` → http://localhost:3001/mbcsadmin/MBCS.git (本地)
+- **Flow**: Push to mbcs-mwl-001 → 在 Gitea 上创建 PR → 合并到 master
 - **Jenkins** (optional): http://localhost:9090 admin/admin, daily 8:00 build
