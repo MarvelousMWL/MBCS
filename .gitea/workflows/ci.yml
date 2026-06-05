@@ -9,14 +9,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Check Java
-        shell: cmd
-        run: java -version 2>&1
-      - name: Check Maven
-        shell: cmd
-        run: mvn --version 2>&1 | head -3
       - name: Run tests
         shell: cmd
         run: |
           cd bank-core
-          mvn test -s ../bank-maven/settings.xml
+          mvn test
