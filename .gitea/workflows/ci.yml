@@ -9,13 +9,14 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Test
+      - name: Check Java
+        shell: cmd
+        run: java -version 2>&1
+      - name: Check Maven
+        shell: cmd
+        run: mvn --version 2>&1 | head -3
+      - name: Run tests
         shell: cmd
         run: |
           cd bank-core
-          mvn test -f pom.xml -s ../bank-maven/settings.xml
+          mvn test -s ../bank-maven/settings.xml
