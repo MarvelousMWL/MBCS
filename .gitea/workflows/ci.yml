@@ -12,10 +12,18 @@ jobs:
         run: |
           if exist C:\mbcs_repo rmdir /s /q C:\mbcs_repo
           git clone http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git C:\mbcs_repo
+      - name: Compile
+        shell: cmd
+        working-directory: C:\mbcs_repo\bank-core
+        run: mvn compile -s C:\mbcs_repo\bank-maven\settings.xml
       - name: Test
         shell: cmd
         working-directory: C:\mbcs_repo\bank-core
         run: mvn test -s C:\mbcs_repo\bank-maven\settings.xml
+      - name: Package
+        shell: cmd
+        working-directory: C:\mbcs_repo\bank-core
+        run: mvn package -Dmaven.test.skip=true -s C:\mbcs_repo\bank-maven\settings.xml
       - name: Create PR and merge
         shell: powershell
         run: |
