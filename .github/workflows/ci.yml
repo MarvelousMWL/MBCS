@@ -11,6 +11,16 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: 123456
+          MYSQL_DATABASE: bank_core
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+
     steps:
     - uses: actions/checkout@v4
 
@@ -20,6 +30,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Init database
+      run: |
+        sleep 10
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < daily_review/ci-init.sql
 
     - name: Compile
       run: mvn compile -f bank-core/pom.xml -s bank-maven/settings.xml
@@ -34,6 +49,16 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: 123456
+          MYSQL_DATABASE: bank_core
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+
     steps:
     - uses: actions/checkout@v4
 
@@ -43,6 +68,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Init database
+      run: |
+        sleep 10
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < daily_review/ci-init.sql
 
     - name: Compile + Test
       run: mvn test -f bank-core/pom.xml -s bank-maven/settings.xml
