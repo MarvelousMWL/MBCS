@@ -43,7 +43,9 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
       run: |
-        echo "=== Checking ===" && wc -l product_init_data.sql && echo "=== Running ===" && mysql -h 127.0.0.1 -u root -p123456 bank_core < product_init_data.sql 2>&1 && echo "=== Done ==="
+        ls -la product_init_data.sql
+        wc -l product_init_data.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core -v --force < product_init_data.sql
     - name: Init sub accounts
       run: |
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source bank-core/db/alter_sub_account.sql"
@@ -93,10 +95,12 @@ jobs:
         mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source adbc_account_tables.sql"
     - name: Init product data
       run: |
-        echo "=== Checking ===" && wc -l product_init_data.sql && echo "=== Running ===" && mysql -h 127.0.0.1 -u root -p123456 bank_core < product_init_data.sql 2>&1 && echo "=== Done ==="
+        ls -la product_init_data.sql
+        wc -l product_init_data.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core -v --force < product_init_data.sql
     - name: Init sub accounts
       run: |
-        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/alter_sub_account.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source bank-core/db/alter_sub_account.sql"
 
     - name: Compile + Test
       run: mvn test -f bank-core/pom.xml -s bank-maven/settings.xml
