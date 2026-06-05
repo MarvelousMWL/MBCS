@@ -34,7 +34,19 @@ jobs:
     - name: Init database
       run: |
         sleep 10
-        mysql -h 127.0.0.1 -u root -p123456 bank_core < daily_review/ci-init.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/init.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/teller.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/teller_data.sql
+    - name: Init product factory tables
+      run: |
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_refactor_existing.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_new_tables.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/migration_product_factory.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_account_tables.sql
+    - name: Init product data
+      run: |
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < 产品初始化数据.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/alter_sub_account.sql
 
     - name: Compile
       run: mvn compile -f bank-core/pom.xml -s bank-maven/settings.xml
@@ -72,7 +84,19 @@ jobs:
     - name: Init database
       run: |
         sleep 10
-        mysql -h 127.0.0.1 -u root -p123456 bank_core < daily_review/ci-init.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/init.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/teller.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/teller_data.sql
+    - name: Init product factory tables
+      run: |
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_refactor_existing.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_new_tables.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/migration_product_factory.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < adbc_account_tables.sql
+    - name: Init product data
+      run: |
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < 产品初始化数据.sql
+        mysql -h 127.0.0.1 -u root -p123456 bank_core < bank-core/db/alter_sub_account.sql
 
     - name: Compile + Test
       run: mvn test -f bank-core/pom.xml -s bank-maven/settings.xml
