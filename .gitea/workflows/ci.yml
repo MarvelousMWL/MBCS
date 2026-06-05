@@ -9,11 +9,10 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         shell: cmd
-        run: |
-          git clone http://mbcsadmin:605ec14b1dfc2fad736e2082dfb27c6fc684557b@localhost:3001/mbcsadmin/MBCS.git C:\ActionsRepo
-      - name: Run tests
+        run: git clone http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git C:\mbcs_repo --depth 1
+      - name: Test
         shell: cmd
-        working-directory: C:\ActionsRepo\bank-core
+        working-directory: C:\mbcs_repo\bank-core
         run: mvn test
