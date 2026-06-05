@@ -2,8 +2,6 @@ name: CI
 on:
   push:
     branches: [ mbcs-mwl-001 ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -18,3 +16,12 @@ jobs:
         shell: cmd
         working-directory: C:\mbcs_repo\bank-core
         run: mvn test -s C:\mbcs_repo\bank-maven\settings.xml
+      - name: Auto-merge to master
+        shell: cmd
+        run: |
+          cd C:\mbcs_repo
+          git config user.name "CI Bot"
+          git config user.email "ci@mbcs.local"
+          git checkout master
+          git merge origin/mbcs-mwl-001
+          git push http://mbcsadmin:fff92a248a1d50edcaeed7e8fb78f0e030bc847a@localhost:3001/mbcsadmin/MBCS.git master:master
