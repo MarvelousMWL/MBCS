@@ -9,8 +9,10 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Run tests
+      - name: Debug
         shell: cmd
         run: |
-          cd "%GITHUB_WORKSPACE%\bank-core"
-          mvn test
+          echo Current dir: %cd%
+          echo Workspace: %GITHUB_WORKSPACE%
+          dir /s /b %cd%\..\bank-core 2>nul || echo No bank-core found
+          dir /s /b %cd%\..\..\bank-core 2>nul || echo No ../.. bank-core found
