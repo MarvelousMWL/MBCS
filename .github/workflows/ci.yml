@@ -45,8 +45,7 @@ jobs:
 
     - name: Init product data
       run: |
-        wc -c product_init_data.sql
-        mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source product_init_data.sql"
+        mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core -e "source product_init_data.sql"
 
     - name: Init sub accounts
       run: |
@@ -99,8 +98,7 @@ jobs:
 
     - name: Init product data
       run: |
-        wc -c product_init_data.sql
-        mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source product_init_data.sql"
+        mysql -h 127.0.0.1 -u root -p123456 --default-character-set=utf8mb4 bank_core -e "source product_init_data.sql"
 
     - name: Init sub accounts
       run: |
