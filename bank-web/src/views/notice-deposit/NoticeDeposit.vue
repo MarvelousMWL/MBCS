@@ -27,25 +27,12 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
-    <el-card style="margin-top:20px">
-      <template #header><span style="font-weight:600">账户列表</span></template>
-      <el-empty v-if="accountList.length===0" description="暂无数据" :image-size="60"/>
-      <el-table v-else :data="accountList" class="data-table" style="margin-top:12px">
-        <el-table-column prop="noticeDepositAccountNo" label="账号" width="200"/>
-        <el-table-column prop="customerAccountNo" label="客户账号" width="150"/>
-        <el-table-column label="余额" width="130" align="right"><template #default="{ row: r }">{{Number(r.principal).toLocaleString('zh-CN',{minFractionDigits:2})}}</template></el-table-column>
-        <el-table-column label="通知天数" width="100"><template #default="{ row: r }">{{r.noticeType==='DAY7'?'7天':'1天'}}</template></el-table-column>
-        <el-table-column label="状态" width="100"><template #default="{ row: r }"><el-tag size="small" :type="r.status==='ACTIVE'?'success':r.status==='WITHDRAWN'?'info':'warning'" effect="light" style="border:0">{{{'ACTIVE':'正常','APPOINTED':'已预约','WITHDRAWN':'已支取','CLOSED':'已销户'}[r.status]||r.status}}</el-tag></template></el-table-column>
-        <el-table-column prop="openDate" label="开户日期" width="160"/>
-      </el-table>
-    </el-card>
   </div>
 </template>
 <script setup>
-import { ref, reactive, onMounted } from 'vue'; import { ElMessage } from 'element-plus'
+import { ref, reactive } from 'vue'; import { ElMessage } from 'element-plus'
 import { openNoticeDeposit, appointWithdraw, withdrawNoticeDeposit } from '../../api/noticeDeposit'
-import request from '../../utils/request'
-var activeTab=ref('open'),accountList=ref([])
+var activeTab=ref('open')
 var openFormRef=ref(),appointFormRef=ref(),withdrawFormRef=ref()
 var openForm=reactive({customerAccountNo:'',currentAccountNo:'',noticeType:'DAY7',amount:0,interestRate:2.5})
 var openRules={customerAccountNo:[{required:true,message:'请输入客户账号',trigger:'blur'}],currentAccountNo:[{required:true,message:'请输入活期结算账号',trigger:'blur'}],noticeType:[{required:true,message:'请选择通知类型',trigger:'change'}],amount:[{required:true,validator:(r,v,c)=>{if(v>0){c()}else{c(new Error('金额必须大于0'))}},trigger:'blur'}],interestRate:[{required:true,validator:(r,v,c)=>{if(v>0){c()}else{c(new Error('利率必须大于0'))}},trigger:'blur'}]}
@@ -53,11 +40,9 @@ var appointForm=reactive({noticeDepositAccountNo:'',bookingAmount:0,bookingDate:
 var appointRules={noticeDepositAccountNo:[{required:true,message:'请输入通知存款账号',trigger:'blur'}],bookingAmount:[{required:true,validator:(r,v,c)=>{if(v>0){c()}else{c(new Error('预约金额必须大于0'))}},trigger:'blur'}],bookingDate:[{required:true,message:'请选择预约日期',trigger:'change'}]}
 var withdrawForm=reactive({noticeDepositAccountNo:''})
 var withdrawRules={noticeDepositAccountNo:[{required:true,message:'请输入通知存款账号',trigger:'blur'}]}
-var loadAccounts=async()=>{try{var r=await request({url:'/liability/notice-deposit/accounts',method:'get'});accountList.value=r.data||[]}catch(e){accountList.value=[]}}
-var handleOpen=async()=>{await openFormRef.value.validate(async v=>{if(v){try{var r=await openNoticeDeposit(openForm);ElMessage.success('开户成功! 账号:'+(r.data?.noticeDepositAccountNo||''));openForm.customerAccountNo='';openForm.currentAccountNo='';openForm.amount=0;loadAccounts()}catch(e){console.error(e)}}})}
-var handleAppoint=async()=>{await appointFormRef.value.validate(async v=>{if(v){try{var r=await appointWithdraw(appointForm);ElMessage.success('预约成功!');appointForm.noticeDepositAccountNo='';appointForm.bookingAmount=0;appointForm.bookingDate='';loadAccounts()}catch(e){console.error(e)}}})}
-var handleWithdraw=async()=>{await withdrawFormRef.value.validate(async v=>{if(v){try{var r=await withdrawNoticeDeposit(withdrawForm);ElMessage.success('支取成功!');withdrawForm.noticeDepositAccountNo='';loadAccounts()}catch(e){console.error(e)}}})}
-onMounted(()=>{loadAccounts()})
+var handleOpen=async()=>{await openFormRef.value.validate(async v=>{if(v){try{var r=await openNoticeDeposit(openForm);ElMessage.success('开户成功! 账号:'+(r.data?.noticeDepositAccountNo||''));openForm.customerAccountNo='';openForm.currentAccountNo='';openForm.amount=0}catch(e){console.error(e)}}})}
+var handleAppoint=async()=>{await appointFormRef.value.validate(async v=>{if(v){try{var r=await appointWithdraw(appointForm);ElMessage.success('预约成功!');appointForm.noticeDepositAccountNo='';appointForm.bookingAmount=0;appointForm.bookingDate=''}catch(e){console.error(e)}}})}
+var handleWithdraw=async()=>{await withdrawFormRef.value.validate(async v=>{if(v){try{var r=await withdrawNoticeDeposit(withdrawForm);ElMessage.success('支取成功!');withdrawForm.noticeDepositAccountNo=''}catch(e){console.error(e)}}})}
 </script>
 <style scoped>
 .page-header{margin-bottom:20px}.page-title{font-size:20px;font-weight:700;color:var(--text-primary);margin:0 0 4px}.page-desc{font-size:13px;color:var(--text-secondary);margin:0}
