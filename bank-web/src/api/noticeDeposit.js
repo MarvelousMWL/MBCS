@@ -9,10 +9,10 @@ export function openNoticeDeposit(data) {
   })
 }
 
-// 通知存款 - 预约支取
+// 通知存款 - 通知支取预约
 export function appointWithdraw(data) {
   return request({
-    url: '/liability/notice-deposit/appoint-withdraw',
+    url: '/liability/notice-deposit/book',
     method: 'post',
     data
   })
@@ -24,14 +24,5 @@ export function withdrawNoticeDeposit(data) {
     url: '/liability/notice-deposit/withdraw',
     method: 'post',
     data
-  })
-}
-
-// 通知存款 - 查询账户列表
-export function getNoticeDepositList(params) {
-  return request({
-    url: '/liability/notice-deposit/accounts',
-    method: 'get',
-    params
   })
 }
