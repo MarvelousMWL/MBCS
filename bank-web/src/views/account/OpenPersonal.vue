@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page">
     <div class="page-header"><div><h2 class="page-title">个人开户</h2><p class="page-desc">为个人客户开立客户账户</p></div></div>
     <el-card style="max-width:520px">
@@ -12,7 +12,7 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'; import { ElMessage } from 'element-plus'; import { openCustomerAccount } from '../../api/account'
-var formRef=ref(),loading=ref(false),form=reactive({customerNo:'',accountType:'PERSONAL'})
+var formRef=ref(),loading=ref(false),form=reactive({customerNo:'',accountType:0})
 var rules={customerNo:[{required:true,message:'请输入客户号',trigger:'blur'}]}
 var handleSubmit=async()=>{await formRef.value.validate(async v=>{if(v){loading.value=true;try{await openCustomerAccount(form);ElMessage.success('个人开户成功');form.customerNo=''}catch(e){}finally{loading.value=false}}})}
 </script>

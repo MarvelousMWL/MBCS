@@ -3,7 +3,7 @@
 // 账户转账
 export function transfer(data) {
   return request({
-    url: '/liability/transfer/transfer',
+    url: '/liability/transfer/execute',
     method: 'post',
     data
   })
@@ -12,7 +12,7 @@ export function transfer(data) {
 // 转账冲正
 export function reverseTransfer(data) {
   return request({
-    url: '/liability/transfer/reverse',
+    url: '/liability/transfer/cancel',
     method: 'post',
     data
   })
@@ -24,5 +24,7 @@ export function getTransferList(params) {
     url: '/liability/transfer/records',
     method: 'get',
     params
+  }).catch(() => {
+    return { data: [] }
   })
 }

@@ -4,7 +4,7 @@
     <el-table :data="accountList" class="data-table" @row-click="showDetail">
       <el-table-column prop="liabilityAccountNo" label="负债账号" width="150"/>
       <el-table-column prop="customerAccountNo" label="客户账号" width="170"/>
-      <el-table-column prop="accountType" label="产品类型" width="100"><template #default="{ row: r }"><el-tag size="small" :type="r.accountType==='DEMAND'?'primary':'warning'" effect="plain" style="border:0">{{r.accountType==='DEMAND'?'活期':'定期'}}</el-tag></template></el-table-column>
+      <el-table-column prop="accountType" label="产品类型" width="100"><template #default="{ row: r }"><el-tag size="small" :type="r.accountType===0?'primary':'warning'" effect="plain" style="border:0">{{r.accountType===0?'活期':'定期'}}</el-tag></template></el-table-column>
       <el-table-column prop="balance" label="余额" width="130" align="right"><template #default="{ row: r }"><span class="balance-text">{{Number(r.balance).toLocaleString('zh-CN',{minFractionDigits:2})}}</span></template></el-table-column>
       <el-table-column label="状态" width="130"><template #default="{ row: r }"><el-tag size="small" :type="[0,3,2,1].indexOf(r.status)===0?'success':[0,3,2,1].indexOf(r.status)===1?'danger':'info'" effect="light" style="border:0">{{$enumDict.LIABILITY_ACCOUNT_STATUS[r.status]||r.status}}</el-tag></template></el-table-column>
       <el-table-column prop="openDate" label="开户日期" width="180"/>
@@ -17,7 +17,7 @@
             <el-descriptions-item label="负债账号">{{detailData.liabilityAccountNo}}</el-descriptions-item>
             <el-descriptions-item label="客户账号">{{detailData.customerAccountNo}}</el-descriptions-item>
             <el-descriptions-item label="子账户序号">{{detailData.subAccountSeq||'-'}}</el-descriptions-item>
-            <el-descriptions-item label="产品类型">{{$enumDict.LIABILITY_ACCOUNT_TYPE_STR[detailData.accountType]||detailData.accountType}}</el-descriptions-item>
+            <el-descriptions-item label="产品类型">{{$enumDict.LIABILITY_ACCOUNT_TYPE[detailData.accountType]||detailData.accountType}}</el-descriptions-item>
             <el-descriptions-item label="账户余额"><span style="font-weight:700;font-size:16px;color:#3182ce">{{Number(detailData.balance).toLocaleString('zh-CN',{minFractionDigits:2})}}</span></el-descriptions-item>
           </el-descriptions>
         </div>
@@ -49,3 +49,4 @@ var showDetail=(row)=>{detailData.value=row;detailVisible.value=true}
 .balance-text{font-family:'Courier New',monospace;font-weight:600;font-size:14px}
 .detail-section{margin-bottom:20px}.detail-section-title{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #edf2f7}
 </style>
+

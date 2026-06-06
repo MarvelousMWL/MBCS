@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="account-page">
     <div class="page-header">
       <div>
@@ -34,7 +34,7 @@
       <el-table-column prop="liabilityAccountNo" label="负债账号" width="150" />
       <el-table-column prop="customerAccountNo" label="客户账号" width="170" />
       <el-table-column prop="accountType" label="产品类型" width="100">
-        <template #default="{row}"><el-tag size="small" :type="row.accountType==='DEMAND'?'primary':'warning'" effect="plain" style="border:0">{{$enumDict.LIABILITY_ACCOUNT_TYPE_STR[row.accountType]||row.accountType}}</el-tag></template>
+        <template #default="{row}"><el-tag size="small" :type="row.accountType===0?'primary':'warning'" effect="plain" style="border:0">{{$enumDict.LIABILITY_ACCOUNT_TYPE_STR[row.accountType]||row.accountType}}</el-tag></template>
       </el-table-column>
       <el-table-column prop="balance" label="账户余额" width="130" align="right">
         <template #default="{row}"><span class="balance-text">{{Number(row.balance).toLocaleString('zh-CN',{minimumFractionDigits:2})}}</span></template>
@@ -248,9 +248,10 @@ var loadData = async () => {
 }
 
 var loadLiabilitySubAccounts = async () => {
-  if(!liabilityForm.customerAccountNo||!liabilityForm.accountType) { availableSubAccounts.value=[]; return }
+  if(!liabilityForm.customerAccountNo||liabilityForm.accountType===null||liabilityForm.accountType===undefined) { availableSubAccounts.value=[]; return }
+  var typeStr = liabilityForm.accountType===0?'DEMAND':'TIME'
   try {
-    var res = await getCustomerSubAccountByType(liabilityForm.customerAccountNo, liabilityForm.accountType)
+    var res = await getCustomerSubAccountByType(liabilityForm.customerAccountNo, typeStr)
     availableSubAccounts.value = (res.data||[]).filter(i=>i.status===0)
   } catch(e) { availableSubAccounts.value=[]; console.error(e) }
 }
@@ -292,15 +293,15 @@ var confirmUnfreeze = async () => {
   } catch(e) { console.error(e) }
 }
 
-var showCustomerAccountDialog = () => { customerForm.customerNo=''; customerForm.accountType='PERSONAL'; customerDialogVisible.value=true }
+var showCustomerAccountDialog = () => { customerForm.customerNo=''; customerForm.accountType=0; customerDialogVisible.value=true }
 var handleOpenCustomerAccount = async () => { await customerFormRef.value.validate(async v=>{if(v){try{await openCustomerAccount(customerForm);ElMessage.success('开户成功');customerDialogVisible.value=false;loadData()}catch(e){console.error(e)}}}) }
-var showLiabilityAccountDialog = () => { liabilityForm.customerAccountNo=''; liabilityForm.accountType='DEMAND'; availableSubAccounts.value=[]; selectedSubAccount.value=null; liabilityDialogVisible.value=true }
+var showLiabilityAccountDialog = () => { liabilityForm.customerAccountNo=''; liabilityForm.accountType=0; availableSubAccounts.value=[]; selectedSubAccount.value=null; liabilityDialogVisible.value=true }
 var handleOpenLiabilityAccount = async () => { await liabilityFormRef.value.validate(async v=>{if(v){try{var data={...liabilityForm};if(selectedSubAccount.value)data.subAccountSeq=selectedSubAccount.value.subAccountSeq;await openLiabilityAccount(data);ElMessage.success('开户成功');liabilityDialogVisible.value=false;loadData()}catch(e){console.error(e)}}}) }
 var closeLiabilityAccount = async (row) => { try{await ElMessageBox.confirm('确定要销户吗?','提示',{type:'warning'});await closeLiabAcct({liabilityAccountNo:row.liabilityAccountNo});ElMessage.success('销户成功');detailVisible.value=false;loadData()}catch(e){if(e!=='cancel')console.error(e)} }
 var showSubAccountDialog = () => { subQueryForm.customerAccountNo=''; subQueryDone.value=false; subAccountList.value=[]; subDialogVisible.value=true }
 var querySubAccounts = async () => { await subQueryFormRef.value.validate(async v=>{if(v){try{var res=await getCustomerSubAccountList(subQueryForm.customerAccountNo);subAccountList.value=res.data||[];subQueryDone.value=true}catch(e){console.error(e);subAccountList.value=[]}}}) }
 var resetSubDialog = () => { subQueryDone.value=false; subQueryForm.customerAccountNo=''; subAccountList.value=[] }
-var showNewSubAccountDialog = () => { newSubForm.accountType='DEMAND'; newSubDialogVisible.value=true }
+var showNewSubAccountDialog = () => { newSubForm.accountType=0; newSubDialogVisible.value=true }
 var handleOpenSubAccount = async () => { await newSubFormRef.value.validate(async v=>{if(v){try{await openSubAccount({customerAccountNo:subQueryForm.customerAccountNo,accountType:newSubForm.accountType});ElMessage.success('开通子账户成功');newSubDialogVisible.value=false;var res=await getCustomerSubAccountList(subQueryForm.customerAccountNo);subAccountList.value=res.data||[]}catch(e){console.error(e)}}}) }
 
 onMounted(()=>{loadData()})

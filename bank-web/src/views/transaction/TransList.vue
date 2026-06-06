@@ -11,19 +11,20 @@
     <el-table :data="list" class="data-table">
       <el-table-column prop="transactionNo" label="流水号" width="200"/>
       <el-table-column prop="liabilityAccountNo" label="负债账号" width="150"/>
-      <el-table-column label="交易类型" width="110"><template #default="{ row: r }">{{{DEPOSIT:'存款',WITHDRAW:'取款',DEPOSIT_CANCEL:'存款冲正',WITHDRAW_CANCEL:'取款冲正'}[r.transactionType]||r.transactionType}}</template></el-table-column>
-      <el-table-column prop="amount" label="金额" width="120" align="right"><template #default="{ row: r }"><span :style="{color:['DEPOSIT'].includes(r.transactionType)?'#38a169':'#e53e3e',fontWeight:600}">{{Number(r.amount).toLocaleString('zh-CN',{minFractionDigits:2})}}</span></template></el-table-column>
+      <el-table-column label="交易类型" width="110"><template #default="{ row: r }">{{typeMap[r.transactionType]||r.transactionType}}</template></el-table-column>
+      <el-table-column prop="amount" label="金额" width="120" align="right"><template #default="{ row: r }"><span :style="{color:r.transactionType===2001||r.transactionType===2002?'#38a169':'#e53e3e',fontWeight:600}">{{Number(r.amount).toLocaleString('zh-CN',{minFractionDigits:2})}}</span></template></el-table-column>
       <el-table-column prop="balanceBefore" label="前余额" width="120" align="right"/>
       <el-table-column prop="balanceAfter" label="后余额" width="120" align="right"/>
       <el-table-column prop="operateTime" label="操作时间" width="180"/>
       <el-table-column prop="operatorNo" label="操作员" width="110"/>
-      <el-table-column prop="status" label="状态" width="90"><template #default="{ row: r }"><el-tag size="small" :type="r.status===0?'success':'danger'" style="border:0">{{r.status===0?'正常':'已冲正'}}</el-tag></template></el-table-column>
+      <el-table-column label="状态" width="90"><template #default="{ row: r }"><el-tag size="small" :type="r.status===0?'success':'danger'" style="border:0">{{r.status===0?'正常':'已冲正'}}</el-tag></template></el-table-column>
     </el-table>
   </div>
 </template>
 <script setup>
 import { ref, reactive, onMounted } from 'vue'; import { getTransactionList } from '../../api/transaction'
 var list=ref([]),query=reactive({liabilityAccountNo:'',transactionType:''})
+var typeMap={2001:'存款',2002:'取款',3001:'存款冲正',3002:'取款冲正'}
 var load=async(p)=>{try{var r=await getTransactionList(p||{});list.value=r.data?.records||[]}catch(e){console.error(e)}}
 var doSearch=()=>{var p={};if(query.liabilityAccountNo)p.liabilityAccountNo=query.liabilityAccountNo;if(query.transactionType)p.transactionType=query.transactionType;load(p)}
 var resetSearch=()=>{query.liabilityAccountNo='';query.transactionType='';load()}

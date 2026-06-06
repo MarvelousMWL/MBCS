@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class TransferCancelCommand {
-    @NotBlank(message = "\u539f\u8f6c\u8d26\u6d41\u6c34\u53f7\u4e0d\u80fd\u4e3a\u7a7a")
+    @NotBlank(message = "原转账流水号不能为空")
     private String originalTransferNo;
 
     private String operatorNo;

@@ -1,4 +1,4 @@
-import request from '../utils/request'
+﻿import request from '../utils/request'
 
 export function getLiabilityAccountList() {
   return request({ url: '/liability/liability-account', method: 'get' })
@@ -34,7 +34,7 @@ export function getCustomerSubAccountList(customerAccountNo) {
   return request({ url: '/liability/customer-sub-account/customer-account/' + customerAccountNo, method: 'get' })
 }
 export function getCustomerSubAccountByType(customerAccountNo, accountType) {
-  return request({ url: '/liability/customer-sub-account/customer-account/' + customerAccountNo + '/type/' + accountType, method: 'get' })
+  return request({ url: '/liability/customer-sub-account/customer-account/' + customerAccountNo + '/account-type/' + accountType, method: 'get' })
 }
 
 // Deposit product API
