@@ -1,7 +1,9 @@
 package com.bank.teller.domain.institution.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bank.teller.domain.enums.InstitutionStatus;
+import com.bank.teller.infrastructure.persistence.handler.InstitutionStatusTypeHandler;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -13,6 +15,7 @@ public class Institution {
     private String institutionName;
     private String institutionLevel;
     private String parentInstitutionNo;
+    @TableField(typeHandler = InstitutionStatusTypeHandler.class)
     private InstitutionStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
