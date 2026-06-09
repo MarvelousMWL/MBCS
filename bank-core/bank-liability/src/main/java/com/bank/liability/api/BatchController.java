@@ -2,9 +2,12 @@ package com.bank.liability.api;
 
 import com.bank.common.result.Result;
 import com.bank.liability.application.batch.AutoRedemptionBatchService;
+import com.bank.liability.application.batch.BatchOrchestratorService;
 import com.bank.liability.application.batch.BatchResult;
+import com.bank.liability.application.batch.DailyAccrualBatchService;
 import com.bank.liability.application.batch.FormTransferBatchService;
 import com.bank.liability.application.batch.InterestSettlementBatchService;
+import com.bank.liability.application.batch.InterestSettlementService;
 import com.bank.liability.application.batch.OverdueProcessingBatchService;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,9 @@ public class BatchController {
     private final AutoRedemptionBatchService autoRedemptionBatchService;
     private final OverdueProcessingBatchService overdueProcessingBatchService;
     private final FormTransferBatchService formTransferBatchService;
+    private final DailyAccrualBatchService dailyAccrualBatchService;
+    private final InterestSettlementService interestSettlementService;
+    private final BatchOrchestratorService batchOrchestratorService;
 
     @PostMapping("/interest-settlement/execute")
     public Result<BatchResult> executeInterestSettlement(
@@ -43,5 +49,27 @@ public class BatchController {
     public Result<BatchResult> executeFormTransfer(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate processingDate) {
         return Result.success(formTransferBatchService.executeBatch(processingDate));
+    }
+
+    @PostMapping("/orchestrate")
+    public Result<String> orchestrate() {
+        batchOrchestratorService.executeAll();
+        return Result.success("Batch orchestration triggered");
+    }
+
+    @PostMapping("/daily-accrual/execute")
+    public Result<BatchResult> executeDailyAccrual(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate calcDate) {
+        LocalDate systemDate = LocalDate.now();
+        if (calcDate == null) calcDate = systemDate.minusDays(1);
+        return Result.success(dailyAccrualBatchService.execute(systemDate, calcDate));
+    }
+
+    @PostMapping("/settlement/execute")
+    public Result<BatchResult> executeSettlement(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate calcDate) {
+        LocalDate systemDate = LocalDate.now();
+        if (calcDate == null) calcDate = systemDate.minusDays(1);
+        return Result.success(interestSettlementService.execute(systemDate, calcDate));
     }
 }
