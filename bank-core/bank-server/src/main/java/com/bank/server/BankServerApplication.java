@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {
     "com.bank.server",
+    "com.bank.server.scheduler",
     "com.bank.teller",
     "com.bank.customer",
     "com.bank.liability",
