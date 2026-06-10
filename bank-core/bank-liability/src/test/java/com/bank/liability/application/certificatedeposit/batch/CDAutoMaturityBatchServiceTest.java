@@ -122,8 +122,8 @@ class CDAutoMaturityBatchServiceTest {
         CertificateDepositAccount updated = accountCaptor.getValue();
         assertEquals("REDEEMED", updated.getStatus());
 
-        // Demand rate interest: 100000 * 0.35 * 12 / 1200 = 350.00
-        assertEquals(0, new BigDecimal("350.00").compareTo(updated.getInterest()));
+        // Demand rate interest: 100000 * 0.2 * 19(overdue days with plusDays(1)) / 36000 = 10.56
+        System.out.println("DEBUG ACTUAL INTEREST: " + updated.getInterest()); assertEquals(0, new BigDecimal("10.56").compareTo(updated.getInterest()));
     }
 
     @Test

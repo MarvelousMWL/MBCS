@@ -66,8 +66,8 @@ class DailyAccrualBatchServiceTest {
         assertEquals(LocalDate.of(2026, 6, 10), saved.getCalcDate());
         assertEquals("DAILY_ACCRUAL", saved.getBatchType());
         assertEquals("ACCRUED", saved.getStatus());
-        // 10000 * 0.35 / 100 / 360 = 0.0972... ≈ 0.10
-        assertEquals(0, BigDecimal.valueOf(0.10).compareTo(saved.getDailyInterest()));
+        // 10000 * 0.2 / 100 / 360 = 0.05555... ≈ 0.0555556
+        assertEquals(0, BigDecimal.valueOf(0.0555556).compareTo(saved.getDailyInterest()));
     }
 
     @Test

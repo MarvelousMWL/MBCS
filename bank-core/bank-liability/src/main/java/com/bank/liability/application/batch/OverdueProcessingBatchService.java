@@ -113,7 +113,7 @@ public class OverdueProcessingBatchService {
     }
 
     private void processItem(OverdueProcessingBatch item, String batchNo, LocalDate processingDate) {
-        if (item.getOverdueDays() == null || item.getOverdueDays() < 0) {
+        if (item.getOverdueDays() == null || item.getOverdueDays() <= 0) {
             throw new BusinessException("overdue days must be greater than 0");
         }
 

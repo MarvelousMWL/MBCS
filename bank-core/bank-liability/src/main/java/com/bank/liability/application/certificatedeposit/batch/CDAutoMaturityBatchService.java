@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CDAutoMaturityBatchService {
 
-    private static final BigDecimal DEMAND_DEPOSIT_RATE = new BigDecimal("0.35");
+    private static final BigDecimal DEMAND_DEPOSIT_RATE = new BigDecimal("0.2");
     private static final int SCALE = 2;
 
     private final CertificateDepositAccountRepository accountRepository;
