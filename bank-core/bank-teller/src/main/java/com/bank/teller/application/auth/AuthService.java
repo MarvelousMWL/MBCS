@@ -19,9 +19,35 @@ public class AuthService {
     private final TellerRepository tellerRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /** 会话超时时间：10分钟无活动自动过期 */
+    private static final long SESSION_TIMEOUT_MS = 10 * 60 * 1000L;
+
     private static final Map<String, LoginResponse> TOKEN_STORE = new ConcurrentHashMap<>();
+    private static final Map<String, String> ACTIVE_SESSIONS = new ConcurrentHashMap<>();
+
+    private void purgeExpiredSessions() {
+        long now = System.currentTimeMillis();
+        TOKEN_STORE.entrySet().removeIf(entry -> {
+            boolean expired = (now - entry.getValue().getLastAccessTime()) > SESSION_TIMEOUT_MS;
+            if (expired) {
+                ACTIVE_SESSIONS.remove(entry.getValue().getTellerNo());
+            }
+            return expired;
+        });
+    }
 
     public LoginResponse login(LoginCommand command) {
+        purgeExpiredSessions();
+
+        String existingToken = ACTIVE_SESSIONS.get(command.getTellerNo());
+        if (existingToken != null && TOKEN_STORE.containsKey(existingToken)) {
+            if (!command.isForce()) {
+                throw new BusinessException(409, "柜员已登录，是否强制登录（挤掉之前的会话）？");
+            }
+            TOKEN_STORE.remove(existingToken);
+            ACTIVE_SESSIONS.remove(command.getTellerNo());
+        }
+
         Teller teller = tellerRepository.findByTellerNo(command.getTellerNo())
                 .orElseThrow(() -> new BusinessException(400, "柜员不存在"));
 
@@ -45,25 +71,43 @@ public class AuthService {
                 .institutionNo(teller.getInstitutionNo())
                 .tellerType(teller.getTellerType().getCode())
                 .status(teller.getStatus().getCode())
+                .lastAccessTime(System.currentTimeMillis())
                 .build();
 
         TOKEN_STORE.put(token, response);
+        ACTIVE_SESSIONS.put(teller.getTellerNo(), token);
         return response;
     }
 
     public void logout(String token) {
+        LoginResponse response = TOKEN_STORE.get(token);
+        if (response != null) {
+            ACTIVE_SESSIONS.remove(response.getTellerNo());
+        }
         TOKEN_STORE.remove(token);
     }
 
     public LoginResponse validate(String token) {
+        purgeExpiredSessions();
+
         LoginResponse response = TOKEN_STORE.get(token);
         if (response == null) {
             throw new BusinessException(401, "未登录或会话已过期");
         }
+
+        response.setLastAccessTime(System.currentTimeMillis());
         return response;
     }
 
     public static LoginResponse getByToken(String token) {
         return TOKEN_STORE.get(token);
+    }
+
+    /**
+     * 清除所有会话（用于测试清理）
+     */
+    public static void clearSessions() {
+        TOKEN_STORE.clear();
+        ACTIVE_SESSIONS.clear();
     }
 }

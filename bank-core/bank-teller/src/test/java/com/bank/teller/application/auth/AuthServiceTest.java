@@ -29,8 +29,7 @@ class AuthServiceTest {
 
     @AfterEach
     void cleanup() {
-        // 清除token存储，避免测试间的相互影响
-        AuthService.getByToken("any");
+        AuthService.clearSessions();
     }
 
     private Teller createNormalTeller() {
