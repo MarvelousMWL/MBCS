@@ -16,4 +16,5 @@ public class LoginResponse {
     private String institutionNo;
     private Integer tellerType;
     private Integer status;
+    private Long lastAccessTime;
 }

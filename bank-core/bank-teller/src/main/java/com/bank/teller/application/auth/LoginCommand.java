@@ -13,4 +13,7 @@ public class LoginCommand {
 
     @NotBlank(message = "密码不能为空")
     private String password;
+
+    /** 是否强制登录（挤掉已有会话） */
+    private boolean force = false;
 }
