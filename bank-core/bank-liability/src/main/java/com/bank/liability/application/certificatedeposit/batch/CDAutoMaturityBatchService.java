@@ -87,10 +87,13 @@ public class CDAutoMaturityBatchService {
         BigDecimal interestAmount;
 
         if (account.getMaturityDate().isBefore(processingDate)) {
+            long overdueDays = java.time.temporal.ChronoUnit.DAYS.between(
+                    account.getMaturityDate().plusDays(1), processingDate);
+            if (overdueDays < 0) overdueDays = 0;
             interestAmount = account.getPrincipal()
                     .multiply(DEMAND_DEPOSIT_RATE)
-                    .multiply(BigDecimal.valueOf(account.getTermMonths()))
-                    .divide(BigDecimal.valueOf(1200), SCALE, BigDecimal.ROUND_HALF_UP);
+                    .multiply(BigDecimal.valueOf(overdueDays))
+                    .divide(BigDecimal.valueOf(100 * 360), SCALE, BigDecimal.ROUND_HALF_UP);
             log.info("Account {} is overdue (maturity={}), applying demand rate {}",
                     account.getCdAccountNo(), account.getMaturityDate(), DEMAND_DEPOSIT_RATE);
         } else {

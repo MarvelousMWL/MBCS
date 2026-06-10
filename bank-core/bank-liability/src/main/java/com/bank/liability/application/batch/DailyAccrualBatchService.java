@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DailyAccrualBatchService {
 
-    private static final int SCALE = 2;
-    private static final int CALC_SCALE = 8;
+    private static final int SCALE = 7;
+    private static final int CALC_SCALE = 12;
     private static final BigDecimal DAYS_PER_YEAR = new BigDecimal("360");
     private static final BigDecimal ONE_HUNDRED = new BigDecimal("100");
 
@@ -218,24 +218,24 @@ public class DailyAccrualBatchService {
         batchRunLogRepository.update(runLog);
     }
 
-    private static final BigDecimal DEFAULT_RATE = new BigDecimal("0.35");
+    private static final BigDecimal DEFAULT_RATE = new BigDecimal("0.2");
 
     private static final Map<String, BigDecimal> DEFAULT_RATES = Map.ofEntries(
-        Map.entry("21000001", new BigDecimal("0.35")),
-        Map.entry("21000002", new BigDecimal("0.35")),
-        Map.entry("21000003", new BigDecimal("1.50")),
-        Map.entry("21000004", new BigDecimal("1.00")),
-        Map.entry("21000005", new BigDecimal("1.50")),
-        Map.entry("21000006", new BigDecimal("1.00")),
-        Map.entry("21000007", new BigDecimal("0.35")),
-        Map.entry("21000008", new BigDecimal("1.50")),
-        Map.entry("21000009", new BigDecimal("0.35")),
-        Map.entry("21000010", new BigDecimal("1.50")),
-        Map.entry("21000015", new BigDecimal("0.35")),
-        Map.entry("21000016", new BigDecimal("1.50")),
-        Map.entry("21000017", new BigDecimal("0.35")),
-        Map.entry("21000018", new BigDecimal("0.35")),
-        Map.entry("21000019", new BigDecimal("0.35")),
-        Map.entry("21000020", new BigDecimal("0.35"))
+        Map.entry("21000001", new BigDecimal("0.2")),
+        Map.entry("21000002", new BigDecimal("0.2")),
+        Map.entry("21000003", new BigDecimal("3.0")),
+        Map.entry("21000004", new BigDecimal("1.5")),
+        Map.entry("21000005", new BigDecimal("3.0")),
+        Map.entry("21000006", new BigDecimal("1.5")),
+        Map.entry("21000007", new BigDecimal("0.2")),
+        Map.entry("21000008", new BigDecimal("3.0")),
+        Map.entry("21000009", new BigDecimal("0.2")),
+        Map.entry("21000010", new BigDecimal("3.0")),
+        Map.entry("21000015", new BigDecimal("0.2")),
+        Map.entry("21000016", new BigDecimal("3.0")),
+        Map.entry("21000017", new BigDecimal("0.2")),
+        Map.entry("21000018", new BigDecimal("0.2")),
+        Map.entry("21000019", new BigDecimal("0.2")),
+        Map.entry("21000020", new BigDecimal("0.2"))
     );
 }

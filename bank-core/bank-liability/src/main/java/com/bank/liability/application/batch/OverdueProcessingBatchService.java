@@ -87,7 +87,7 @@ public class OverdueProcessingBatchService {
             throw new BusinessException("account not yet overdue, maturity date: " + maturityDate);
         }
 
-        int overdueDays = (int) ChronoUnit.DAYS.between(maturityDate, LocalDate.now());
+        int overdueDays = (int) ChronoUnit.DAYS.between(maturityDate.plusDays(1), LocalDate.now());
 
         OverdueProcessingBatch item = new OverdueProcessingBatch();
         item.setAccountNo(accountNo);
@@ -113,7 +113,7 @@ public class OverdueProcessingBatchService {
     }
 
     private void processItem(OverdueProcessingBatch item, String batchNo, LocalDate processingDate) {
-        if (item.getOverdueDays() == null || item.getOverdueDays() <= 0) {
+        if (item.getOverdueDays() == null || item.getOverdueDays() < 0) {
             throw new BusinessException("overdue days must be greater than 0");
         }
 
