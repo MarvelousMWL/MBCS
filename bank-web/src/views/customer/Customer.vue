@@ -5,7 +5,11 @@
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="customerNo" label="客户号" width="120" />
       <el-table-column prop="customerName" label="客户姓名" width="120" />
-      <el-table-column prop="idType" label="证件类型" width="100" />
+      <el-table-column label="证件类型" width="100">
+        <template #default="{ row }">
+          {{ idTypeMap[row.idType] || ('未知(' + row.idType + ')') }}
+        </template>
+      </el-table-column>
       <el-table-column prop="idNumber" label="证件号码" width="180" />
       <el-table-column prop="phone" label="手机号" width="130" />
       <el-table-column prop="address" label="地址" />
@@ -29,9 +33,9 @@
         </el-form-item>
         <el-form-item label="证件类型" prop="idType">
           <el-select v-model="form.idType" placeholder="请选择证件类型">
-            <el-option label="身份证" value="ID_CARD" />
-            <el-option label="护照" value="PASSPORT" />
-            <el-option label="军官证" value="MILITARY_ID" />
+            <el-option label="身份证" :value="0" />
+            <el-option label="护照" :value="1" />
+            <el-option label="军官证" :value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="证件号码" prop="idNumber">
@@ -56,6 +60,8 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getCustomerList, getCustomerByNo, createCustomer, updateCustomer, deleteCustomer } from '../../api/customer'
+
+const idTypeMap = { 0: '身份证', 1: '护照', 2: '军官证' }
 
 const tableData = ref([])
 const dialogVisible = ref(false)

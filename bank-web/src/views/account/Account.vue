@@ -128,7 +128,7 @@
     <el-dialog v-model="customerDialogVisible" title="开立客户账户" width="500px">
       <el-form ref="customerFormRef" :model="customerForm" :rules="customerRules" label-width="100px">
         <el-form-item label="客户号" prop="customerNo"><el-input v-model="customerForm.customerNo" placeholder="输入客户号"/></el-form-item>
-        <el-form-item label="账户类型" prop="accountType"><el-select v-model="customerForm.accountType"><el-option label="个人" value="PERSONAL"/><el-option label="企业" value="CORPORATE"/></el-select></el-form-item>
+        <el-form-item label="账户类型" prop="accountType"><el-select v-model="customerForm.accountType"><el-option label="个人" :value="0"/><el-option label="企业" :value="1"/></el-select></el-form-item>
       </el-form>
       <template #footer><el-button @click="customerDialogVisible=false">取消</el-button><el-button type="primary" @click="handleOpenCustomerAccount">确定</el-button></template>
     </el-dialog>
@@ -139,8 +139,8 @@
         <el-form-item label="客户账号" prop="customerAccountNo"><el-input v-model="liabilityForm.customerAccountNo" @blur="loadLiabilitySubAccounts" placeholder="输入客户账号"/></el-form-item>
         <el-form-item label="产品类型" prop="accountType">
           <el-select v-model="liabilityForm.accountType" @change="loadLiabilitySubAccounts" style="width:100%">
-            <el-option label="活期存款 (DEMAND)" value="DEMAND"/>
-            <el-option label="定期存款 (TIME)" value="TIME"/>
+            <el-option label="活期存款 (DEMAND)" :value="0"/>
+            <el-option label="定期存款 (TIME)" :value="1"/>
           </el-select>
           <div class="field-hint">选择产品类型后，系统将自动匹配对应的存款产品属性</div>
         </el-form-item>
@@ -182,7 +182,7 @@
     <!-- 开通子账户对话框 -->
     <el-dialog v-model="newSubDialogVisible" title="开通子账户" width="450px">
       <el-form ref="newSubFormRef" :model="newSubForm" :rules="newSubRules" label-width="100px">
-        <el-form-item label="账户类型" prop="accountType"><el-select v-model="newSubForm.accountType" style="width:100%"><el-option label="活期 (DEMAND)" value="DEMAND"/><el-option label="定期 (TIME)" value="TIME"/></el-select></el-form-item>
+        <el-form-item label="账户类型" prop="accountType"><el-select v-model="newSubForm.accountType" style="width:100%"><el-option label="活期 (DEMAND)" :value="0"/><el-option label="定期 (TIME)" :value="1"/></el-select></el-form-item>
       </el-form>
       <template #footer><el-button @click="newSubDialogVisible=false">取消</el-button><el-button type="primary" @click="handleOpenSubAccount">确定</el-button></template>
     </el-dialog>
@@ -249,7 +249,7 @@ var loadData = async () => {
 
 var loadLiabilitySubAccounts = async () => {
   if(!liabilityForm.customerAccountNo||liabilityForm.accountType===null||liabilityForm.accountType===undefined) { availableSubAccounts.value=[]; return }
-  var typeStr = liabilityForm.accountType===0?'DEMAND':'TIME'
+  var typeStr = liabilityForm.accountType
   try {
     var res = await getCustomerSubAccountByType(liabilityForm.customerAccountNo, typeStr)
     availableSubAccounts.value = (res.data||[]).filter(i=>i.status===0)

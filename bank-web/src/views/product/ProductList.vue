@@ -254,7 +254,7 @@ var maturityControls = ref([]), formTransfers = ref([])
 var channelControls = ref([]), currencyControls = ref([]), institutionControls = ref([])
 var customerControls = ref([]), voucherControls = ref([]), accountingControls = ref([])
 
-var typeMap = { '00':'单位活期存款','02':'单位定期存款','04':'国库定期存款','05':'单位通知存款','06':'单位保证金活期','07':'单位保证金定期','09':'单位协议存款','14':'同业存放活期','15':'同业存放定期' }
+var typeMap = { '0':'单位活期存款','2':'单位定期存款','4':'国库定期存款','5':'单位通知存款','6':'单位保证金活期','7':'单位保证金定期','9':'单位协议存款','14':'同业存放活期','15':'同业存放定期' }
 
 async function loadData() {
   loading.value = true

@@ -40,8 +40,8 @@
         </el-form-item>
         <el-form-item label="柜员类型" prop="tellerType">
           <el-select v-model="form.tellerType">
-            <el-option label="普通柜员" value="NORMAL" />
-            <el-option label="库管柜员" value="VAULT" />
+            <el-option label="普通柜员" :value="0" />
+            <el-option label="库管柜员" :value="1" />
           </el-select>
         </el-form-item>
         <el-form-item label="密码" :rules="isEdit ? [] : [{ required: true, message: '密码不能为空', trigger: 'blur' }]">
@@ -49,8 +49,8 @@
         </el-form-item>
         <el-form-item label="状态" v-if="isEdit">
           <el-select v-model="form.status">
-            <el-option label="正常" value="NORMAL" />
-            <el-option label="停用" value="STOPPED" />
+            <el-option label="正常" :value="0" />
+            <el-option label="停用" :value="1" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -77,9 +77,9 @@ const form = ref({
   tellerNo: '',
   tellerName: '',
   institutionNo: '',
-  tellerType: 'NORMAL',
+  tellerType: 0,
   password: '',
-  status: 'NORMAL'
+  status: 0
 })
 
 const rules = {
@@ -111,9 +111,9 @@ const showAddDialog = () => {
     tellerNo: '',
     tellerName: '',
     institutionNo: userStore.institutionNo,
-    tellerType: 'NORMAL',
+    tellerType: 0,
     password: '',
-    status: 'NORMAL'
+    status: 0
   }
   dialogVisible.value = true
 }

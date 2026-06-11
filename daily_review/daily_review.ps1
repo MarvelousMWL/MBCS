@@ -17,7 +17,7 @@ function Stop-Residual {
   Log "[1/5] Cleaning..."
   @(8080,3000) | ForEach-Object { try { $p = Get-NetTCPConnection -LocalPort $_ -ErrorAction Stop; Stop-Process -Id $p.OwningProcess -Force; Start-Sleep 1 } catch {} }
   Get-Process java -ErrorAction SilentlyContinue | Where-Object CommandLine -match "bank|maven|spring" | Stop-Process -Force
-  Get-Process node -ErrorAction SilentlyContinue | Where-Object CommandLine -match "vite|run_all" | Stop-Process -Force
+  Get-Process node -ErrorAction SilentlyContinue | Where-Object { $cmd = (Get-CimInstance Win32_Process -Filter "ProcessId = $(  Get-Process node -ErrorAction SilentlyContinue | Where-Object CommandLine -match "vite|run_all" | Stop-Process -Force.Id)").CommandLine; $cmd -match "vite|run_all|serve-prod" } | Stop-Process -Force
   Start-Sleep 2; Log "  OK"
 }
 
@@ -28,10 +28,10 @@ function Start-Svcs {
   $mvnArgs = @("spring-boot:run","-Dspring-boot.run.jvmArguments=""-Xms512m -Xmx1024m""","-s","$root\bank-maven\settings.xml")
   Start-Process -WindowStyle Hidden -FilePath "mvn.cmd" -ArgumentList $mvnArgs -WorkingDirectory "$root\bank-core\bank-server" -RedirectStandardOutput "$logDir\server_$date.log" -RedirectStandardError "$logDir\server_$date.log.err"
   Start-Sleep 12
-  Log "  Frontend (vite)..."
-  $vite = "$root\bank-web\node_modules\.bin\vite.cmd"
-  if (Test-Path $vite) { Start-Process -WindowStyle Hidden $vite -WorkingDirectory "$root\bank-web" -RedirectStandardOutput "$logDir\front_$date.log" -RedirectStandardError "$logDir\front_$date.log.err" }
-  else { Start-Process -WindowStyle Hidden npx.cmd @("vite") -WorkingDirectory "$root\bank-web" -RedirectStandardOutput "$logDir\front_$date.log" -RedirectStandardError "$logDir\front_$date.log.err" }
+  Log "  Frontend (serve-prod)..."
+  $vite = "$root\bank-web\serve-prod.mjs"
+  if (Test-Path $vite) { Start-Process -WindowStyle Hidden -FilePath "node" -ArgumentList $vite -WorkingDirectory "$root\bank-web" -RedirectStandardOutput "$logDir\front_$date.log" -RedirectStandardError "$logDir\front_$date.log.err" }
+  else { Start-Process -WindowStyle Hidden -FilePath "node" -ArgumentList "$root\bank-web\serve-prod.mjs" -WorkingDirectory "$root\bank-web" -RedirectStandardOutput "$logDir\front_$date.log" -RedirectStandardError "$logDir\front_$date.log.err" }
   Start-Sleep 3
   Log "  Waiting..."
   $bk=$false; $ft=$false
@@ -42,6 +42,17 @@ function Start-Svcs {
   }
   if (-not $bk) { $errs += "backend timeout" }
   if (-not $ft) { $errs += "frontend timeout" }
+    # 等待数据库连接池完全就绪（热机）
+  if ($bk) {
+    Log "  Warming up DB connection pool..."
+    for ($i=0; $i -lt 10; $i++) {
+      try {
+        $r = Invoke-WebRequest "http://localhost:8080/api/teller/institution" -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop
+        if ($r.StatusCode -eq 200) { Log "  DB pool ready"; break }
+      } catch {}
+      Start-Sleep 2
+    }
+  }
   return $errs
 }
 
@@ -111,6 +122,7 @@ $notification = @{
 $notificationJson = $notification | ConvertTo-Json -Compress -Depth 10
 [System.IO.File]::WriteAllText($notificationFile, $notificationJson, [System.Text.UTF8Encoding]::new($false))
 Log "  Notification written: $notificationFile"
+
 
 
 

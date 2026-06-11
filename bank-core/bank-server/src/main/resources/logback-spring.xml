@@ -1,29 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    
+    <property name="LOG_HOME" value="E:/Agent/MyProject/MBCS/log" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern></encoder>
     </appender>
-    
-    <appender name="BUSINESS_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/business.log</file>
+
+    <!-- 全部日志（按日滚动，保留30天） -->
+    <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/backend.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/business.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/backend.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern></encoder>
     </appender>
-    
-    <logger name="BUSINESS" level="INFO" additivity="false">
-        <appender-ref ref="BUSINESS_FILE"/>
+
+    <!-- 错误日志（仅ERROR级别，按日滚动） -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern></encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter"><level>ERROR</level></filter>
+    </appender>
+
+    <!-- API请求日志（每笔请求都会记录） -->
+    <appender name="FILE_API" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/api.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/api.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern></encoder>
+    </appender>
+
+    <!-- 柜员模块日志 -->
+    <appender name="FILE_TELLER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/teller.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/teller.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern></encoder>
+    </appender>
+
+    <!-- 负债模块日志 -->
+    <appender name="FILE_LIABILITY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/liability.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/liability.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern></encoder>
+    </appender>
+
+    <!-- 客户模块日志 -->
+    <appender name="FILE_CUSTOMER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/customer.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/customer.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern></encoder>
+    </appender>
+
+    <!-- 通用模块日志 -->
+    <appender name="FILE_COMMON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/common.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/common.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern></encoder>
+    </appender>
+
+    <!-- SQL日志（保留7天） -->
+    <appender name="FILE_SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/sql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/sql.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder><pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern></encoder>
+    </appender>
+
+    <!-- API请求日志器 → api.log -->
+    <logger name="API_LOG" level="INFO" additivity="false">
+        <appender-ref ref="FILE_API" />
     </logger>
-    
+
+    <!-- 各模块日志器 -->
+    <logger name="com.bank.teller" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_TELLER" />
+        <appender-ref ref="FILE_ERROR" />
+    </logger>
+    <logger name="com.bank.liability" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_LIABILITY" />
+        <appender-ref ref="FILE_ERROR" />
+    </logger>
+    <logger name="com.bank.customer" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_CUSTOMER" />
+        <appender-ref ref="FILE_ERROR" />
+    </logger>
+    <logger name="com.bank.common" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_COMMON" />
+        <appender-ref ref="FILE_ERROR" />
+    </logger>
+
+    <!-- MyBatis Mapper SQL日志 -->
+    <logger name="com.bank.liability.infrastructure.persistence" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+    <logger name="com.bank.customer.infrastructure.persistence" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+    <logger name="com.bank.teller.infrastructure.persistence" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_SQL" />
+    </logger>
+
+    <!-- Spring框架（仅警告+错误） -->
+    <logger name="org.springframework" level="WARN" additivity="false">
+        <appender-ref ref="FILE_ALL" />
+        <appender-ref ref="FILE_ERROR" />
+    </logger>
+
+    <!-- 根日志器 -->
     <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE_ALL" />
+        <appender-ref ref="FILE_ERROR" />
     </root>
+
 </configuration>

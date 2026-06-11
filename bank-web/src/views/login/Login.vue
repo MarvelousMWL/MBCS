@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="login-page">
     <div class="login-bg">
       <div class="login-bg-circle c1"></div>
@@ -35,15 +35,78 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, onMounted } from 'vue'; import { useRouter } from 'vue-router'; import { ElMessage } from 'element-plus';
-import { getInstitutionList } from '../../api/institution'; import { getTellerByInstitution } from '../../api/teller';
-import { login } from '../../api/login'; import { useUserStore } from '../../stores/user';
-const router=useRouter(),userStore=useUserStore(),formRef=ref(),loading=ref(false),institutions=ref([]),tellers=ref([]);
-const form=reactive({institutionNo:'',tellerNo:'',password:''});
-const rules={institutionNo:[{required:true,message:'请选择机构',trigger:'change'}],tellerNo:[{required:true,message:'请选择柜员',trigger:'change'}],password:[{required:true,message:'请输入密码',trigger:'blur'}]};
-onMounted(async()=>{try{const res=await getInstitutionList();institutions.value=res.data}catch(e){console.error(e)}});
-const onInstitutionChange=async(instNo)=>{form.tellerNo='';try{const res=await getTellerByInstitution(instNo);tellers.value=res.data}catch(e){console.error(e)}};
-const handleLogin=async()=>{await formRef.value.validate(async(v)=>{if(v){loading.value=true;try{const res=await login({institutionNo:form.institutionNo,tellerNo:form.tellerNo,password:form.password});userStore.setUser(res.data);ElMessage.success('登录成功');router.push('/')}catch(e){console.error(e)}finally{loading.value=false}}})};
+import { ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { getInstitutionList } from '../../api/institution'
+import { getTellerByInstitution } from '../../api/teller'
+import { login, logout } from '../../api/login'
+import { useUserStore } from '../../stores/user'
+
+const router = useRouter()
+const userStore = useUserStore()
+const formRef = ref(null)
+const loading = ref(false)
+const institutions = ref([])
+const tellers = ref([])
+
+const form = reactive({ institutionNo: '', tellerNo: '', password: '' })
+
+const rules = {
+  institutionNo: [{ required: true, message: '请选择机构', trigger: 'change' }],
+  tellerNo: [{ required: true, message: '请选择柜员', trigger: 'change' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+}
+
+onMounted(async () => {
+  // 进入登录页时清理旧会话
+  if (userStore.token) {
+    try { await logout() } catch (_) {}
+    userStore.logout()
+  }
+  try { const res = await getInstitutionList(); institutions.value = res.data } catch (e) { console.error(e) }
+})
+
+const onInstitutionChange = async (instNo) => {
+  form.tellerNo = ''
+  try { const res = await getTellerByInstitution(instNo); tellers.value = res.data } catch (e) { console.error(e) }
+}
+
+const doLogin = async (force) => {
+  loading.value = true
+  try {
+    const res = await login({
+      institutionNo: form.institutionNo,
+      tellerNo: form.tellerNo,
+      password: form.password,
+      force: force
+    })
+    userStore.setUser(res.data)
+    ElMessage.success(force ? '强制登录成功' : '登录成功')
+    router.push('/')
+  } catch (e) {
+    if (e && e.code === 409) {
+      try {
+        await ElMessageBox.confirm(
+          e.message || '柜员已登录，是否强制登录（挤掉之前的会话）？',
+          '登录确认',
+          { confirmButtonText: '强制登录', cancelButtonText: '取消', type: 'warning' }
+        )
+        await doLogin(true)
+      } catch (_) { /* 用户取消 */ }
+    } else {
+      console.error(e)
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleLogin = async () => {
+  await formRef.value.validate(async (valid) => {
+    if (valid) { await doLogin(false) }
+  })
+}
 </script>
 <style scoped>
 .login-page{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#f7fafc}
@@ -67,3 +130,5 @@ const handleLogin=async()=>{await formRef.value.validate(async(v)=>{if(v){loadin
 .login-field :deep(.el-input__inner){height:46px;color:var(--text-primary)}
 .login-btn{width:100%;height:48px;font-size:16px;border-radius:10px;margin-top:6px;letter-spacing:4px;font-weight:600}
 </style>
+
+

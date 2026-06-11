@@ -1,6 +1,58 @@
-<template>
+﻿<template>
   <router-view />
 </template>
+
+<script setup>
+import { onMounted, onUnmounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from './stores/user'
+import { ElMessage } from 'element-plus'
+import { logout as apiLogout } from './api/login'
+
+const router = useRouter()
+const userStore = useUserStore()
+
+// ===== 5分钟无操作自动登出 =====
+const SESSION_TIMEOUT_MS = 5 * 60 * 1000
+let sessionTimer = null
+const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll', 'click']
+
+function clearSessionTimer() {
+  if (sessionTimer) { clearTimeout(sessionTimer); sessionTimer = null }
+}
+
+function startSessionTimer() {
+  clearSessionTimer()
+  sessionTimer = setTimeout(async () => {
+    // 先调后端登出，清理服务端会话
+    try { await apiLogout() } catch (_) {}
+    userStore.logout()
+    ElMessage.warning('长时间未操作，已自动退出登录')
+    router.push('/login')
+  }, SESSION_TIMEOUT_MS)
+}
+
+function handleActivity() { startSessionTimer() }
+function startSessionWatch() {
+  activityEvents.forEach(ev => window.addEventListener(ev, handleActivity))
+  startSessionTimer()
+}
+function stopSessionWatch() {
+  clearSessionTimer()
+  activityEvents.forEach(ev => window.removeEventListener(ev, handleActivity))
+}
+
+onMounted(() => {
+  if (userStore.token) startSessionWatch()
+})
+
+onUnmounted(() => { stopSessionWatch() })
+
+watch(() => userStore.token, (val) => {
+  val ? startSessionWatch() : stopSessionWatch()
+})
+</script>
+
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body, #app { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; -webkit-font-smoothing: antialiased; }
@@ -45,3 +97,4 @@ body { background-color: var(--main-bg); }
 .el-input__wrapper { border-radius: 8px !important; }
 .el-select .el-input__wrapper { border-radius: 8px !important; }
 </style>
+

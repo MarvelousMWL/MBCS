@@ -28,26 +28,25 @@ public class AuthTokenFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String path = request.getRequestURI();
-        String method = request.getMethod();
 
-        // Skip auth for public endpoints and GET requests (read operations)
-        if ("GET".equalsIgnoreCase(method) || isPublicUrl(path)) {
+        // 公开接口无需鉴权
+        if (isPublicUrl(path)) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Check token for write operations (POST, PUT, DELETE)
+        // 所有非公开接口必须携带有效 token（包括 GET 请求）
         String token = request.getHeader("Authorization");
         if (token == null || token.isEmpty()) {
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"code\":401,\"message\":\"\u672a\u767b\u5f55\u6216\u4f1a\u8bdd\u5df2\u8fc7\u671f\",\"data\":null}");
+            response.getWriter().write("{\"code\":401,\"message\":\"未登录或会话已过期\",\"data\":null}");
             return;
         }
 
         LoginResponse loginInfo = AuthService.getByToken(token);
         if (loginInfo == null) {
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"code\":401,\"message\":\"\u672a\u767b\u5f55\u6216\u4f1a\u8bdd\u5df2\u8fc7\u671f\",\"data\":null}");
+            response.getWriter().write("{\"code\":401,\"message\":\"未登录或会话已过期\",\"data\":null}");
             return;
         }
 
