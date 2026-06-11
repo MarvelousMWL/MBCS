@@ -25,8 +25,25 @@ function req(method, path, data, token) {
 async function main() {
   var results = { services: { backend: 'Down', frontend: 'Down' }, apiTests: [], browserTests: [], logIssues: [], fixes: [], allIssues: [] };
   log('--- API ---');
-  var apis = [{ n:'Institutions', u:'/api/teller/institution' },{ n:'Products', u:'/api/liability/product' },{ n:'Customers', u:'/api/customer' }];
-  for (var i=0;i<apis.length;i++) { var r=await req('GET',apis[i].u); if(r.status===200&&r.data&&r.data.code===200){log('  OK '+apis[i].n);results.apiTests.push({page:apis[i].n,status:'API_OK'});}else{log('  FAIL '+apis[i].n);results.apiTests.push({page:apis[i].n,status:'API_FAIL'});results.allIssues.push('API '+apis[i].n+' failed');} }
+  // Institutions = public endpoint, no auth needed
+  var rInst=await req('GET','/api/teller/institution');
+  if(rInst.status===200&&rInst.data&&rInst.data.code===200){log('  OK Institutions');results.apiTests.push({page:'Institutions',status:'API_OK'});}else{log('  FAIL Institutions');results.apiTests.push({page:'Institutions',status:'API_FAIL'});results.allIssues.push('API Institutions failed');}
+  // Products/Customers = protected (need token since AuthTokenFilter now requires auth for all non-public)
+  // Use first institution/teller credentials
+  var instNo = (rInst.data&&rInst.data.data&&rInst.data.data.length>0) ? rInst.data.data[0].institutionNo : '';
+  var token4api = '';
+  if (instNo) {
+    var rTel=await req('GET','/api/teller/teller/institution/'+instNo);
+    if(rTel.status===200&&rTel.data&&rTel.data.data&&rTel.data.data.length>0){
+      var rLogin=await req('POST','/api/teller/auth/login',{institutionNo:instNo,tellerNo:rTel.data.data[0].tellerNo,password:'123456'});
+      if(rLogin.status===200&&rLogin.data&&rLogin.data.data&&rLogin.data.data.token){token4api=rLogin.data.data.token;}
+    }
+  }
+  var protectedApis = [{ n:'Products', u:'/api/liability/product' },{ n:'Customers', u:'/api/customer' }];
+  for (var i=0;i<protectedApis.length;i++) {
+    var r=await req('GET',protectedApis[i].u,null,token4api||null);
+    if(r.status===200&&r.data&&r.data.code===200){log('  OK '+protectedApis[i].n);results.apiTests.push({page:protectedApis[i].n,status:'API_OK'});}else{log('  FAIL '+protectedApis[i].n);results.apiTests.push({page:protectedApis[i].n,status:'API_FAIL'});results.allIssues.push('API '+protectedApis[i].n+' failed');}
+  }
 
   log('--- Browser Test ---');
   try {
