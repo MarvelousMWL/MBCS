@@ -1,4 +1,4 @@
-# Java
+﻿# Java
 *.class
 *.jar
 *.war
@@ -33,6 +33,27 @@ bank-maven/local-repo/
 bank-maven/repository/
 bank-maven/.repository/
 
+# Maven build output
+META-INF/
+
+# App logs & runtime
+logs/
+log/
+bank-core/logs/
+bank-core/bank-server/startup.err
+data/
+
+# Gitea runtime (local only)
+gitea-data/.runner
+gitea-data/act_runner.exe
+gitea-data/gitea-runner.exe
+gitea-data/cache/
+gitea-data/data/
+gitea.exe
+
+# Docker installer
+docker-installer.exe
+
 # Jenkins
 jenkins-*.xml
 jenkins_*.png
@@ -52,3 +73,23 @@ response2.html
 login_result.html
 test_page.html
 test_cookie.txt
+
+# Test artifacts
+test_screenshots/
+daily_review/screenshot_*.png
+daily_review/test_*.png
+daily_review/crash_logs/
+daily_review/_notification.json
+daily_review/test_ci_locally.py
+daily_review/check_lengths.py
+daily_review/full_check*.py
+daily_review/review.js
+daily_review/*白盒测试报告*.docx
+daily_review/MBCS_WhiteBox_Test_Report_*.docx
+daily_review/page_deposit.html
+
+# Null device
+nul
+
+# Gitea local runtime
+gitea-data/

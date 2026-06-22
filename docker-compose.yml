@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mbcs-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: bank_core
+      TZ: Asia/Shanghai
+    ports:
+      - "3307:3306"          # 用3307避免与本机MySQL冲突
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./bank-core/db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./bank-core/db/teller.sql:/docker-entrypoint-initdb.d/02-teller.sql
+      - ./bank-core/db/teller_data.sql:/docker-entrypoint-initdb.d/03-teller_data.sql
+      - ./bank-core/db/migration_product_factory.sql:/docker-entrypoint-initdb.d/04-migration_product_factory.sql
+      - ./bank-core/db/alter_sub_account.sql:/docker-entrypoint-initdb.d/05-alter_sub_account.sql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mbcs-network
+
+  backend:
+    build:
+      context: ./bank-core
+      dockerfile: Dockerfile
+    container_name: mbcs-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bank_core?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    ports:
+      - "8080:8080"
+    networks:
+      - mbcs-network
+
+  frontend:
+    build:
+      context: ./bank-web
+      dockerfile: Dockerfile
+    container_name: mbcs-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - mbcs-network
+
+volumes:
+  mysql-data:
+
+networks:
+  mbcs-network:
+    driver: bridge
