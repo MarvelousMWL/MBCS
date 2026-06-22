@@ -3,79 +3,79 @@
     <el-aside :width="collapsed?'64px':'240px'" class="sidebar">
       <div class="sidebar-logo">
         <div class="sidebar-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-        <span class="sidebar-logo-text" v-show="!collapsed">閾惰鏍稿績绯荤粺</span>
+        <span class="sidebar-logo-text" v-show="!collapsed">银行核心系统</span>
       </div>
       <div class="sidebar-menu-wrap">
         <el-menu :default-active="activeMenu" :collapse="collapsed" router class="sidebar-menu">
 
-          <el-menu-item index="/app/home"><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></el-icon><span>棣栭〉</span></el-menu-item>
+          <el-menu-item index="/app/home"><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></el-icon><span>首页</span></el-menu-item>
 
           <el-sub-menu index="business" v-if="isVaultUser">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></el-icon><span>鏌滈潰涓氬姟</span></template>
-            <el-menu-item index="/app/institution"><span>鏈烘瀯绠＄悊</span></el-menu-item>
-            <el-menu-item index="/app/teller"><span>鏌滃憳绠＄悊</span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></el-icon><span>柜面业务</span></template>
+            <el-menu-item index="/app/institution"><span>机构管理</span></el-menu-item>
+            <el-menu-item index="/app/teller"><span>柜员管理</span></el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="product-mod">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></el-icon><span>浜у搧宸ュ巶</span></template>
-            <el-menu-item index="/app/product-factory"><span>浜у搧鍒楄〃</span></el-menu-item>
-            <el-menu-item index="/app/product-factory/copy"><span>浜у搧鎷疯礉</span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></el-icon><span>产品工厂</span></template>
+            <el-menu-item index="/app/product-factory"><span>产品列表</span></el-menu-item>
+            <el-menu-item index="/app/product-factory/copy"><span>产品拷贝</span></el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="customer-mod">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></el-icon><span>瀹㈡埛绠＄悊</span></template>
-            <el-menu-item index="/app/customer"><span>瀹㈡埛淇℃伅</span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></el-icon><span>客户管理</span></template>
+            <el-menu-item index="/app/customer"><span>客户信息</span></el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="account-mod">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></el-icon><span>璐︽埛涓氬姟</span></template>
-            <el-menu-item index="/app/account/query"><span>璐︽埛鏌ヨ</span></el-menu-item>
-            <el-menu-item-group title="寮€鎴?><template #title><span style="font-size:11px;color:#a0aec0;padding:0 8px">- 寮€鎴?-</span></template>
-              <el-menu-item index="/app/account/open-personal"><span>涓汉寮€鎴?/span></el-menu-item>
-              <el-menu-item index="/app/account/open-corporate"><span>瀵瑰叕寮€鎴?/span></el-menu-item>
-              <el-menu-item index="/app/account/open-liability"><span>寮€绔嬭礋鍊鸿处鎴?/span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></el-icon><span>账户业务</span></template>
+            <el-menu-item index="/app/account/query"><span>账户查询</span></el-menu-item>
+            <el-menu-item-group title="开户"><template #title><span style="font-size:11px;color:#a0aec0;padding:0 8px">- 开户 -</span></template>
+              <el-menu-item index="/app/account/open-personal"><span>个人开户</span></el-menu-item>
+              <el-menu-item index="/app/account/open-corporate"><span>对公开户</span></el-menu-item>
+              <el-menu-item index="/app/account/open-liability"><span>开立负债账户</span></el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="閿€鎴?><template #title><span style="font-size:11px;color:#a0aec0;padding:0 8px">- 閿€鎴?-</span></template>
-              <el-menu-item index="/app/account/close"><span>璐︽埛閿€鎴?/span></el-menu-item>
+            <el-menu-item-group title="销户"><template #title><span style="font-size:11px;color:#a0aec0;padding:0 8px">- 销户 -</span></template>
+              <el-menu-item index="/app/account/close"><span>账户销户</span></el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="闄愬埗"><template #title><span style="font-size:11px;color:#a0aec0;padding:0 8px">- 闄愬埗 -</span></template>
-              <el-menu-item index="/app/account/restriction"><span>闄愬埗鎬昏</span></el-menu-item>
-              <el-menu-item index="/app/account/freeze"><span>璐︽埛鍐荤粨</span></el-menu-item>
-              <el-menu-item index="/app/account/unfreeze"><span>璐︽埛瑙ｅ喕</span></el-menu-item>
+            <el-menu-item-group title="限制"><template #title><span style="font-size:11px;color:#a0aec0;padding:0 8px">- 限制 -</span></template>
+              <el-menu-item index="/app/account/restriction"><span>限制总览</span></el-menu-item>
+              <el-menu-item index="/app/account/freeze"><span>账户冻结</span></el-menu-item>
+              <el-menu-item index="/app/account/unfreeze"><span>账户解冻</span></el-menu-item>
             </el-menu-item-group>
-            <el-menu-item index="/app/account/sub-account"><span>瀛愯处鎴风鐞?/span></el-menu-item>
+            <el-menu-item index="/app/account/sub-account"><span>子账户管理</span></el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="trans-mod">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></el-icon><span>浜ゆ槗绠＄悊</span></template>
-            <el-menu-item-group title="浜ゆ槗">
-              <el-menu-item index="/app/transaction/deposit"><span>瀛樻浜ゆ槗</span></el-menu-item>
-              <el-menu-item index="/app/transaction/withdraw"><span>鍙栨浜ゆ槗</span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></el-icon><span>交易管理</span></template>
+            <el-menu-item-group title="交易">
+              <el-menu-item index="/app/transaction/deposit"><span>存款交易</span></el-menu-item>
+              <el-menu-item index="/app/transaction/withdraw"><span>取款交易</span></el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="鎾ら攢">
-              <el-menu-item index="/app/transaction/cancel-deposit"><span>瀛樻鎾ら攢</span></el-menu-item>
-              <el-menu-item index="/app/transaction/cancel-withdraw"><span>鍙栨鎾ら攢</span></el-menu-item>
+            <el-menu-item-group title="撤销">
+              <el-menu-item index="/app/transaction/cancel-deposit"><span>存款撤销</span></el-menu-item>
+              <el-menu-item index="/app/transaction/cancel-withdraw"><span>取款撤销</span></el-menu-item>
             </el-menu-item-group>
-            <el-menu-item index="/app/transaction/list"><span>浜ゆ槗娴佹按</span></el-menu-item>
-            <el-menu-item index="/app/transfer"><span>琛屽唴杞处</span></el-menu-item>
+            <el-menu-item index="/app/transaction/list"><span>交易流水</span></el-menu-item>
+            <el-menu-item index="/app/transfer"><span>行内转账</span></el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="cd-mod">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></el-icon><span>澶ч瀛樺崟</span></template>
-            <el-menu-item index="/app/certificate-deposit/product"><span>浜у搧鏈熸</span></el-menu-item>
-            <el-menu-item index="/app/certificate-deposit/subscribe"><span>璁よ喘</span></el-menu-item>
-            <el-menu-item index="/app/certificate-deposit/redeem"><span>鍏戜粯</span></el-menu-item>
-            <el-menu-item index="/app/certificate-deposit/transfer"><span>杞</span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></el-icon><span>大额存单</span></template>
+            <el-menu-item index="/app/certificate-deposit/product"><span>产品期次</span></el-menu-item>
+            <el-menu-item index="/app/certificate-deposit/subscribe"><span>认购</span></el-menu-item>
+            <el-menu-item index="/app/certificate-deposit/redeem"><span>兑付</span></el-menu-item>
+            <el-menu-item index="/app/certificate-deposit/app/transfer"><span>转让</span></el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="notice-mod">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></el-icon><span>閫氱煡瀛樻</span></template>
-            <el-menu-item index="/app/notice-deposit"><span>寮€鎴蜂笌鏀彇</span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></el-icon><span>通知存款</span></template>
+            <el-menu-item index="/app/notice-deposit"><span>开户与支取</span></el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="batch-mod">
-            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></el-icon><span>鎵归噺澶勭悊</span></template>
-            <el-menu-item index="/app/batch/execute"><span>鎵归噺鎵ц</span></el-menu-item>
+            <template #title><el-icon><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></el-icon><span>批量处理</span></template>
+            <el-menu-item index="/app/batch/execute"><span>批量执行</span></el-menu-item>
           </el-sub-menu>
 
 
@@ -83,13 +83,13 @@
       </div>
       <div class="sidebar-footer" @click="collapsed=!collapsed">
         <el-icon><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline :points="collapsed?'9 18 15 12 9 6':'15 18 9 12 15 6'"/></svg></el-icon>
-        <span v-show="!collapsed">鏀惰捣渚ф爮</span>
+        <span v-show="!collapsed">收起侧栏</span>
       </div>
     </el-aside>
     <el-container>
       <el-header class="topbar">
         <div class="topbar-left"><span class="topbar-title">{{ currentTitle }}</span><span class="topbar-path">{{ route.path }}</span></div>
-        <div class="topbar-right"><div class="topbar-user"><div class="topbar-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="topbar-user-info"><span class="topbar-user-name">{{userStore.tellerName}}</span><span class="topbar-user-role">{{userStore.tellerNo}}</span></div><span class="topbar-divider"></span><el-button text class="topbar-logout" @click="handleLogout">閫€鍑?/el-button></div></div>
+        <div class="topbar-right"><div class="topbar-user"><div class="topbar-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="topbar-user-info"><span class="topbar-user-name">{{userStore.tellerName}}</span><span class="topbar-user-role">{{userStore.tellerNo}}</span></div><span class="topbar-divider"></span><el-button text class="topbar-logout" @click="handleLogout">退出</el-button></div></div>
       </el-header>
       <el-main class="main-area"><div class="page-content"><router-view/></div></el-main>
     </el-container>
@@ -98,8 +98,8 @@
 <script setup>
 import { ref, computed } from 'vue'; import { useRouter, useRoute } from 'vue-router'; import { useUserStore } from '../../stores/user'
 const router=useRouter(),route=useRoute(),userStore=useUserStore(),collapsed=ref(false),activeMenu=computed(()=>route.path),isVaultUser=computed(()=>userStore.tellerType===1)
-var titles={'/app/product-factory':'浜у搧鍒楄〃','/app/product-factory/copy':'浜у搧鎷疯礉','/app/home':'棣栭〉','/app/institution':'鏈烘瀯绠＄悊','/app/teller':'鏌滃憳绠＄悊','/app/customer':'瀹㈡埛绠＄悊','/app/account/query':'璐︽埛鏌ヨ','/app/account/open-personal':'涓汉寮€鎴?,'/app/account/open-corporate':'瀵瑰叕寮€鎴?,'/app/account/open-liability':'寮€绔嬭礋鍊鸿处鎴?,'/app/account/close':'璐︽埛閿€鎴?,'/app/account/restriction':'闄愬埗鎬昏','/app/account/freeze':'璐︽埛鍐荤粨','/app/account/unfreeze':'璐︽埛瑙ｅ喕','/app/account/sub-account':'瀛愯处鎴风鐞?,'/app/transaction/deposit':'瀛樻浜ゆ槗','/app/transaction/withdraw':'鍙栨浜ゆ槗','/app/transaction/cancel-deposit':'瀛樻鎾ら攢','/app/transaction/cancel-withdraw':'鍙栨鎾ら攢','/app/transaction/list':'浜ゆ槗娴佹按','/app/certificate-deposit/product':'浜у搧鏈熸','/app/certificate-deposit/subscribe':'璁よ喘','/app/certificate-deposit/redeem':'鍏戜粯','/app/certificate-deposit/transfer':'杞','/app/notice-deposit':'閫氱煡瀛樻','/app/batch/execute':'鎵归噺鎵ц','/app/transfer':'琛屽唴杞处'}
-var currentTitle=computed(()=>titles[route.path]||'宸ヤ綔鍙?)
+var titles={'/app/product-factory':'产品列表','/app/product-factory/copy':'产品拷贝','/app/home':'首页','/app/institution':'机构管理','/app/teller':'柜员管理','/app/customer':'客户管理','/app/account/query':'账户查询','/app/account/open-personal':'个人开户','/app/account/open-corporate':'对公开户','/app/account/open-liability':'开立负债账户','/app/account/close':'账户销户','/app/account/restriction':'限制总览','/app/account/freeze':'账户冻结','/app/account/unfreeze':'账户解冻','/app/account/sub-account':'子账户管理','/app/transaction/deposit':'存款交易','/app/transaction/withdraw':'取款交易','/app/transaction/cancel-deposit':'存款撤销','/app/transaction/cancel-withdraw':'取款撤销','/app/transaction/list':'交易流水','/app/certificate-deposit/product':'产品期次','/app/certificate-deposit/subscribe':'认购','/app/certificate-deposit/redeem':'兑付','/app/certificate-deposit/app/transfer':'转让','/app/notice-deposit':'通知存款','/app/batch/execute':'批量执行','/app/transfer':'行内转账'}
+var currentTitle=computed(()=>titles[route.path]||'工作台')
 const handleLogout=()=>{userStore.logout();router.push('/login')}
 </script>
 <style scoped>

@@ -83,7 +83,7 @@ const doLogin = async (force) => {
     })
     userStore.setUser(res.data)
     ElMessage.success(force ? '强制登录成功' : '登录成功')
-    router.push('/')
+    router.push('/app/home')
   } catch (e) {
     if (e && e.code === 409) {
       try {
