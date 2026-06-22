@@ -120,7 +120,7 @@ class OverdueProcessingBatchServiceTest {
     void addOverdueItem_shouldThrow_whenNotYetOverdue() {
         assertThrows(BusinessException.class, () ->
             service.addOverdueItem("CDACC001", "CD001", BigDecimal.valueOf(100000), BigDecimal.valueOf(1.5),
-                    LocalDate.of(2026, 6, 20)));
+                    LocalDate.now().plusDays(30)));
     }
 
     @Test
