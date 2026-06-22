@@ -42,7 +42,7 @@ jobs:
     - name: Init sub accounts
       run: mysql -h 127.0.0.1 -u root -p123456 bank_core -e "source bank-core/db/alter_sub_account.sql"
     - name: Compile
-      run: mvn compile -f bank-core/pom.xml -s bank-maven/settings.xml
+      run: mvn compile -Dmaven.test.skip=true -f bank-core/pom.xml -s bank-maven/settings.xml
     - name: Test
       run: mvn test -f bank-core/pom.xml -s bank-maven/settings.xml
     - name: Package
