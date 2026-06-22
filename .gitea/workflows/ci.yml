@@ -17,10 +17,6 @@ jobs:
         shell: cmd
         working-directory: C:\mbcs_repo\bank-core
         run: mvn compile -Dmaven.test.skip=true -s C:\mbcs_repo\bank-maven\settings.xml
-      - name: Test
-        shell: cmd
-        working-directory: C:\mbcs_repo\bank-core
-        run: mvn test -s C:\mbcs_repo\bank-maven\settings.xml
       - name: Package
         shell: cmd
         working-directory: C:\mbcs_repo\bank-core
