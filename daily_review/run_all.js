@@ -1,4 +1,4 @@
-const http = require('http');
+﻿const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
@@ -22,6 +22,15 @@ function req(method, path, data, token) {
   });
 }
 
+async function loginWithForce(instNo, tellerNo) {
+  var r = await req('POST','/api/teller/auth/login',{institutionNo:instNo,tellerNo:tellerNo,password:'123456'});
+  if (r.status === 409) {
+    log('  Login 409, retrying with force=true');
+    r = await req('POST','/api/teller/auth/login',{institutionNo:instNo,tellerNo:tellerNo,password:'123456',force:true});
+  }
+  return r;
+}
+
 async function main() {
   var results = { services: { backend: 'Down', frontend: 'Down' }, apiTests: [], browserTests: [], logIssues: [], fixes: [], allIssues: [] };
   log('--- API ---');
@@ -35,9 +44,11 @@ async function main() {
   if (instNo) {
     var rTel=await req('GET','/api/teller/teller/institution/'+instNo);
     if(rTel.status===200&&rTel.data&&rTel.data.data&&rTel.data.data.length>0){
-      var rLogin=await req('POST','/api/teller/auth/login',{institutionNo:instNo,tellerNo:rTel.data.data[0].tellerNo,password:'123456'});
+      var rLogin=await loginWithForce(instNo, rTel.data.data[0].tellerNo);
       if(rLogin.status===200&&rLogin.data&&rLogin.data.data&&rLogin.data.data.token){token4api=rLogin.data.data.token;}
+      else {log('  WARN API login failed status='+rLogin.status);}
     }
+    if(!token4api){log('  WARN no token for protected APIs');}
   }
   var protectedApis = [{ n:'Products', u:'/api/liability/product' },{ n:'Customers', u:'/api/customer' }];
   for (var i=0;i<protectedApis.length;i++) {
@@ -53,13 +64,13 @@ async function main() {
       var r2=await req('GET','/api/teller/teller/institution/'+instNo);
       if(r2.status===200&&r2.data&&r2.data.data&&r2.data.data.length>0){
         var tellerNo=r2.data.data[0].tellerNo; results.browserTests.push({name:'2.GetTellerList',status:'PASS'});
-        var r3=await req('POST','/api/teller/auth/login',{institutionNo:instNo,tellerNo:tellerNo,password:'123456'});
+        var r3=await loginWithForce(instNo, tellerNo);
         if(r3.status===200&&r3.data&&r3.data.data&&r3.data.data.token){
           var token=r3.data.data.token; results.browserTests.push({name:'3.Login('+tellerNo+')',status:'PASS'}); log('  Login OK');
           var pages=[{n:'4.Accounts',u:'/api/liability/liability-account/accounts'},{n:'5.Products',u:'/api/liability/product'},{n:'6.Customers',u:'/api/customer'},{n:'7.Transactions',u:'/api/liability/transaction?page=1&size=20'},{n:'8.CDProducts',u:'/api/liability/cd/products'}];
           for(var j=0;j<pages.length;j++){var r=await req('GET',pages[j].u,null,token);if(r.status===200){results.browserTests.push({name:pages[j].n,status:'PASS'});}else{results.browserTests.push({name:pages[j].n,status:'FAIL'});results.allIssues.push(pages[j].n+' failed');}}
           var r10=await req('POST','/api/teller/auth/logout',null,token);results.browserTests.push({name:'9.Logout',status:r10.status===200?'PASS':'FAIL'});
-        }else{results.browserTests.push({name:'3.Login',status:'FAIL'});results.allIssues.push('Login failed');}
+        }else{results.browserTests.push({name:'3.Login('+tellerNo+')',status:'FAIL'});results.allIssues.push('Login failed status='+r3.status);}
       }else{results.browserTests.push({name:'2.GetTeller',status:'FAIL'});}
     }else{results.browserTests.push({name:'1.GetInst',status:'FAIL'});}
   }catch(e){results.allIssues.push('Test error: '+e.message);}
@@ -86,21 +97,21 @@ async function main() {
   r+='## 三、浏览器测试'+n+n+'共 **'+results.browserTests.length+'** 项，**'+btPass+'** 通过，**'+btFail+'** 失败'+n+n+'| 步骤 | 结果 |'+n+'|------|------|'+n;
   for(var i=0;i<results.browserTests.length;i++){r+='| '+results.browserTests[i].name+' | '+(results.browserTests[i].status==='PASS'?'✅':'❌')+' |'+n;}r+=n;
   r+='## 四、安全'+n+n+'| 检查 | 状态 |'+n+'|------|------|'+n+'| API Auth | ✅ OK |'+n+'| Ports | ✅ OK |'+n+'| Security | ✅ OK |'+n+n;
-  r+='## 五、性能'+n+n+'| 指标 | 值 |'+n+'|------|-----|'+n+'| 启动 | ~15s |'+n+'| 响应 | OK |'+n+'| 测试 | '+(btFail===0?'全通过':btFail+'失败')+' |'+n+n;
+  r+='## 五、性能'+n+n+'| 指标 | 值 |'+n+'|------|-----|'+n+'| 启动 | ~15s |'+n+'| 响应 | OK |'+n+'| 测试 | '+(btFail===0?'全部通过':btFail+'失败')+' |'+n+n;
   var allB=results.allIssues.concat(results.logIssues);
   r+='## 六、Bug'+n+n;
   if(allB.length>0){r+='| # | 问题 | 来源 | 严重 |'+n+'|---|------|------|------|'+n;for(var i=0;i<allB.length;i++){var sv=allB[i].match(/ERROR|Exception|500|Crash|NullPointer|ECONNREFUSED|missing/i)?'HIGH':'MED';r+='|'+(i+1)+'|'+allB[i].substring(0,100)+'|Log|'+sv+'|'+n;}}else{r+='✅ No bugs'+n;}r+=n;
   r+='## 七、自动修复'+n+n+(results.fixes.length>0?results.fixes.map(function(f){return '- '+f;}).join('\n'):'- 无需修复')+n+n;
   r+='## 八、改进建议'+n+n;
   r+='### 1. Layout.vue 模板 (P1)'+n+'- Layout.vue:53 - el-sub-menu 未闭合'+n+'- 修复: 标签结构'+n+'- 验证: 无警告'+n+n;
-  r+='### 2. MapperScan (P2)'+n+'- BankServerApplication.java:17'+n+'- 修复: 更新 @MapperScan'+n+'- 验证: 告警消失'+n+n;
+  r+='### 2. MapperScan (P2)'+n+'- BankServerApplication.java:17'+n+'- 修复: 更新 @MapperScan'+n+'- 验证: 警告消失'+n+n;
   r+='### 3. JVM Crash (P2)'+n+'- hs_err_pid*.log'+n+'- 修复: -Xms512m -Xmx1024m'+n+'- 验证: 24h 无新'+n+n;
   r+='## 九、新功能'+n+n;
   r+='### 1. Audit Log (P2)'+n+'- bank-common/audit/ + bank-web/views/audit/'+n+'- 记录敏感操作'+n+n;
   r+='### 2. Dashboard (P3)'+n+'- WebSocketConfig.java + Home.vue'+n+'- ECharts 管理驾驶舱'+n+n;
   r+='## 十、执行计划'+n+n+'| # | 任务 | 工时 | 优先 |'+n+'|---|------|------|------|'+n;
   r+='| 1 | Layout.vue | 15m | P1 |'+n+'| 2 | JVM 参数 | 30m | P2 |'+n+'| 3 | MapperScan | 20m | P2 |'+n+'| 4 | Audit BE | 2h | P2 |'+n+'| 5 | Audit FE | 1.5h | P2 |'+n+'| 6 | Dashboard | 3h | P3 |'+n+n;
-  r+='---'+n+'**提醒**: 回复 “执行第X项”'+n+'*MBCS Daily Review*'+n;
+  r+='---'+n+'**提醒**: 回复对应任务编号执行'+n+'*MBCS Daily Review*'+n;
 
   fs.writeFileSync(REPORT, r, 'utf-8');
   log('报告已生成'); console.log('报告已生成');
